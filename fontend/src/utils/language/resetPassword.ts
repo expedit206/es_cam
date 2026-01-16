@@ -1,0 +1,87 @@
+// src/utils/i18n/settings.ts
+export const resetPAssword = {
+  fr: {
+    forgot_password: "Mot de passe oublié ?",
+    email_required: "L'adresse email est requise",
+    email_invalid: "L'adresse email est invalide",
+    reset_email_sent: "Email de réinitialisation envoyé !",
+    reset_email_error: "Erreur lors de l'envoi de l'email",
+    sending: "Envoi en cours...",
+    title: "Réinitialiser le mot de passe",
+    forgot_password_instructions:
+      "Entrez votre adresse email pour recevoir un lien de réinitialisation",
+    new_password: "Nouveau mot de passe",
+    confirm_password: "Confirmer le mot de passe",
+    reset_button: "Réinitialiser le mot de passe",
+    resetting: "Réinitialisation en cours...",
+    success: "Mot de passe réinitialisé avec succès !",
+    error: "Erreur lors de la réinitialisation",
+    forgot_instructions:
+      "Entrez votre adresse email pour recevoir un lien de réinitialisation",
+    email_address: "Adresse email",
+    reset_password: "Reinitialiser le mot de passe",
+    reset_password_instructions:
+      "Veuillez entrer votre nouveau mot de passe ci-dessous.",
+    email_placeholder: "votre@email.com",
+    cancel: "Annuler",
+    send_reset_link: "envoyer le lien passe",
+    password_strength: "Force du mot de passe",
+    medium: "Moyen",
+    strong: "Fort",
+
+    required: "Ce champ est requis",
+    email: "L'adresse email est invalide",
+    min_length: "Doit contenir au moins {min} caractères",
+    password_mismatch: "Les mots de passe ne correspondent pas",
+    phone_invalid: "Le numéro de téléphone est invalide",
+
+    reset_link_sent:
+      "Un lien de réinitialisation a été envoyé à votre adresse email.",
+    check_your_email:
+      "Vérifiez votre boîte email pour le lien de réinitialisation.",
+    token_expired:
+      "Le lien de réinitialisation a expiré. Veuillez en demander un nouveau.",
+    token_invalid: "Le lien de réinitialisation est invalide.",
+    password_updated: "Votre mot de passe a été mis à jour avec succès.",
+  },
+
+  en: {
+    reset_password: "Reset Password",
+    reset_password_instructions:
+      "Please enter your new password below.",
+    forgot_password: "Forgot password?",
+    email_required: "Email address is required",
+    email_invalid: "Email address is invalid",
+    reset_email_sent: "Reset email sent!",
+    reset_email_error: "Error sending email",
+    sending: "Sending...",
+    send_reset_link: "Send reset link",
+    title: "Reset Password",
+    forgot_password_instructions:
+      "Enter your new email address to receive a reset link",
+    new_password: "New password",
+    confirm_password: "Confirm password",
+    reset_button: "Reset password",
+    resetting: "Resetting...",
+    success: "Password reset successfully!",
+    error: "Error during reset",
+    forgot_instructions: "Enter your email address to receive a reset link",
+    email_address: "Email address",
+    email_placeholder: "your@email.com",
+    cancel: "Cancel",
+    password_strength: "Password strength",
+    weak: "Weak",
+    medium: "Medium",
+    strong: "Strong",
+    required: "This field is required",
+    email: "Email address is invalid",
+    min_length: "Must contain at least {min} characters",
+    password_mismatch: "Passwords do not match",
+    phone_invalid: "Phone number is invalid",
+    reset_link_sent: "A reset link has been sent to your email address.",
+    check_your_email: "Check your email for the reset link.",
+    token_expired: "The reset link has expired. Please request a new one.",
+    token_invalid: "The reset link is invalid.",
+    password_updated: "Your password has been updated successfully.",
+  },
+};

@@ -1,0 +1,932 @@
+    <!-- views/produits/ProduitDetail.vue -->
+ <template>
+    <div class="min-h-screen bg-gray-50 relative">
+        <SeoHead :title="seoTitle" :description="seoDescription" />
+
+        <!-- Loading State -->
+        <div v-if="isLoading" class="flex justify-center items-center min-h-96">
+            <Loader :isLoading="true" />
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="max-w-4xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 sm:p-8 text-center">
+                <i class="fas fa-exclamation-triangle text-yellow-500 text-3xl sm:text-4xl mb-4"></i>
+                <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">Produit non trouvé</h2>
+                <p class="text-gray-600 text-sm sm:text-base mb-6">{{ error }}</p>
+                <button @click="$router.back()"
+                    class="bg-[var(--espace-vert)] text-white px-4 sm:px-6 py-2 sm:py-2 rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base">
+                    Retour
+                </button>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div v-else-if="produit" class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+            <!-- Breadcrumb - Mobile optimisé -->
+            <nav
+                class="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 overflow-x-auto hide-scrollbar">
+                <router-link to="/" class="hover:text-[var(--espace-vert)] whitespace-nowrap">Accueil</router-link>
+                <i class="fas fa-chevron-right text-xs flex-shrink-0"></i>
+                <router-link to="/" class="hover:text-[var(--espace-vert)] whitespace-nowrap">Produits</router-link>
+                <i class="fas fa-chevron-right text-xs flex-shrink-0"></i>
+                <span class="text-gray-900 whitespace-nowrap truncate max-w-[120px] sm:max-w-none">{{
+                    produit?.category?.name }}</span>
+            </nav>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                <!-- Colonne principale -->
+                <div class="lg:col-span-2 space-y-4 sm:space-y-6">
+                    <!-- Galerie d'images - Mobile optimisé -->
+                    <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 overflow-hidden image-container"
+                        @touchstart="handleTouchStart" @touchend="handleTouchEnd">
+                        <div class="relative">
+                            <!-- Image principale -->
+                            <div class="aspect-[4/3] sm:aspect-[16/9] bg-gray-100">
+                                <img :src="currentImage" :alt="produit?.nom" class="w-full h-full object-contain">
+                            </div>
+
+                            <!-- Indicateurs de slide pour mobile -->
+                            <div v-if="produit?.photos && produit?.photos.length > 1"
+                                class="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:hidden">
+                                <div v-for="(_, index) in produit?.photos" :key="index"
+                                    class="w-1.5 h-1.5 rounded-full transition-all"
+                                    :class="currentImageIndex === index ? 'bg-white' : 'bg-white/50'"></div>
+                            </div>
+
+                            <!-- Navigation desktop -->
+                            <button v-if="produit?.photos && produit?.photos.length > 1 && currentImageIndex > 0"
+                                @click="currentImageIndex--" @mousedown="recordProductClick('prev_image')"
+                                class="hidden sm:flex absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full items-center justify-center transition-all">
+                                <i class="fas fa-chevron-left text-sm"></i>
+                            </button>
+                            <button
+                                v-if="produit?.photos && produit?.photos.length > 1 && currentImageIndex < produit?.photos.length - 1"
+                                @click="currentImageIndex++" @mousedown="recordProductClick('next_image')"
+                                class="hidden sm:flex absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full items-center justify-center transition-all">
+                                <i class="fas fa-chevron-right text-sm"></i>
+                            </button>
+
+                            <!-- Miniatures - Desktop seulement -->
+                            <div v-if="produit?.photos && produit?.photos.length > 1"
+                                class="hidden sm:flex space-x-2 p-3 sm:p-4 overflow-x-auto">
+                                <button v-for="(image, index) in produit?.photos" :key="index"
+                                    @click="currentImageIndex = index"
+                                    @mousedown="recordProductClick('thumbnail_click')" :class="[
+                                        'flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all',
+                                        currentImageIndex === index
+                                            ? 'border-[var(--espace-vert)]'
+                                            : 'border-transparent hover:border-gray-300'
+                                    ]">
+                                    <img :src="image" :alt="`${produit?.nom} - Image ${index + 1}`"
+                                        class="w-full h-full object-cover">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informations détaillées -->
+                    <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6">
+                        <h1 class="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight"
+                            @click="recordProductClick('title_click')">
+                            {{ produit?.nom }}
+                        </h1>
+
+                        <!-- Note et avis - Stack sur mobile -->
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0 mb-4 sm:mb-6">
+                            <div class="flex items-center space-x-2" @click="recordProductClick('rating_click')">
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-star text-yellow-400 text-sm sm:text-base"></i>
+                                    <span class="font-semibold text-sm sm:text-base">{{ produit?.note_moyenne || 'N/A'
+                                    }}</span>
+                                </div>
+                                <span class="text-gray-600 text-xs sm:text-sm">({{ produit?.nombre_avis }} avis)</span>
+                            </div>
+                            <div class="flex items-center space-x-1 text-green-600 text-sm">
+                                <i class="fas fa-check-circle text-sm"></i>
+                                <span class="text-xs sm:text-sm capitalize">{{ produit?.quantite > 0 ? 'En stock' :
+                                    'Rupture de stock' }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4 sm:mb-6">
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">Description</h3>
+                            <p class="text-gray-700 text-sm sm:text-base leading-relaxed whitespace-pre-line"
+                                @click="recordProductClick('description_click')">
+                                {{ produit?.description || 'Aucune description disponible' }}
+                            </p>
+                        </div>
+
+                        <!-- Caractéristiques -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div @click="recordProductClick('price_click')">
+                                <h4 class="font-semibold text-gray-900 text-sm sm:text-base mb-1 sm:mb-2">Prix</h4>
+                                <p class="text-gray-700 text-sm sm:text-base">{{ formatPrice(produit?.prix) }}</p>
+                            </div>
+                            <div @click="recordProductClick('stock_click')">
+                                <h4 class="font-semibold text-gray-900 text-sm sm:text-base mb-1 sm:mb-2">Stock
+                                    disponible</h4>
+                                <p class="text-gray-700 text-sm sm:text-base">{{ produit?.quantite }} unité(s)</p>
+                            </div>
+                            <div @click="recordProductClick('condition_click')">
+                                <h4 class="font-semibold text-gray-900 text-sm sm:text-base mb-1 sm:mb-2">Condition</h4>
+                                <p class="text-gray-700 text-sm sm:text-base capitalize">{{ produit?.condition || 'Non spécifiée' }}</p>
+                            </div>
+                            <div v-if="produit?.revendable" @click="recordProductClick('resellable_click')">
+                                <h4 class="font-semibold text-gray-900 text-sm sm:text-base mb-1 sm:mb-2">Revendable
+                                </h4>
+                                <p class="text-green-600 text-sm sm:text-base">Oui</p>
+                            </div>
+                        </div>
+
+                        <!-- Informations rapides -->
+                        <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200 space-y-2 text-xs sm:text-sm">
+                            <div class="flex items-center space-x-2 text-gray-600"
+                                @click="recordProductClick('location_click')">
+                                <i class="fas fa-map-marker-alt text-[var(--espace-vert)] text-xs sm:text-sm"></i>
+                                <span class="truncate">{{ produit?.ville || 'Localisation non spécifiée' }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-gray-600"
+                                @click="recordProductClick('date_click')">
+                                <i class="fas fa-calendar text-[var(--espace-vert)] text-xs sm:text-sm"></i>
+                                <span>Ajouté le {{ formatDate(produit?.created_at) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="space-y-4 sm:space-y-6">
+                    <!-- Actions et prix - Sticky sur desktop -->
+                    <div
+                        class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:sticky lg:top-4">
+
+
+                        <div class="space-y-2 sm:space-y-3">
+                            <router-link :to="`/messages/${produit?.user?.id}`" @click="contactSeller"
+                                class="w-full bg-[var(--espace-vert)] text-white py-2.5 sm:py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base">
+                                <i class="fas fa-comment-dots text-sm"></i>
+                                <span>Contacter le vendeur</span>
+                            </router-link>
+
+                            <button @click="toggleFavorite" :class="[
+                                'w-full border py-2.5 sm:py-3 px-4 rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer'
+                            ]">
+                                <i
+                                    :class="isFavorited ? ' border-[var(--espace-or)] bg-[var(--espace-or)]/5 text-[var(--espace-or)] hover:bg-[var(--espace-or)]/10 fas fa-heart' : 'far fa-heart border-gray-300 text-gray-700 hover:bg-gray-50'"></i>
+                                <span>{{ isFavorited ? 'Retirer des favoris' : 'Ajouter aux favoris' }}</span>
+                            </button>
+
+                            <button v-if="produit?.revendable" @click="openResaleModal" :class="[
+                                'w-full border py-2.5 sm:py-3 px-4 rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer',
+                                produit?.revendable
+                                    ? 'border-[var(--espace-vert)] text-[var(--espace-vert)] hover:bg-[var(--espace-vert)]/5'
+                                    : 'border-gray-300 text-gray-400 cursor-not-allowed'
+                            ]" :disabled="revendu">
+                                <i class="fas fa-handshake"></i>
+                                <span v-if="revendu">vous avez revendu le produit</span>
+                                <span v-else>Proposer une revente</span>
+                            </button>
+
+                            <button @click="shareNative"
+                                class="w-full border border-gray-300 text-gray-700 py-2.5 sm:py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base">
+                                <i class="fas fa-share-alt"></i>
+                                <span>Partager</span>
+                            </button>
+
+                        </div>
+
+                        <!-- Informations vendeur -->
+                        <div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
+                            <h3 class="text-sm font-semibold text-gray-900 mb-3">Vendeur</h3>
+                            <div class="flex items-center space-x-3" @click="recordProductClick('seller_click')">
+                                <img :src="produit?.user?.photo || '/default-avatar.png'" :alt="produit?.user?.nom"
+                                    class="w-10 h-10 rounded-full object-cover flex-shrink-0">
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-semibold text-gray-900 text-sm truncate">{{ produit?.user?.nom }}
+                                    </h4>
+                                    <p class="text-gray-600 text-xs truncate">Membre depuis {{
+                                        formatMemberSince(produit?.user?.created_at) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Avis des clients -->
+                    <ReviewsProduct :product-id="produit.id" :reviews-stats="reviewsStats" />
+                </div>
+            </div>
+
+            <!-- Produits similaires -->
+            <div v-if="similarProduits?.length > 0" class="mt-8 sm:mt-12">
+                <div class="flex items-center justify-between mb-4 sm:mb-6">
+                    <h2 class="text-lg sm:text-2xl font-bold text-gray-900">Produits similaires</h2>
+                    <button @click="recordProductClick('see_all_similar')"
+                        class="text-[var(--espace-vert)] text-sm font-medium hover:text-green-700 flex items-center space-x-1">
+                        <span>Voir tout</span>
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <ProductCard v-for="similarProduit in similarProduits" :key="similarProduit?.id"
+                        :produit="similarProduit" @click="viewProduit(similarProduit)" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal pour proposer une revente -->
+        <div v-if="showResaleModal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Proposer une revente</h3>
+                    <button @click="closeResaleModal" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600 mb-2">
+                        Vous proposez de revendre le produit : <strong>{{ produit?.nom }}</strong>
+                    </p>
+                    <p class="text-xs text-gray-500 mb-4">
+                        Le propriétaire devra confirmer votre proposition avant que la revente soit active.
+                    </p>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Prix de revente proposé (FCFA)
+                    </label>
+                    <input v-model="resalePrice" type="number" min="0" :max="produit?.prix ?? 0 * 2"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--espace-vert)] focus:border-transparent"
+                        placeholder="Entrez le prix de revente" @keyup.enter="submitResaleProposal">
+                    <p class="text-xs text-gray-500 mt-1">
+                        Prix original : {{ formatPrice(produit?.prix) }}
+                    </p>
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button @click="closeResaleModal"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                        Annuler
+                    </button>
+
+                    <button @click="submitResaleProposal" :disabled="!resalePrice || isSubmittingResale" :class="[
+                        'px-4 py-2 text-sm font-medium text-white rounded-md transition-colors',
+                        !resalePrice || isSubmittingResale
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-[var(--espace-vert)] hover:bg-green-700'
+                    ]">
+                        <span v-if="isSubmittingResale">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Envoi...
+                        </span>
+                        <span v-else>
+                            Proposer la revente
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmation -->
+        <div v-if="showConfirmationModal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg max-w-sm w-full p-6 text-center">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Proposition envoyée !</h3>
+                <p class="text-sm text-gray-600 mb-4">
+                    Votre proposition de revente a été envoyée au propriétaire.
+                    Vous serez notifié lorsqu'il aura pris une décision.
+                </p>
+                <button @click="showConfirmationModal = false"
+                    class="w-full bg-[var(--espace-vert)] text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
+                    Compris
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import SeoHead from '../../components/SeoHead.vue';
+import Loader from '../../components/Loader.vue';
+import ProductCard from '../../components/mesProduits/MesProductCard.vue';
+import ReviewsProduct from './ReviewsProduit.vue';
+import type { Product } from '../../stores/marketplace';
+import apiClient from '../../api';
+import { useToast } from 'vue-toastification';
+import { useAuthStore } from '../../stores/Auth';
+import { interactionService } from '../../utils/interaction';
+
+const route = useRoute();
+const router = useRouter();
+const toast = useToast();
+const authStore = useAuthStore();
+
+// États existants
+const produit = ref<Product | null>(null);
+const similarProduits = ref<Product[]>([]);
+const isLoading = ref(true);
+const error = ref<string | null>(null);
+const currentImageIndex = ref(0);
+const isFavorited = ref(false);
+const touchStartX = ref(0);
+const revendu = ref(false);
+
+// Nouveaux états pour la revente
+const showResaleModal = ref(false);
+const showConfirmationModal = ref(false);
+const resalePrice = ref<number | null>(null);
+const isSubmittingResale = ref(false);
+
+// Nouveaux états pour le suivi des interactions
+const hasViewed = ref(false);
+const lastClickTime = ref<number>(0);
+const contactClickCount = ref(0);
+
+// Computed properties
+const currentImage = computed(() => {
+    if (!produit.value?.photos) return '/default-product.jpg';
+    return produit.value?.photos[currentImageIndex.value] || produit.value?.photos[0];
+});
+
+const seoTitle = computed(() => {
+    return produit.value ? `${produit.value?.nom} - Produits` : 'Produit';
+});
+
+const seoDescription = computed(() => {
+    return produit.value?.description?.substring(0, 160) || 'Découvrez ce produit de qualité';
+});
+
+// URL de partage
+const shareUrl = computed(() => {
+    if (!produit.value) return '';
+    return `${window.location.origin}/produits/${produit.value.id}`;
+});
+
+// Texte de partage
+const shareText = computed(() => {
+    if (!produit.value) return '';
+    return `Découvrez "${produit.value.nom}" - ${formatPrice(produit.value?.prix)} sur Espace Cameroun`;
+});
+
+const reviewsStats = computed(() => ({
+    average: produit.value?.note_moyenne || 0,
+    total: produit.value?.nombre_avis || 0
+}));
+
+// MÉTHODES D'INTERACTION
+
+// Enregistrer une vue (quand l'utilisateur arrive sur la page)
+const recordView = async () => {
+    if (!produit.value || hasViewed.value || !authStore.user) return;
+
+    try {
+        await interactionService.recordInteraction(
+            produit.value.id,
+            'produit',
+            'clic',
+            { duration: 0, source: 'product_page' }
+        );
+        hasViewed.value = true;
+        console.log('Interaction "clic" enregistrée pour la vue initiale');
+    } catch (error) {
+        console.error('Erreur enregistrement vue:', error);
+    }
+};
+
+// Enregistrer un clic sur le produit
+const recordProductClick = async (clickType: string) => {
+    if (!produit.value || !authStore.user) return;
+
+    // Éviter les clics trop rapprochés (débouillonner)
+    const now = Date.now();
+    if (now - lastClickTime.value < 1000) return; // 1 seconde minimum entre clics
+
+    lastClickTime.value = now;
+
+    try {
+        await interactionService.recordInteraction(
+            produit.value.id,
+            'produit',
+            'clic',
+            {
+                click_type: clickType,
+                timestamp: new Date().toISOString(),
+                user_agent: navigator.userAgent
+            }
+        );
+        console.log(`Interaction "clic" enregistrée pour: ${clickType}`);
+    } catch (error) {
+        console.error('Erreur enregistrement clic:', error);
+    }
+};
+
+// Méthode de partage améliorée avec interaction
+const shareNative = async () => {
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: produit.value?.nom,
+                text: shareText.value,
+                url: shareUrl.value,
+            });
+
+            // Enregistrer l'interaction de partage
+            if (produit.value && authStore.user) {
+                await interactionService.recordInteraction(
+                    produit.value.id,
+                    'produit',
+                    'partage',
+                    {
+                        method: 'native_share',
+                        platform: 'native',
+                        timestamp: new Date().toISOString()
+                    }
+                );
+            }
+
+            toast.success('Produit partagé avec succès !');
+        } catch (err) {
+            // L'utilisateur a annulé le partage
+            console.log('Partage annulé');
+        }
+    } else {
+        // Fallback pour les navigateurs sans Web Share API
+        openShareModal();
+    }
+};
+
+// Ouvrir le modal de partage
+const openShareModal = () => {
+    // Votre logique existante pour le modal de partage
+    showShareModal.value = true;
+
+    // Enregistrer l'interaction d'ouverture du modal de partage
+    if (produit.value && authStore.user) {
+        interactionService.recordInteraction(
+            produit.value.id,
+            'produit',
+            'partage',
+            { action: 'opened_share_modal', timestamp: new Date().toISOString() }
+        );
+    }
+};
+
+// Méthode pour copier le lien avec interaction
+const copyLink = async () => {
+    try {
+        await navigator.clipboard.writeText(shareUrl.value);
+        showCopyToast.value = true;
+        setTimeout(() => showCopyToast.value = false, 3000);
+
+        // Enregistrer l'interaction de copie
+        if (produit.value && authStore.user) {
+            await interactionService.recordInteraction(
+                produit.value.id,
+                'produit',
+                'partage',
+                { method: 'copy_link', timestamp: new Date().toISOString() }
+            );
+        }
+
+        toast.success('Lien copié dans le presse-papier !');
+    } catch (err) {
+        console.error('Erreur lors de la copie:', err);
+        toast.error('Impossible de copier le lien');
+    }
+};
+
+// Méthodes existantes modifiées
+const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('fr-FR').format(price) + ' FCFA';
+};
+
+const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR');
+};
+
+const formatMemberSince = (dateString: string) => {
+    return new Date(dateString).getFullYear();
+};
+
+// Nouvelles méthodes pour la revente
+const openResaleModal = async () => {
+    if (!produit.value) {
+        toast.error('Produit non chargé');
+        return;
+    }
+
+    // Vérifier si l'utilisateur est connecté
+    if (!authStore.user) {
+        toast.error('Veuillez vous connecter pour proposer une revente');
+        router.push('/login');
+        return;
+    }
+
+    // Vérifier si l'utilisateur n'est pas le propriétaire du produit
+    if (authStore.user.id === produit.value?.user.id) {
+        toast.error('Vous ne pouvez pas proposer une revente de votre propre produit');
+        return;
+    }
+
+    // Vérifier si le produit est revendable
+    if (!produit.value?.revendable) {
+        toast.error('Ce produit n\'est pas marqué comme revendable');
+        return;
+    }
+
+    showResaleModal.value = true;
+    resalePrice.value = Math.round(produit.value?.prix ?? 0 * 0.8);
+
+    // Enregistrer l'interaction d'ouverture du modal de revente
+    await recordProductClick('open_resale_modal');
+};
+
+const closeResaleModal = () => {
+    showResaleModal.value = false;
+    resalePrice.value = null;
+    isSubmittingResale.value = false;
+};
+
+const submitResaleProposal = async () => {
+    if (!resalePrice.value || !produit.value) {
+        toast.error('Veuillez entrer un prix de revente');
+        return;
+    }
+
+    if (resalePrice.value <= 0) {
+        toast.error('Le prix de revente doit être supérieur à 0');
+        return;
+    }
+
+    isSubmittingResale.value = true;
+
+    try {
+        const response = await apiClient.post(`/reventes/${produit.value?.id}`, {
+            prix_revente: resalePrice.value,
+            produit_id: produit.value?.id
+        });
+
+        if (response.data.success) {
+            showResaleModal.value = false;
+            showConfirmationModal.value = true;
+            toast.success('Votre proposition de revente a été envoyée avec succès');
+
+            // Enregistrer l'interaction de contact (revente)
+            if (authStore.user) {
+                await interactionService.recordInteraction(
+                    produit.value.id,
+                    'produit',
+                    'contact',
+                    {
+                        type: 'resale_proposal',
+                        price_proposed: resalePrice.value,
+                        original_price: produit.value?.prix,
+                        timestamp: new Date().toISOString()
+                    }
+                );
+            }
+        } else {
+            toast.error(response.data.message || 'Erreur lors de l\'envoi de la proposition');
+        }
+    } catch (err: any) {
+        console.error('Erreur revente:', err);
+        const errorMessage = err.response?.data?.message || 'Erreur lors de l\'envoi de la proposition';
+        toast.error(errorMessage);
+
+        if (err.response?.status === 409) {
+            toast.error('Vous avez déjà une proposition en attente pour ce produit');
+        } else if (err.response?.status === 403) {
+            toast.error('Vous ne pouvez pas proposer une revente pour ce produit');
+        }
+    } finally {
+        isSubmittingResale.value = false;
+    }
+};
+
+// Navigation tactile pour les images
+const handleTouchStart = (e: TouchEvent) => {
+    touchStartX.value = e.touches[0].clientX;
+};
+
+const handleTouchEnd = (e: TouchEvent) => {
+    if (!produit.value?.photos || produit.value?.photos.length <= 1) return;
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.value - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+        if (diff > 0 && currentImageIndex.value < produit.value?.photos.length - 1) {
+            currentImageIndex.value++;
+            // Enregistrer l'interaction de navigation d'image
+            recordProductClick('image_navigation_next');
+        } else if (diff < 0 && currentImageIndex.value > 0) {
+            currentImageIndex.value--;
+            // Enregistrer l'interaction de navigation d'image
+            recordProductClick('image_navigation_prev');
+        }
+    }
+};
+
+const fetchProduitDetails = async () => {
+    try {
+        isLoading.value = true;
+        const response = await apiClient.get(`/produits/${route.params.id}`);
+
+        if (response.data.success) {
+            produit.value = response.data.data.produit;
+            similarProduits.value = response.data.data.similar_produits;
+
+            // Vérifier si l'utilisateur a déjà une proposition en attente
+            await checkExistingResaleProposal();
+
+            // Vérifier si le produit est dans les favoris
+console.log(response.data.data);
+
+            // Enregistrer la vue initiale
+            await recordView();
+        } else {
+            error.value = response.data.message;
+        }
+    } catch (err: any) {
+        console.log(err.response);
+        error.value = err.response?.data?.message || 'Erreur lors du chargement du produit';
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+const checkExistingResaleProposal = async () => {
+    if (!produit.value) return;
+
+    try {
+        const response = await apiClient.get(`/reventes/${produit.value?.id}/status`);
+        if (response.data.revendu) {
+            revendu.value = response.data.revendu;
+        }
+    } catch (err) {
+        console.log('Erreur vérification proposition:', err);
+    }
+};
+
+
+const toggleFavorite = async () => {
+    isFavorited.value = !isFavorited.value;
+    if (!produit.value || !authStore.user) {
+        toast.error('Veuillez vous connecter pour ajouter aux favoris');
+        router.push('/login');
+        return;
+    }
+
+    try {
+
+            // Enregistrer l'interaction favori
+            await interactionService.recordInteraction(
+                produit.value.id,
+                'produit',
+                'favori',
+                {
+                    action: isFavorited.value ? 'added' : 'removed',
+                    timestamp: new Date().toISOString()
+                }
+            );
+
+            toast.success(isFavorited.value ? 'Ajouté aux favoris' : 'Retiré des favoris');
+        
+    } catch (err: any) {
+        console.error('Erreur lors de la mise à jour des favoris:', err);
+        toast.error('Erreur lors de la mise à jour des favoris');
+    }
+};
+
+// Méthode pour contacter le vendeur avec interaction
+const contactSeller = async () => {
+    if (!produit.value || !authStore.user) {
+        toast.error('Veuillez vous connecter pour contacter le vendeur');
+        router.push('/login');
+        return;
+    }
+
+    // Limiter le nombre de clics sur contact
+    contactClickCount.value++;
+    if (contactClickCount.value > 3) {
+        toast.info('Vous avez déjà contacté ce vendeur plusieurs fois');
+        return;
+    }
+
+    // Enregistrer l'interaction de contact
+    try {
+        await interactionService.recordInteraction(
+            produit.value.id,
+            'produit',
+            'contact',
+            {
+                type: 'message_vendor',
+                click_count: contactClickCount.value,
+                timestamp: new Date().toISOString()
+            }
+        );
+    } catch (error) {
+        console.error('Erreur enregistrement contact:', error);
+    }
+
+    // Redirection vers les messages
+    router.push(`/messages/${produit.value?.user?.id}`);
+};
+
+const viewProduit = (produit: Product) => {
+    router.push(`/produits/${produit.id}`);
+};
+
+// Gestion du scroll pour éviter les conflits avec la bottom bar
+const adjustScrollForMobile = () => {
+    if (window.innerWidth < 1024) {
+        document.documentElement.style.scrollPaddingBottom = '80px';
+    }
+};
+
+// Track time spent on page
+let pageViewStartTime = 0;
+const trackTimeOnPage = () => {
+    pageViewStartTime = Date.now();
+
+    window.addEventListener('beforeunload', () => {
+        const timeSpent = Math.floor((Date.now() - pageViewStartTime) / 1000); // en secondes
+
+        if (produit.value && authStore.user && timeSpent > 5) {
+            // Enregistrer le temps passé sur la page
+            interactionService.recordInteraction(
+                produit.value.id,
+                'produit',
+                'clic',
+                {
+                    type: 'page_view',
+                    duration_seconds: timeSpent,
+                    timestamp: new Date().toISOString()
+                }
+            ).catch(console.error);
+        }
+    });
+};
+
+// Cycle de vie
+onMounted(() => {
+    fetchProduitDetails();
+    adjustScrollForMobile();
+    trackTimeOnPage();
+
+    // Enregistrer les clics sur les images
+    const imageContainer = document.querySelector('.image-container');
+    if (imageContainer) {
+        imageContainer.addEventListener('click', () => {
+            recordProductClick('image_click');
+        });
+    }
+
+    window.addEventListener('resize', adjustScrollForMobile);
+});
+
+onUnmounted(() => {
+    document.documentElement.style.scrollPaddingBottom = '0px';
+    window.removeEventListener('resize', adjustScrollForMobile);
+});
+</script>
+
+<style scoped>
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Ajustements pour les très petits écrans */
+    @media (max-width: 360px) {
+        .text-xs {
+            font-size: 0.7rem;
+        }
+
+        .px-3 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+    }
+
+    /* Animation pour les transitions d'images */
+    .image-transition {
+        transition: transform 0.3s ease;
+    }
+
+    /* Padding pour la bottom bar mobile */
+    @media (max-width: 1023px) {
+        .pb-safe {
+            padding-bottom: 5rem;
+        }
+    }
+
+    /* Animation pour le modal */
+    .modal-enter-active,
+    .modal-leave-active {
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-enter-from,
+    .modal-leave-to {
+        opacity: 0;
+    }
+
+    .modal-content-enter-active,
+    .modal-content-leave-active {
+        transition: all 0.3s ease;
+    }
+
+    .modal-content-enter-from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    .modal-content-leave-to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.3s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
+
+    /* Styles pour les boutons de partage */
+    .share-button {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .share-button:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Responsive pour les petits écrans */
+    @media (max-width: 640px) {
+        .share-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .share-button {
+            padding: 0.75rem;
+        }
+
+        .share-icon {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Ajustements pour les très petits écrans */
+    @media (max-width: 360px) {
+        .text-xs {
+            font-size: 0.7rem;
+        }
+
+        .px-3 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+    }
+
+    /* Animation pour les transitions d'images */
+    .image-transition {
+        transition: transform 0.3s ease;
+    }
+
+    /* Padding pour la bottom bar mobile */
+    @media (max-width: 1023px) {
+        .pb-safe {
+            padding-bottom: 5rem;
+        }
+    }
+    </style>
