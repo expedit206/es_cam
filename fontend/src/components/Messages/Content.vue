@@ -35,6 +35,11 @@
                         Votre navigateur ne supporte pas l'audio.
                     </audio>
 
+                    <!-- 🟢 Contenu image -->
+                    <div v-if="message.type === 'image' && message.content" class="rounded-lg overflow-hidden">
+                        <img :src="message.content" alt="Image partagée" class="max-w-full h-auto max-h-64 object-cover" @click="viewImage(message.content)" />
+                    </div>
+
                     <!-- 🟢 Heure + statut -->
                     <div class="flex justify-between items-center mt-1 text-xs text-[var(--espace-gris)]">
                         <span>{{ new Date(message.created_at).toLocaleTimeString() }}</span>
@@ -85,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import apiClient from '../../api/index'
 import { Message } from '../types/index'
@@ -148,6 +153,9 @@ const deleteMessage = (messageId: number) => {
             .then(() => emit('delete-message', messageId))
             .catch(() => toast.error('Échec de la suppression du message'))
     }
+}
+const viewImage = (url: string) => {
+    window.open(url, '_blank');
 }
 </script>
 

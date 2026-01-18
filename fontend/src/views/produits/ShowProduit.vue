@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-50 relative">
-        <SeoHead :title="seoTitle" :description="seoDescription" />
+        <SeoHead :title="seoTitle" :description="seoDescription" :image="seoImage" />
 
         <!-- Loading State -->
         <div v-if="isLoading" class="flex justify-center items-center min-h-96">
@@ -94,15 +94,15 @@
                                     <h1 class="text-lg sm:text-xl font-bold text-gray-900 leading-tight truncate">
                                         {{ produit?.nom }}
                                     </h1>
-                                    <!-- Badge promotion -->
-                                    <span v-if="promotionActive"
+                                    <!-- Badge promotion (MUTED) -->
+                                    <span v-if="false && promotionActive"
                                         class="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
                                         <i class="fas fa-bolt text-[10px]"></i> PROMU
                                     </span>
                                 </div>
 
-                                <!-- Stats interaction -->
-                                <div v-if="promotionActive"
+                                <!-- Stats interaction (MUTED PROPRIETARY STATS) -->
+                                <div v-if="false && promotionActive"
                                     class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 text-gray-600 text-xs sm:text-sm">
                                     <div class="flex items-center gap-1"><i class="fas fa-mouse-pointer"></i> <span>{{
                                             produitCounts?.clics_count || 0 }} clics</span></div>
@@ -180,8 +180,8 @@
                             </div>
                         </div>
 
-                        <!-- PERFORMANCE PROPRIÉTAIRE -->
-                        <div v-if="isProductOwner && promotionActive"
+                        <!-- PERFORMANCE PROPRIÉTAIRE (MUTED) -->
+                        <div v-if="false && isProductOwner && promotionActive"
                             class="mt-6 pt-6 border-t border-gray-200 space-y-4">
                             <h4 class="text-sm font-semibold text-gray-900 mb-3">Performance du produit</h4>
 
@@ -236,7 +236,7 @@
                             <div class="flex items-baseline gap-2">
                                 <span class="text-2xl sm:text-3xl font-bold text-gray-900">{{ formatPrice(produit?.prix)
                                     }}</span>
-                                <span v-if="promotionActive"
+                                <span v-if="false && promotionActive"
                                     class="text-xs text-purple-600 font-medium bg-purple-50 px-2 py-1 rounded-full">
                                     <i class="fas fa-bolt mr-1"></i> Boosté
                                 </span>
@@ -708,6 +708,7 @@ import ReviewsProduct from './ReviewsProduit.vue';
 import { interactionService } from '../../utils/interaction';
 import { useAuthStore } from '../../stores/Auth';
 import apiClient from '../../api';
+import urlHelper from '../../utils/urlHelper';
 
 const route = useRoute();
 const router = useRouter();
@@ -872,6 +873,13 @@ const isSubmittingResale = ref(false);
 const currentImage = computed(() => {
     if (!produit.value?.photos) return '/default-product.jpg';
     return produit.value?.photos[currentImageIndex.value] || produit.value?.photos[0];
+});
+
+const seoImage = computed(() => {
+    if (!produit.value?.photos || produit.value.photos.length === 0) return null;
+    const photo = produit.value.photos[0];
+    if (photo.startsWith('http')) return photo;
+    return urlHelper.endpoints.storage.url(photo);
 });
 
 const seoTitle = computed(() => {

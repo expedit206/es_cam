@@ -1,11 +1,9 @@
 <template>
     <!-- Composants SEO -->
-    <SeoHead :title="`${profile?.nom || t('profile')} - ${t('espace_cameroun')}`" :description="t('merchant_seo_description', {
+    <SeoHead :title="`${profile?.nom || t('profile')} - ${t('espace_cameroun')}`" :description="t('user_seo_description', {
         name: profile?.nom || t('user'),
-        count: 0,
-        ville: profile?.ville || t('city_not_specified'),
-        rating: 0
-    })" :keywords="t('merchant_seo_keywords', {
+        ville: profile?.ville || t('city_not_specified')
+    })" :keywords="t('user_seo_keywords', {
             name: profile?.nom || t('user'),
             ville: profile?.ville || t('cameroon')
         })" url="https://espacecameroun.com/doc" type="profile" />
@@ -14,12 +12,12 @@
         '@context': 'https://schema.org',
         '@type': 'ProfilePage',
         'name': `${t('profile')} ${profile?.nom || t('user')}`,
-        'description': `${t('profile')} ${profile?.commercant ? t('merchant') : t('user')} ${t('on')} ${t('espace_cameroun')}`,
+        'description': `${t('profile')} ${t('user')} ${t('on')} ${t('espace_cameroun')}`,
         'url': 'https://espacecameroun.com/doc',
         'mainEntity': {
-            '@type': profile?.commercant ? 'Organization' : 'Person',
+            '@type': 'Person',
             'name': profile?.nom,
-            'description': profile?.commercant ? t('merchant_structured_description', { ville: profile?.ville || t('city_not_specified') }) : t('user'),
+            'description': t('user'),
             'image': profile?.photo ? `${getStorageUrl()}${profile.photo}` : undefined,
             'address': profile?.ville ? {
                 '@type': 'PostalAddress',
@@ -74,14 +72,9 @@
                                 </span>
 
                                 <!-- Badge Type -->
-                                <span :class="[
-                                    'px-3 py-1 rounded-full text-sm font-semibold',
-                                    profile?.commercant
-                                        ? 'bg-green-100 text-green-800 border border-green-200'
-                                        : 'bg-blue-100 text-blue-800 border border-blue-200'
-                                ]">
-                                    <i :class="profile?.commercant ? 'fas fa-store' : 'fas fa-user'"></i>
-                                    {{ profile?.commercant ? t('merchant') : t('user') }}
+                                <span class="bg-blue-100 text-blue-800 border border-blue-200 px-3 py-1 rounded-full text-sm font-semibold">
+                                    <i class="fas fa-user"></i>
+                                    {{ t('user') }}
                                 </span>
                             </div>
 
@@ -117,11 +110,7 @@
                                 {{ t('start_chat') }}
                             </button>
 
-                            <button v-if="profile?.commercant" @click="viewCommercantProfile"
-                                class="flex items-center justify-center gap-2 border border-[var(--espace-or)] text-[var(--espace-vert)] px-6 py-3 rounded-xl font-semibold hover:bg-[var(--espace-or)] hover:text-white transition-all min-w-[160px]">
-                                <i class="fas fa-store"></i>
-                                {{ t('view_store') }}
-                            </button>
+
                         </div>
                     </div>
                 </div>
@@ -159,11 +148,8 @@
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
                             <span class="text-gray-600">{{ t('account_type') }}:</span>
-                            <span :class="[
-                                'font-semibold',
-                                profile?.commercant ? 'text-[var(--espace-vert)]' : 'text-blue-600'
-                            ]">
-                                {{ profile?.commercant ? t('merchant') : t('user') }}
+                            <span class="font-semibold text-blue-600">
+                                {{ t('user') }}
                             </span>
                         </div>
                         <div class="flex justify-between">
@@ -180,31 +166,24 @@
                 </div>
             </div>
 
-            <!-- Section produits si commerçant -->
-            <div v-if="profile?.commercant && profile?.id" class="mt-8">
+            <!-- Section statistiques produits/services -->
+            <div v-if="profile?.produits_count > 0 || profile?.services_count > 0" class="mt-8">
                 <div class="bg-white rounded-2xl shadow-sm p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-xl font-bold text-gray-900 flex items-center gap-2">
                             <i class="fas fa-boxes text-[var(--espace-vert)]"></i>
-                            {{ t('merchant_products') }}
+                            {{ t('inventory') }}
                         </h3>
-                        <button @click="viewCommercantProducts"
-                            class="text-[var(--espace-vert)] hover:text-[var(--espace-vert)] font-semibold flex items-center gap-2">
-                            {{ t('see_all') }}
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
                     </div>
-                    <div class="text-center py-8">
-                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-store text-gray-400 text-2xl"></i>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-[var(--espace-vert)]">{{ profile?.produits_count }}</p>
+                            <p class="text-sm text-gray-600">{{ t('products') }}</p>
                         </div>
-                        <p class="text-gray-600">
-                            {{ t('discover_merchant_products') }}
-                        </p>
-                        <button @click="viewCommercantProfile"
-                            class="mt-4 bg-[var(--espace-vert)] text-white px-6 py-2 rounded-lg hover:bg-[var(--espace-vert)] transition-colors">
-                            {{ t('visit_store') }}
-                        </button>
+                        <div class="bg-gray-50 p-4 rounded-xl text-center">
+                            <p class="text-2xl font-bold text-blue-600">{{ profile?.services_count }}</p>
+                            <p class="text-sm text-gray-600">{{ t('services') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -263,17 +242,7 @@ const goToChat = () => {
     }
 };
 
-const viewCommercantProfile = () => {
-    if (profile.value?.commercant && profile.value?.id) {
-        router.push(`/commercants/${profile.value.commercant.id}`);
-    }
-};
 
-const viewCommercantProducts = () => {
-    if (profile.value?.commercant && profile.value?.id) {
-        router.push(`/commercants/${profile.value.commercant.id}`);
-    }
-};
 
 onMounted(() => {
     fetchProfile();

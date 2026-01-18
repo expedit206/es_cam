@@ -41,7 +41,8 @@
                 <!-- Input -->
                 <Input v-if="messageStore.selectedConversation" :new-message="messageStore.newMessage"
                     :is-recording="messageStore.recordingState.isRecording" :product="messageStore.product"
-                    @send-message="handleSendMessage" @start-recording="messageStore.startRecording"
+                    @send-message="handleSendMessage" @send-image="handleSendImage"
+                    @start-recording="messageStore.startRecording"
                     @stop-recording="messageStore.stopRecording" @emit-typing="messageStore.emitTyping"
                     @update:newMessage="messageStore.newMessage = $event"
                     @pause-recording="messageStore.toggleRecordingPause"
@@ -92,6 +93,14 @@ const handleSelectConversation = (receiverId: number) => {
 const handleSendMessage = () => {
     if (messageStore.newMessage.trim()) {
         messageStore.sendMessage(messageStore.newMessage.trim());
+    }
+};
+
+const handleSendImage = (file: File) => {
+    if (file) {
+        // Create an object URL for temporary display, the store handles the upload
+        // We pass the file wrapper as Blob
+        messageStore.sendMessage(URL.createObjectURL(file), 'image', file);
     }
 };
 

@@ -14,7 +14,6 @@ const categories = [
   { id: 3, name: "Électronique", slug: "electronique", icon: "fas fa-laptop" },
   { id: 4, name: "Maison", slug: "maison", icon: "fas fa-home" },
   { id: 5, name: "Véhicules", slug: "vehicules", icon: "fas fa-car" },
-  { id: 6, name: "Services", slug: "services", icon: "fas fa-tools" },
 ];
 
 const { t } = useI18n();
@@ -46,7 +45,7 @@ const searchSuggestions = ref([
   { text: "Mode africaine", category: "Vêtements" },
   { text: "Maison à louer", category: "Immobilier" },
   { text: "Toyota RAV4", category: "Véhicules" },
-  { text: "Services de plomberie", category: "Services" },
+  // { text: "Services de plomberie", category: "Services" },
 ]);
 
 // Ref pour le bouton menu mobile
@@ -131,13 +130,15 @@ const navLinks = computed(() => {
     // Monnaie & jetons (seulement connecté)
     // { to: '/jeton-history', label: t('my tokens'), icon: 'fa-coins', badge: 0, requiresAuth: true },
 
-    // Réseau & parrainage (seulement connecté)
+
+
+    // Blog
     {
-      to: "/parrainage",
-      label: t("my team"),
-      icon: "fa-users",
+      to: "/blog",
+      label: "Blog",
+      icon: "fa-newspaper",
       badge: 0,
-      requiresAuth: true,
+      showAlways: true,
     },
 
     // Support & informations
@@ -166,15 +167,37 @@ const navLinks = computed(() => {
     },
   ];
 
-  return baseLinks;
+  // Ajouter le lien Admin si nécessaire
+  if (user.value && user.value?.role === 'admin') {
+    baseLinks.push({
+      to: "/admin/dashboard",
+      label: "Administration",
+      icon: "fa-user-shield",
+      badge: 0,
+      showAlways: true,
+    } as any);
+  }
+
+  // Filtrer les liens selon l'état de connexion
+  return baseLinks.filter(link => !link.requiresAuth || (user.value));
 });
+console.log(user.value)
 
 // Menu mobile - Adapté selon l'état de connexion
 const mobileMenuItems = computed(() => {
-  if (!authStore.user) {
+  const items = [];
+
+  // Liens communs (toujours présents au début ou ordonnés logiquement)
+
+  if (!user.value) {
     // Menu pour utilisateur NON connecté
     return [
-      { label: t("home"), icon: "fa-home", action: () => router.push("/") },
+
+      {
+        label: "Blog",
+        icon: "fa-newspaper",
+        action: () => router.push("/blog"),
+      },
       {
         label: t("login"),
         icon: "fa-sign-in-alt",
@@ -199,8 +222,18 @@ const mobileMenuItems = computed(() => {
   }
 
   // Menu pour utilisateur connecté
+  // Administration au début pour les admins
+  if (user.value?.role === 'admin') {
+    items.unshift({
+      label: "Administration",
+      icon: "fa-user-shield",
+      action: () => router.push("/admin/dashboard"),
+    });
+  }
+
   return [
-    // Section principale
+    ...items,
+
     {
       label: t("my profile"),
       icon: "fa-user",
@@ -213,32 +246,17 @@ const mobileMenuItems = computed(() => {
     },
 
     // Messages & Reventes (avec badges)
+  
+
+
+   
+
     {
-      label: t("messages"),
-      icon: "fa-comment-dots",
-      action: () => {
-        badgeStore.markAsRead("messages");
-        router.push("/messages");
-      },
-      badge: badgeStore.badgeCounts.messages,
-      badgeKey: "messages",
-    },
-    {
-      label: t("reventes"),
-      icon: "fa-handshake",
-      action: () => {
-        badgeStore.markAsRead("reventes");
-        router.push("/reventes");
-      },
-      badge: badgeStore.badgeCounts.reventes,
-      badgeKey: "reventes",
+      label: "Blog",
+      icon: "fa-newspaper",
+      action: () => router.push("/blog"),
     },
 
-    // Monnaie & revenus
-    // { label: t('my tokens'), icon: 'fa-coins', action: () => router.push('/jeton-history') },
-    // { label: t('token market'), icon: 'fa-store-alt', action: () => router.push('/jetonMarket') },
-
-    // Support & infos
     {
       label: t("help support"),
       icon: "fa-question-circle",
@@ -250,14 +268,12 @@ const mobileMenuItems = computed(() => {
       action: () => router.push("/doc"),
     },
 
-    // Paramètres
     {
       label: t("settings"),
       icon: "fa-cog",
       action: () => router.push("/parametres"),
     },
 
-    // Déconnexion
     {
       label: t("logout"),
       icon: "fa-sign-out-alt",
@@ -423,7 +439,7 @@ const performLiveSearch = debounce(async (query: string) => {
 
     if (response.data && response.data.data) {
       const products = response.data.data.products || [];
-      const services = response.data.data.services || [];
+      const services = []; // response.data.data.services || [];
 
       // Combiner les résultats pour l'affichage en direct
       liveSearchResults.value = [...products, ...services].slice(0, 10);
@@ -555,13 +571,7 @@ const handleNavigation = async (to: string, badgeKey?: string) => {
   router.push(to);
 };
 
-const handleMobileNavigation = async (to: string, badgeKey?: string) => {
-  if (badgeKey) {
-    await badgeStore.markAsRead(badgeKey as "reventes" | "parrainages");
-  }
-  showMobileMenu.value = false;
-  router.push(to);
-};
+
 
 onMounted(async () => {
   await initializeUserData();
@@ -1107,9 +1117,8 @@ onUnmounted(() => {
             v-for="item in mobileMenuItems"
             :key="item.label"
             @click="
-              item.badgeKey
-                ? handleMobileNavigation(item.action(), item.badgeKey)
-                : item.action()
+              item.action();
+              showMobileMenu = false;
             "
             class="w-full text-left px-5 py-4 hover:bg-gray-50 transition-colors flex items-center gap-4 group relative border-b border-gray-100"
             :class="{ 'text-red-600 hover:bg-red-50': item.danger }"

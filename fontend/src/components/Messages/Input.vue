@@ -54,6 +54,13 @@
                 <i class="fas fa-microphone"></i>
             </button>
 
+            <!-- Image Upload Button (hidden when recording) -->
+            <button v-if="!isRecording" @click="$refs.fileInput.click()" class="voice-button ml-2 bg-blue-500 hover:bg-blue-600"
+                title="Envoyer une image">
+                <i class="fas fa-image"></i>
+            </button>
+            <input type="file" ref="fileInput" accept="image/*" class="hidden" @change="handleFileSelect">
+
             <!-- Send Button (visible when recording) -->
             <button v-if="isRecording" @click="stopAndSendRecording" class="send-button ml-2" :disabled="isPaused">
                 <i class="fas fa-paper-plane"></i>
@@ -63,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref, onMounted, onUnmounted } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { Product } from '../types/index';
 
 const props = defineProps<{
@@ -75,6 +82,7 @@ const props = defineProps<{
 const emit = defineEmits([
     'update:newMessage',
     'send-message',
+    'send-image',
     'start-recording',
     'stop-recording',
     'emit-typing',
@@ -88,6 +96,17 @@ const recordingTime = ref(0);
 const recordingTimer = ref<number | null>(null);
 const isPaused = ref(false);
 const textAreaRef = ref<HTMLTextAreaElement | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null);
+
+const handleFileSelect = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        // Reset input value so the same file can be selected again
+        emit('send-image', file);
+        input.value = '';
+    }
+};
 
 // Voice recording functions
 const startVoiceRecording = () => {

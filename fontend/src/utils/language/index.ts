@@ -61,36 +61,6 @@ const translations: Translations = {
     unread_messages: "messages non lus",
     new_parrainages: "nouveaux parrainages",
   },
-  en: {
-    new_parrainages: "new referrals",
-    ...mesServices.en,
-
-    ...resetPAssword.en,
-    ...messaging.en,
-
-    ...jetonhistory.en,
-    ...parrainage.en,
-    ...infoparrainage.en,
-    ...market.en,
-
-    ...confidentialite.en,
-
-    ...politiqueUse.en,
-    ...core.en,
-    ...navigation.en,
-    ...auth.en,
-    ...products.en,
-    ...documentation.en,
-    ...tokens.en,
-    ...reventes.en,
-    ...merchants.en,
-    ...profile.en,
-    ...wallet.en,
-    ...premium.en,
-    ...settings.en,
-    ...seo.en,
-    ...errors.en,
-  },
 };
 
 // src/utils/i18n/index.ts
@@ -100,7 +70,7 @@ const currentLang  = ref<string>("en");
 
 export const i18n = {
   setLanguage(lang: string): void {
-    if (translations[lang]) {
+    if (translations[lang] || lang === "en") {
       currentLang.value = lang;
       localStorage.setItem("preferred_language", lang);
       document.documentElement.lang = lang;

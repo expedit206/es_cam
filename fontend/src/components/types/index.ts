@@ -22,6 +22,7 @@ export interface User {
   last_login: string | null;
   created_at: string;
   updated_at: string;
+  role: string;
 }
 
 // src/types/product.ts
@@ -36,7 +37,6 @@ export interface Product {
   updated_at: string;
   categoryProduit_id: string;
   revendable: boolean; // 0 or 1, could be boolean if converted
-  commercant_id: string;
   boosted: boolean;
   condition: string;
   favorites_count: number;
@@ -98,7 +98,7 @@ export interface Parrainage {
   id: number;
   filleul_nom: string | null;
   date_inscription: string;
-  est_commercant: boolean;
+  has_products: boolean;
   // Ajoutez d'autres propriétés si nécessaire (par exemple, id, email, etc.)
 }
 
@@ -139,22 +139,7 @@ export interface Message {
   isTemporary?: boolean; // Pour les messages en attente d'envoi
 }
 
-// src/types/commercant.ts
-export interface Commercant {
-  id: string;
-  nom: string;
-  description?: string | null;
-  ville?: string;
-  logo?: string | null;
-  user_id: number;
 
-  email_verified_at: string | null;
-
-  email: string | null;
-  telephone: string | null;
-  created_at: string;
-  updated_at: string;
-}
 
 // src/types/transaction.ts
 export interface Transaction {

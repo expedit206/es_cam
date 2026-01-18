@@ -166,8 +166,8 @@ export const useMessageStore = defineStore("message", () => {
 
   const sendMessage = async (
     content: string,
-    type: "text" | "audio" = "text",
-    audioBlob?: Blob
+    type: "text" | "audio" | "image" = "text",
+    file?: Blob | File
   ): Promise<void> => {
     if (!selectedConversation.value) {
       toast.error("Aucune conversation sélectionnée");
@@ -206,10 +206,10 @@ export const useMessageStore = defineStore("message", () => {
 
     try {
       let response;
-      if (type === "audio" && audioBlob) {
+      if ((type === "audio" || type === "image") && file) {
         const formData = new FormData();
-        formData.append("type", "audio");
-        formData.append("audio", audioBlob);
+        formData.append("type", type);
+        formData.append(type, file); // 'audio' or 'image' matches the type
         formData.append(
           "receiver_id",
           selectedConversation.value.user_id.toString()
@@ -243,6 +243,7 @@ export const useMessageStore = defineStore("message", () => {
           id: realMessage.id,
           created_at: realMessage.created_at,
           updated_at: realMessage.updated_at,
+          content: realMessage.content, // Ensure we use the server URL
           isTemporary: false,
         };
       }

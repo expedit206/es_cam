@@ -46,38 +46,50 @@ const getStorageBaseUrl = () => {
 
 const storageUrl = computed(() => getStorageBaseUrl());
 
-const settingsLinks = computed(() => [
-    ...(user?.commercant
-        ? [{
+const settingsLinks = computed(() => {
+    const links = [
+        {
             to: '/gallery',
-            label: t('merchant_space'),
+            label: t('my_inventory'),
             icon: 'fa-store',
             description: t('manage_your_store_and_products'),
             color: 'text-black bg-blue-50'
-        }]
-        : []),
-    {
-        to: '/parrainage',
-        label: t('referral'),
-        icon: 'fa-user-plus',
-        description: t('invite_friends_and_earn'),
-        color: 'text-black bg-green-50'
-    },
-    {
-        to: '/profil',
-        label: t('subscriptions'),
-        icon: 'fa-crown',
-        description: t('manage_your_premium_subscriptions'),
-        color: 'text-black bg-yellow-50'
-    },
-    {
-        to: '/reventes',
-        label: t('reventes'),
-        icon: 'fa-handshake',
-        description: t('your_product_reventes'),
-        color: 'text-black bg-purple-50'
-    },
-]);
+        },
+        {
+            to: '/parrainage',
+            label: t('referral'),
+            icon: 'fa-user-plus',
+            description: t('invite_friends_and_earn'),
+            color: 'text-black bg-green-50'
+        },
+        {
+            to: '/profil',
+            label: t('subscriptions'),
+            icon: 'fa-crown',
+            description: t('manage_your_premium_subscriptions'),
+            color: 'text-black bg-yellow-50'
+        },
+        {
+            to: '/reventes',
+            label: t('reventes'),
+            icon: 'fa-handshake',
+            description: t('your_product_reventes'),
+            color: 'text-black bg-purple-50'
+        },
+    ];
+
+    if (user?.role === 'admin') {
+        links.unshift({
+            to: '/admin/dashboard',
+            label: t('administration'),
+            icon: 'fa-user-shield',
+            description: t('access_admin_panel'),
+            color: 'text-white bg-red-600'
+        });
+    }
+
+    return links;
+});
 
 const updateProfile = async () => {
     isLoading.value = true;

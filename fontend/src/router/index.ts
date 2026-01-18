@@ -27,6 +27,10 @@ import ResetPassword from "../views/ResetPassword.vue";
 import MesServices from "../components/mesServices/MesServices.vue";
 import ShowService from "../views/services/ShowService.vue";
 import ShowProduit from "../views/produits/ShowProduit.vue";
+import AdminDashboard from "../views/admin/AdminDashboard.vue";
+import AdminUsers from "../views/admin/AdminUsers.vue";
+import AdminMarketplace from "../views/admin/AdminMarketplace.vue";
+import AdminCategories from "../views/admin/AdminCategories.vue";
 const routes = [
   { path: "/login", component: Login, name: "login" },
   { path: "/register/:code?", component: Register, name: "register" },
@@ -34,6 +38,12 @@ const routes = [
     path: "/profil",
     component: Profile,
     name: "profil",
+  },
+  {
+    path: "/favoris",
+    component: () => import("../views/Favoris.vue"),
+    name: "favoris",
+    meta: { requiresAuth: true }
   },
   {
     path: "/market-place",
@@ -147,7 +157,62 @@ const routes = [
     path: "/services/:id",
     name: "showService",
     component: ShowService,
+  },
 
+  // Blog Routes
+  {
+    path: "/blog",
+    name: "blog",
+    component: () => import("../views/blog/Blog.vue"),
+  },
+  {
+    path: "/blog/:slug",
+    name: "blog-post",
+    component: () => import("../views/blog/BlogPost.vue"),
+  },
+
+  // Admin Routes
+  {
+    path: "/admin/dashboard",
+    name: "admin-dashboard",
+    component: AdminDashboard,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/users",
+    name: "admin-users",
+    component: AdminUsers,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/marketplace",
+    name: "admin-marketplace",
+    component: AdminMarketplace,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/categories",
+    name: "admin-categories",
+    component: AdminCategories,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/finance",
+    name: "admin-finance",
+    component: () => import("../views/admin/AdminFinance.vue"), // Lazy load
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/broadcast",
+    name: "admin-broadcast",
+    component: () => import("../views/admin/AdminBroadcast.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/blog",
+    name: "admin-blog",
+    component: () => import("../views/admin/AdminBlog.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true }
   },
 ];
 
@@ -157,29 +222,28 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  //   const authStore = useAuthStore();
-  //   const isAuthenticated =   await authStore.checkAuth();
-  // //console.log(authStore.user);
-  //   // // Si l'utilisateur est connecté et tente d'accéder à /login ou /register
-  //   if (authStore.user && (to.name === "login" || to.name === "register")) {
-  //     next({ name: "home" }); // Rediriger vers la page d'accueil
-  //   }
-  //   // // Si la route nécessite une authentification et que l'utilisateur n'est pas connecté
-  //     next({ name: "login" });
-  //   }
-  //   // // Si la route nécessite un statut commerçant
-  //   else if (
-  //     to.meta.requiresCommercant &&
-  //     (!isAuthenticated || !authStore.user?.commercant)
-  //   ) {
-  //     next({ name: "home" });
-  //   }
-  //   // Autoriser l'accès dans les autres cas
-  //   else {
-  //       next();
-  //     }
+  const authStore = useAuthStore();
+  
+  // Toujours vérifier l'auth si on a un token mais pas d'utilisateur
+  if (authStore.token && !authStore.user) {
+    await authStore.checkAuth();
+  }
+
+  // Rediriger vers Home si déjà connecté et tente d'aller sur login/register
+  if (authStore.user && (to.name === "login" || to.name === "register")) {
+    return next({ name: "home" });
+  }
+
+  // Vérifier les routes protégées
+  if (to.meta.requiresAuth && !authStore.user) {
+    return next({ name: "login" });
+  }
+
+  // Vérifier les privilèges Admin
+  if (to.meta.requiresAdmin && authStore.user?.role !== 'admin') {
+    return next({ name: "home" });
+  }
+
   next();
 });
-
 export default router;
-    
