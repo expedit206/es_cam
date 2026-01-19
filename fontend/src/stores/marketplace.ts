@@ -55,6 +55,7 @@ export interface Category {
   id: string;
   name: string;
   icon: string;
+  image?: string;
   type: "product" | "service";
 }
 
@@ -364,6 +365,7 @@ console.log(items);
             response.data.categoryProduits?.map((cat: any) => ({
               id: cat.id,
               name: cat.nom,
+              image: cat.image,
               icon: this.getCategoryIcon(cat.nom),
               type: "product" as const,
             })) || [];
@@ -373,6 +375,7 @@ console.log(items);
             response.data.categoryServices?.map((cat: any) => ({
               id: cat.id,
               name: cat.nom,
+              image: cat.image,
               icon: this.getCategoryIcon(cat.nom),
               type: "service" as const,
             })) || [];

@@ -1,180 +1,131 @@
+// src/utils/i18n/jetonhistory.ts
 export const jetonhistory = {
   fr: {
     // SEO et Métadonnées
-    transaction_history_title: "Historique des Transactions - Espace Cameroun",
-    transaction_history_description:
+    "Transaction History - Espace Cameroon": "Historique des Transactions - Espace Cameroun",
+    "Check your transaction history and purchased tokens on Espace Cameroon. Manage your token purchases and boost your products.":
       "Consultez votre historique de transactions et jetons achetés sur Espace Cameroun. Gérez vos achats de jetons et boostez vos produits.",
-    transaction_history_keywords:
+    "transaction history, espace cameroon tokens, token purchase, orange money, mtn mobile money, cameroon marketplace":
       "historique transactions, jetons espace cameroun, achat jetons, orange money, mtn mobile money, marketplace cameroun",
 
     // Titres et en-têtes
-    transaction_history: "Historique des Transactions",
-    transaction_history_subtitle: "Suivez tous vos achats et ventes de jetons",
+    "Transaction History": "Historique des Transactions",
+    "Track all your token purchases and sales": "Suivez tous vos achats et ventes de jetons",
 
     // Statistiques
-    total_transactions: "totales",
-    successful_transactions: "réussies",
-    tokens_purchase: "Jetons achetés",
+    "Transactions": "Transactions", // total_transactions & successful_transactions mapped to same key in EN originally, checking context. fr: "totales" and "réussies".
+    // Wait, original EN had "Transactions" for both "total_transactions" and "successful_transactions".
+    // fr: "totales", "réussies".
+    // I should probably distinguish them if I use English keys.
+    "Total Transactions": "Transactions totales", // Tweaking key for clarity
+    "Successful Transactions": "Transactions réussies",
+    "Tokens Purchased": "Jetons achetés",
 
     // Filtres
-    all: "Toutes",
-    successful: "Réussies",
-    failed: "Échouées",
-    pending: "En attente",
+    "All": "Toutes",
+    "Successful": "Réussies",
+    "Failed": "Échouées",
+    "Pending": "En attente",
 
     // Éléments de transaction
-    purchase_of_tokens: "Achat de jetons",
-    transaction_id: "ID Transaction",
-    status_successful: "Réussi",
-    status_pending: "En attente",
-    status_failed: "Échoué",
+    "Token purchase": "Achat de jetons",
+    "Transaction ID": "ID Transaction",
+    // "Successful" already defined
+    // "Pending" already defined
+    // "Failed" already defined
 
     // Actions
-    redo_transaction: "Refaire",
-    buy_tokens: "Acheter des jetons",
-    token_market: "Marché des jetons",
-    boost_product: "Booster un produit",
+    "Redo": "Refaire",
+    "Buy Tokens": "Acheter des jetons",
+    "Token Market": "Marché des jetons",
+    "Boost Product": "Booster un produit",
 
     // États vides
-    no_transactions: "Aucune transaction",
-    no_transactions_description:
+    "No transactions": "Aucune transaction",
+    "You haven't made any token purchase transactions yet.":
       "Vous n'avez pas encore effectué de transactions d'achat de jetons.",
 
     // Section promotionnelle
-    boost_business_title: "🚀 Boostez votre business !",
-    boost_business_description:
+    "🚀 Boost your business!": "🚀 Boostez votre business !",
+    "Use your tokens to increase your products' visibility and attract more customers.":
       "Utilisez vos jetons pour augmenter la visibilité de vos produits et attirer plus de clients.",
 
     // Modal de chargement
-    processing: "Traitement en cours",
-    please_wait:
+    "Processing in progress": "Traitement en cours",
+    "Please wait while we process your transaction...":
       "Veuillez patienter pendant que nous traitons votre transaction...",
 
     // Messages
-    transaction_success: "Transaction réussie",
-    transaction_error: "Erreur lors de la transaction",
-    loading_error: "Erreur lors du chargement de l'historique",
-    unauthenticated_message:
+    "Transaction successful": "Transaction réussie",
+    "Transaction error": "Erreur lors de la transaction",
+    "Error loading history": "Erreur lors du chargement de l'historique",
+    "Please log in to see your history":
       "Veuillez vous connecter pour voir votre historique",
 
-    tokens_purchased: "Jetons Achetés",
-    total_spent: "Total Dépensé",
+    "Tokens Purchased Title": "Jetons Achetés", // Key collision with statistic? "Tokens Purchased" above. fr: "Jetons Achetés".
+    "Total Spent": "Total Dépensé",
 
-    transaction_origin: "origine de Transaction",
-    all_types: "Tous les types",
-    marketplace: "Marketplace",
-    platform: "Plateforme",
-    platform_purchase: "Plateforme",
-    marketplace_purchase: "Marketplace",
+    "Transaction Origin": "origine de Transaction",
+    "All Types": "Tous les types",
+    "Marketplace": "Marketplace",
+    "Platform": "Plateforme",
+    // Platform/Marketplace repeated in source with diff keys?
+    // platform_purchase: "Plateforme", marketplace_purchase: "Marketplace"
 
-    all_status: "Tous les statuts",
-    confirmed: "Confirmé",
-    unit_price: "Prix unitaire",
-    platform_fee: "Commission plateforme",
-    seller_net_amount: "Net vendeur",
-    reference: "Ref:",
-    seller: "Vendeur",
+    "All Status": "Tous les statuts",
+    "Confirmed": "Confirmé",
+    "Unit Price": "Prix unitaire",
+    "Platform Fee": "Commission plateforme",
+    "Seller Net Amount": "Net vendeur",
+    "Ref:": "Ref:",
+    "Seller": "Vendeur",
 
-    check_status: "Vérifier statut",
-    buy_again: "Acheter à nouveau",
-    view_details: "Voir détails",
-    page: "Page",
-    of: "sur",
-    previous: "Précédent",
-    next: "Suivant",
+    "Check Status": "Vérifier statut",
+    "Buy Again": "Acheter à nouveau",
+    "View Details": "Voir détails",
+    "Page": "Page",
+    "of": "sur",
+    "Previous": "Précédent",
+    "Next": "Suivant",
 
-    feature_coming_soon: "Fonctionnalité à venir",
-    status_checked: "Statut vérifié avec succès",
-    status_check_error: "Erreur lors de la vérification du statut",
+    "Feature coming soon": "Fonctionnalité à venir",
+    "Status checked successfully": "Statut vérifié avec succès",
+    "Error checking status": "Erreur lors de la vérification du statut",
 
-    tokens: "jetons",
+    "tokens": "jetons",
 
     // Nouvelles traductions pour le double volet
-    view_type: "Vue",
-    all_transactions: "Toutes les transactions",
-    my_purchases: "Mes achats",
-    my_sales: "Mes ventes",
+    "View": "Vue",
+    "All transactions": "Toutes les transactions",
+    "My purchases": "Mes achats",
+    "My sales": "Mes ventes",
 
-    tokens_sold: "Jetons vendus",
-    net_amount: "Montant net",
-    commission: "Commission",
-    buyer: "Acheteur",
+    "Tokens sold": "Jetons vendus",
+    "Net amount": "Montant net",
+    "Commission": "Commission",
+    "Buyer": "Acheteur",
 
-    sale_of: "Vente",
-    purchase_of: "Achat",
-    from_marketplace: "du marketplace",
+    "Sale": "Vente",
+    "Purchase": "Achat",
+    "from marketplace": "du marketplace",
 
-    no_purchases: "Aucun achat",
-    no_purchases_description:
+    "No purchases": "Aucun achat",
+    "You haven't made any token purchases yet.":
       "Vous n'avez effectué aucun achat de jetons pour le moment.",
-    no_sales: "Aucune vente",
-    no_sales_description: "Vous n'avez vendu aucun jeton sur le marketplace.",
+    "No sales": "Aucune vente",
+    "You haven't sold any tokens on the marketplace.":
+      "Vous n'avez vendu aucun jeton sur le marketplace.",
 
-    sell_again: "Vendre à nouveau",
-    status_checked_success: "Paiement confirmé ! Jetons crédités.",
-    status_checked_pending: "Paiement toujours en attente.",
+    "Sell again": "Vendre à nouveau",
+    "Payment confirmed! Tokens credited.": "Paiement confirmé ! Jetons crédités.",
+    "Payment still pending.": "Paiement toujours en attente.",
 
     // Nouvelles traductions pour les rôles
-    my_role: "Mon Rôle",
-    all_roles: "Tous ",
-    as_buyer: "mes achats",
-    as_seller: "mes ventes",
-    checking: "Vérification...",
+    "My Role": "Mon Rôle",
+    "All Roles": "Tous ",
+    "as buyer": "mes achats",
+    "as seller": "mes ventes",
+    "Checking...": "Vérification...",
   },
-  en: {
-    // SEO and Metadata
-    transaction_history_title: "Transaction History - Espace Cameroon",
-    transaction_history_description:
-      "Check your transaction history and purchased tokens on Espace Cameroon. Manage your token purchases and boost your products.",
-    transaction_history_keywords:
-      "transaction history, espace cameroon tokens, token purchase, orange money, mtn mobile money, cameroon marketplace",
-
-    // Titles and headers
-    transaction_history: "Transaction History",
-    transaction_history_subtitle: "Track all your token purchases and sales",
-
-    // Statistics
-    total_transactions: "Transactions",
-    successful_transactions: "Transactions",
-    tokens_purchase: "Tokens Purchased",
-
-    // Filters
-    all: "All",
-    successful: "Successful",
-    failed: "Failed",
-    pending: "Pending",
-
-    // Transaction elements
-    purchase_of_tokens: "Token purchase",
-    transaction_id: "Transaction ID",
-    status_successful: "Successful",
-    status_pending: "Pending",
-    status_failed: "Failed",
-
-    // Actions
-    redo_transaction: "Redo",
-    buy_tokens: "Buy Tokens",
-    token_market: "Token Market",
-    boost_product: "Boost Product",
-
-    // Empty states
-    no_transactions: "No transactions",
-    no_transactions_description:
-      "You haven't made any token purchase transactions yet.",
-
-    // Promotional section
-    boost_business_title: "🚀 Boost your business!",
-    boost_business_description:
-      "Use your tokens to increase your products' visibility and attract more customers.",
-
-    // Loading modal
-    processing: "Processing in progress",
-    please_wait: "Please wait while we process your transaction...",
-
-    // Messages
-    transaction_success: "Transaction successful",
-    transaction_error: "Transaction error",
-    loading_error: "Error loading history",
-    unauthenticated_message: "Please log in to see your history",
-  },
+  en: {}
 };

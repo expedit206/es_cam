@@ -31,9 +31,16 @@ import AdminDashboard from "../views/admin/AdminDashboard.vue";
 import AdminUsers from "../views/admin/AdminUsers.vue";
 import AdminMarketplace from "../views/admin/AdminMarketplace.vue";
 import AdminCategories from "../views/admin/AdminCategories.vue";
+import CategoriesView from "../views/CategoriesView.vue";
+
 const routes = [
   { path: "/login", component: Login, name: "login" },
   { path: "/register/:code?", component: Register, name: "register" },
+  {
+    path: "/categories",
+    component: CategoriesView,
+    name: "categories",
+  },
   {
     path: "/profil",
     component: Profile,

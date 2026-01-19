@@ -25,21 +25,21 @@ onMounted(async () => {
 const navLinks = computed(() => {
     if (!authStore.user) {
         return [
-            { to: '/', label: t('   '), icon: 'fa-home' },
+            { to: '/', label: t('Home'), icon: 'fa-home' },
             {
-                to: '/market-place', label: t('explorer'),
+                to: '/market-place', label: t('Explore'),
                 icon: 'fa-magnifying-glass'
 
             },
-            { to: '/login', label: t('login'), icon: 'fa-sign-in-alt' },
-            { to: '/register', label: t('register'), icon: 'fa-user-plus' },
+            { to: '/login', label: t('Login'), icon: 'fa-sign-in-alt' },
+            { to: '/register', label: t('Register'), icon: 'fa-user-plus' },
         ];
     }
 
     return [
         {
             to: '/acceuil',
-            label: t('home'),
+            label: t('Home'),
             icon: 'fa-home',
             badge: badgeStore.badgeCounts.parrainages,
             badgeKey: 'parrainages'
@@ -51,19 +51,19 @@ const navLinks = computed(() => {
  },
         {
             to: '/gallery',
-            label: t('gallery'),
+            label: t('Gallery'),
             icon: 'fa-circle-plus',
             featured: true
         },
         {
             to: '/messages',
-            label: t('messages'),
+            label: t('Messages'),
             icon: 'fa-comment-dots',
             badge: badgeStore.badgeCounts.messages,
         },
         {
             to: '/reventes',
-            label: t('reventes'),
+            label: t('Reventes'),
             icon: 'fa-handshake',
             badge: badgeStore.badgeCounts.reventes,
             badgeKey: 'reventes'
@@ -165,11 +165,11 @@ const getBadgeDescription = (route: string, count: number) => {
 
     switch (route) {
         case '/reventes':
-            return `${count} ${t('pending_reventes')}`;
+            return `${count} ${t('Pending reventes')}`;
         case '/messages':
-            return `${count} ${t('unread_messages')}`;
+            return `${count} ${t('Unread messages')}`;
         case '/parrainage':
-            return `${count} ${t('new_parrainages')}`;
+            return `${count} ${t('New referrals')}`;
         default:
             return `${count} notifications`;
     }

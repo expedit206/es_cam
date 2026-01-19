@@ -159,14 +159,14 @@ const formatCurrency = (value: number) => {
   return new Intl.NumberFormat('fr-CM', { style: 'currency', currency: 'XAF' }).format(value);
 };
 </script>
-
-<!-- <style scoped>
+<!-- 
+<style scoped>
 .stats-card {
-  @apply bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300;
+  @apply bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-green-500/5 hover:-translate-y-1 transition-all duration-300;
 }
 
 .action-btn {
-  @apply flex items-center gap-3 p-4 bg-gray-50 rounded-2xl text-gray-700 font-medium hover:bg-gradient-to-r hover:from-[var(--espace-vert)] hover:to-green-400 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 hover:border-transparent hover:shadow-lg hover:shadow-green-500/20;
+  @apply flex items-center gap-3 p-4 bg-gray-50 rounded-2xl text-gray-700 font-medium hover:bg-gradient-to-r hover:from-[var(--espace-vert)] hover:to-green-500 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 hover:border-transparent hover:shadow-lg hover:shadow-green-500/20;
 }
 
 .action-btn i {

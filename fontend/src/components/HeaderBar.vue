@@ -74,10 +74,10 @@ const storageUrl = computed(() => getStorageBaseUrl());
 const navLinks = computed(() => {
   const baseLinks = [
     // Navigation principale
-    { to: "/", label: t("home"), icon: "fa-home", badge: 0, showAlways: true },
+    { to: "/", label: t("Home"), icon: "fa-home", badge: 0, showAlways: true },
     {
       to: "/market-place",
-      label: t("explore"),
+      label: t("Explore"),
       icon: "fa-search",
       badge: 0,
       showAlways: true,
@@ -86,7 +86,7 @@ const navLinks = computed(() => {
     // Marketplace
     {
       to: "/gallery",
-      label: t("gallery"),
+      label: t("Gallery"),
       icon: "fa-circle-plus",
       featured: true,
       badge: 0,
@@ -94,7 +94,7 @@ const navLinks = computed(() => {
     },
     {
       to: "/categories",
-      label: t("categories"),
+      label: t("Categories"),
       icon: "fa-tags",
       badge: 0,
       showAlways: true,
@@ -103,7 +103,7 @@ const navLinks = computed(() => {
     // Messages et reventes (seulement connecté)
     {
       to: "/messages",
-      label: t("messages"),
+      label: t("Messages"),
       icon: "fa-comment-dots",
       badge: authStore.user ? badgeStore.badgeCounts.messages : 0,
       badgeKey: "messages",
@@ -111,7 +111,7 @@ const navLinks = computed(() => {
     },
     {
       to: "/reventes",
-      label: t("reventes"),
+      label: t("Reventes"),
       icon: "fa-handshake",
       badge: authStore.user ? badgeStore.badgeCounts.reventes : 0,
       badgeKey: "reventes",
@@ -121,7 +121,7 @@ const navLinks = computed(() => {
     // Mon espace (seulement connecté)
     {
       to: "/favoris",
-      label: t("my favorites"),
+      label: t("My Favorites"),
       icon: "fa-heart",
       badge: 0,
       requiresAuth: true,
@@ -144,14 +144,14 @@ const navLinks = computed(() => {
     // Support & informations
     {
       to: "/aide",
-      label: t("help support"),
+      label: t("Help & Support"),
       icon: "fa-question-circle",
       badge: 0,
       showAlways: true,
     },
     {
       to: "/doc",
-      label: t("about app"),
+      label: t("About App"),
       icon: "fa-info-circle",
       badge: 0,
       showAlways: true,
@@ -160,7 +160,7 @@ const navLinks = computed(() => {
     // Paramètres (seulement connecté)
     {
       to: "/parametres",
-      label: t("settings"),
+      label: t("Settings"),
       icon: "fa-cog",
       badge: 0,
       requiresAuth: true,
@@ -194,27 +194,32 @@ const mobileMenuItems = computed(() => {
     return [
 
       {
+        label: t("Categories"),
+        icon: "fa-tags",
+        action: () => router.push("/categories"),
+      },
+      {
         label: "Blog",
         icon: "fa-newspaper",
         action: () => router.push("/blog"),
       },
       {
-        label: t("login"),
+        label: t("Login"),
         icon: "fa-sign-in-alt",
         action: () => router.push("/login"),
       },
       {
-        label: t("register"),
+        label: t("Register"),
         icon: "fa-user-plus",
         action: () => router.push("/register"),
       },
       {
-        label: t("help support"),
+        label: t("Help & Support"),
         icon: "fa-question-circle",
         action: () => router.push("/aide"),
       },
       {
-        label: t("about app"),
+        label: t("About App"),
         icon: "fa-info-circle",
         action: () => router.push("/doc"),
       },
@@ -235,12 +240,12 @@ const mobileMenuItems = computed(() => {
     ...items,
 
     {
-      label: t("my profile"),
+      label: t("Profile"),
       icon: "fa-user",
       action: () => router.push("/profil"),
     },
     {
-      label: t("my favorites"),
+      label: t("My Favorites"),
       icon: "fa-heart",
       action: () => router.push("/favoris"),
     },
@@ -252,30 +257,35 @@ const mobileMenuItems = computed(() => {
    
 
     {
+      label: t("Categories"),
+      icon: "fa-tags",
+      action: () => router.push("/categories"),
+    },
+    {
       label: "Blog",
       icon: "fa-newspaper",
       action: () => router.push("/blog"),
     },
 
     {
-      label: t("help support"),
+      label: t("Help & Support"),
       icon: "fa-question-circle",
       action: () => router.push("/aide"),
     },
     {
-      label: t("about app"),
+      label: t("About App"),
       icon: "fa-info-circle",
       action: () => router.push("/doc"),
     },
 
     {
-      label: t("settings"),
+      label: t("Settings"),
       icon: "fa-cog",
       action: () => router.push("/parametres"),
     },
 
     {
-      label: t("logout"),
+      label: t("Logout"),
       icon: "fa-sign-out-alt",
       danger: true,
       action: () => {
@@ -292,21 +302,21 @@ const notifications = computed(() => [
   {
     id: 1,
     type: "message",
-    content: t("new message received"),
+    content: t("New message received"),
     time: "2 min",
     read: false,
   },
   {
     id: 2,
     type: "revente",
-    content: t("resale request received"),
+    content: t("Resale request received"),
     time: "5 min",
     read: false,
   },
   {
     id: 3,
     type: "system",
-    content: t("system update"),
+    content: t("System update"),
     time: "1h",
     read: true,
   },
@@ -321,7 +331,7 @@ const fetchBadges = async () => {
   try {
     await badgeStore.fetchBadgeCounts();
   } catch (error) {
-    console.error(t("badges load error"), error);
+    console.error(t("Error loading badges:"), error);
   }
 };
 
@@ -330,7 +340,7 @@ const initializeUserData = async () => {
     try {
       await authStore.checkAuth();
     } catch (error) {
-      console.error(t("user fetch error"), error);
+      console.error(t("Error fetching user:"), error);
     }
   }
   if (user.value) {
@@ -595,14 +605,14 @@ onUnmounted(() => {
   >
     <!-- Logo -->
     <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-      <RouterLink to="/" :aria-label="t('go home')" class="flex items-center">
+      <RouterLink to="/" :aria-label="t('Go back to home')" class="flex items-center">
         <img
           :src="
             isSidebarCollapsed
               ? '/src/assets/images/logo/logo_vert.png'
               : '/src/assets/images/logo/LOGO_vert_all.png'
           "
-          :alt="t('logo_alt')"
+          :alt="t('Espace Cameroun Logo')"
           class="h-8 object-contain transition-transform duration-300"
           :class="isSidebarCollapsed ? 'w-18' : 'w-32'"
         />
@@ -629,7 +639,7 @@ onUnmounted(() => {
         <input
           v-model="searchQuery"
           type="text"
-          :placeholder="t('search') + '...'"
+          :placeholder="t('Search') + '...'"
           class="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-100 focus:border-[var(--espace-vert)] transition-all"
           @keyup.enter="performSearch()"
           @focus="showSearchHistory = !searchQuery"
@@ -765,13 +775,13 @@ onUnmounted(() => {
         to="/profil"
         class="flex items-center rounded-lg hover:bg-gray-100 transition-colors p-2 w-full"
         :class="isSidebarCollapsed ? 'justify-center' : ''"
-        :aria-label="t('view profile')"
+        :aria-label="t('Profile')"
       >
         <div class="relative">
           <img
             v-if="user?.photo"
             :src="storageUrl + user.photo"
-            :alt="t('profile picture')"
+            :alt="t('Profile picture')"
             class="w-8 h-8 rounded-full object-cover border-2 border-gray-300 transition-transform duration-300 hover:scale-105"
           />
           <div
@@ -790,7 +800,7 @@ onUnmounted(() => {
             {{ user?.nom || user?.email }}
           </p>
           <p class="text-xs text-gray-500">
-            {{ t("view profile") }}
+            {{ t("Profile") }}
           </p>
         </div>
       </RouterLink>
@@ -804,7 +814,7 @@ onUnmounted(() => {
       >
         <i class="fas fa-sign-in-alt text-lg"></i>
         <span v-if="!isSidebarCollapsed" class="ml-3 font-medium">
-          {{ t("login") }}
+          {{ t("Login") }}
         </span>
       </RouterLink>
     </div>
@@ -832,7 +842,7 @@ onUnmounted(() => {
             >
               <i class="fas fa-search text-gray-400 mr-2"></i>
               <span class="text-gray-400 text-sm truncate">
-                {{ t("search") }}…
+                {{ t("Search") }}…
               </span>
             </div>
           </div>

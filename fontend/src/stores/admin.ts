@@ -151,21 +151,38 @@ export const useAdminStore = defineStore('admin', {
       }
     },
 
-    async createCategory(nom: string, type: 'product' | 'service') {
+    async createCategory(nom: string, type: 'product' | 'service', image: File | null = null) {
       try {
-        await apiClient.post('/admin/categories', { nom, type });
+        const formData = new FormData();
+        formData.append('nom', nom);
+        formData.append('type', type);
+        if (image) formData.append('image', image);
+        
+        await apiClient.post('/admin/categories', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
         await this.fetchCategories();
       } catch (error) {
         console.error('Error creating category:', error);
+        throw error;
       }
     },
 
-    async updateCategory(id: string, name: string, type: 'product' | 'service') {
+    async updateCategory(id: string, name: string, type: 'product' | 'service', image: File | null = null) {
         try {
-            await apiClient.put(`/admin/categories/${id}`, { nom: name, type });
+            const formData = new FormData();
+            formData.append('nom', name);
+            formData.append('type', type);
+            formData.append('_method', 'PUT');
+            if (image) formData.append('image', image);
+
+            await apiClient.post(`/admin/categories/${id}`, formData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
             await this.fetchCategories();
         } catch (error) {
             console.error('Error updating category:', error);
+            throw error;
         }
     },
 

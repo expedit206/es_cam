@@ -56,10 +56,6 @@ const translations: Translations = {
     ...infoparrainage.fr,
     ...resetPAssword.fr,
     ...mesServices.fr,
-
-    pending_reventes: "reventes en attente",
-    unread_messages: "messages non lus",
-    new_parrainages: "nouveaux parrainages",
   },
 };
 
@@ -85,9 +81,9 @@ export const i18n = {
     }
 
     Object.keys(params).forEach((param) => {
-      translation = translation.replace(
+      translation = (translation as string).replace(
         new RegExp(`{{\\s*${param}\\s*}}`, "g"),
-        params[param]
+        String(params[param])
       );
     });
 

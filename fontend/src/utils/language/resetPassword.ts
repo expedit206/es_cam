@@ -1,87 +1,48 @@
-// src/utils/i18n/settings.ts
+// src/utils/i18n/resetPassword.ts
 export const resetPAssword = {
   fr: {
-    forgot_password: "Mot de passe oublié ?",
-    email_required: "L'adresse email est requise",
-    email_invalid: "L'adresse email est invalide",
-    reset_email_sent: "Email de réinitialisation envoyé !",
-    reset_email_error: "Erreur lors de l'envoi de l'email",
-    sending: "Envoi en cours...",
-    title: "Réinitialiser le mot de passe",
-    forgot_password_instructions:
+    // === RESET PASSWORD ===
+    "Forgot password?": "Mot de passe oublié ?",
+    "Email address is required": "L'adresse email est requise",
+    "Email address is invalid": "L'adresse email est invalide",
+    "Reset email sent!": "Email de réinitialisation envoyé !",
+    "Error sending email": "Erreur lors de l'envoi de l'email",
+    "Sending...": "Envoi en cours...",
+    "Reset Password": "Réinitialiser le mot de passe",
+    "Enter your new email address to receive a reset link":
       "Entrez votre adresse email pour recevoir un lien de réinitialisation",
-    new_password: "Nouveau mot de passe",
-    confirm_password: "Confirmer le mot de passe",
-    reset_button: "Réinitialiser le mot de passe",
-    resetting: "Réinitialisation en cours...",
-    success: "Mot de passe réinitialisé avec succès !",
-    error: "Erreur lors de la réinitialisation",
-    forgot_instructions:
+    "New password": "Nouveau mot de passe",
+    "Confirm password": "Confirmer le mot de passe",
+    "Reset password": "Réinitialiser le mot de passe",
+    "Resetting...": "Réinitialisation en cours...",
+    "Password reset successfully!": "Mot de passe réinitialisé avec succès !",
+    "Error during reset": "Erreur lors de la réinitialisation",
+    "Enter your email address to receive a reset link":
       "Entrez votre adresse email pour recevoir un lien de réinitialisation",
-    email_address: "Adresse email",
-    reset_password: "Reinitialiser le mot de passe",
-    reset_password_instructions:
+    "Email address": "Adresse email",
+    "Please enter your new password below.":
       "Veuillez entrer votre nouveau mot de passe ci-dessous.",
-    email_placeholder: "votre@email.com",
-    cancel: "Annuler",
-    send_reset_link: "envoyer le lien passe",
-    password_strength: "Force du mot de passe",
-    medium: "Moyen",
-    strong: "Fort",
+    "your@email.com": "votre@email.com",
+    "Cancel": "Annuler",
+    "Send reset link": "envoyer le lien passe",
+    "Password strength": "Force du mot de passe",
+    "Weak": "Faible",
+    "Medium": "Moyen",
+    "Strong": "Fort",
 
-    required: "Ce champ est requis",
-    email: "L'adresse email est invalide",
-    min_length: "Doit contenir au moins {min} caractères",
-    password_mismatch: "Les mots de passe ne correspondent pas",
-    phone_invalid: "Le numéro de téléphone est invalide",
+    "This field is required": "Ce champ est requis",
+    "Must contain at least {min} characters": "Doit contenir au moins {min} caractères",
+    "Passwords do not match": "Les mots de passe ne correspondent pas",
+    "Phone number is invalid": "Le numéro de téléphone est invalide",
 
-    reset_link_sent:
+    "A reset link has been sent to your email address.":
       "Un lien de réinitialisation a été envoyé à votre adresse email.",
-    check_your_email:
+    "Check your email for the reset link.":
       "Vérifiez votre boîte email pour le lien de réinitialisation.",
-    token_expired:
+    "The reset link has expired. Please request a new one.":
       "Le lien de réinitialisation a expiré. Veuillez en demander un nouveau.",
-    token_invalid: "Le lien de réinitialisation est invalide.",
-    password_updated: "Votre mot de passe a été mis à jour avec succès.",
+    "The reset link is invalid.": "Le lien de réinitialisation est invalide.",
+    "Your password has been updated successfully.": "Votre mot de passe a été mis à jour avec succès.",
   },
-
-  en: {
-    reset_password: "Reset Password",
-    reset_password_instructions:
-      "Please enter your new password below.",
-    forgot_password: "Forgot password?",
-    email_required: "Email address is required",
-    email_invalid: "Email address is invalid",
-    reset_email_sent: "Reset email sent!",
-    reset_email_error: "Error sending email",
-    sending: "Sending...",
-    send_reset_link: "Send reset link",
-    title: "Reset Password",
-    forgot_password_instructions:
-      "Enter your new email address to receive a reset link",
-    new_password: "New password",
-    confirm_password: "Confirm password",
-    reset_button: "Reset password",
-    resetting: "Resetting...",
-    success: "Password reset successfully!",
-    error: "Error during reset",
-    forgot_instructions: "Enter your email address to receive a reset link",
-    email_address: "Email address",
-    email_placeholder: "your@email.com",
-    cancel: "Cancel",
-    password_strength: "Password strength",
-    weak: "Weak",
-    medium: "Medium",
-    strong: "Strong",
-    required: "This field is required",
-    email: "Email address is invalid",
-    min_length: "Must contain at least {min} characters",
-    password_mismatch: "Passwords do not match",
-    phone_invalid: "Phone number is invalid",
-    reset_link_sent: "A reset link has been sent to your email address.",
-    check_your_email: "Check your email for the reset link.",
-    token_expired: "The reset link has expired. Please request a new one.",
-    token_invalid: "The reset link is invalid.",
-    password_updated: "Your password has been updated successfully.",
-  },
+  en: {}
 };
