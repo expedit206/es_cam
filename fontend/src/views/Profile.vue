@@ -460,7 +460,9 @@ const uploadProfilePicture = async () => {
     });
     if (response.data.photo) {
       // Mettre à jour l'utilisateur dans le store
-      authStore.user.photo = response.data.photo;
+      if (authStore.user) {
+        authStore.user.photo = response.data.photo;
+      }
       toast.success(t('profile_picture_updated'));
       cancelUpload();
     }

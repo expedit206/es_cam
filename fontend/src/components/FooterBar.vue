@@ -183,7 +183,7 @@ const getBadgeDescription = (route: string, count: number) => {
             <nav class="lg:hidden shadow-gray-900 shadow-xl z-240">
                 <div class="flex justify-around items-center py-1">
                     <RouterLink v-for="link in navLinks" :key="link.to" :to="link.to" :aria-label="link.label"
-                        class="relative flex flex-col items-center justify-center w-22 hover:text-[var(--espace-vert)] transition-colors duration-300 group featured-item text-[var(--espace-vert)]"
+                        class="relative flex flex-col items-center justify-center w-15 hover:text-[var(--espace-vert)] transition-colors duration-300 group featured-item  text-[var(--espace-vert)]"
                         :class="[
                             link.featured ? '' : '',
                             $route.path === link.to ? 'text-[var(--espace-vert)]' : ''
@@ -194,7 +194,7 @@ const getBadgeDescription = (route: string, count: number) => {
                             <i class="fas transition-all duration-300 transform group-hover:scale-110" :class="[
                                 link.icon,
                                 (!authStore.user && link.to === '/home') ? 'animate-swing' : '',
-                                link.featured ? 'text-3xl sm:text-3xl' : 'text-lg sm:text-xl'
+                                link.featured ? 'text-xl sm:text-xs' : 'text-sm sm:text-xl'
                             ]">
                             </i>
 
@@ -211,7 +211,7 @@ const getBadgeDescription = (route: string, count: number) => {
 
                         <!-- Label -->
                         <span
-                            class="text-[.7rem] mt-1 font-medium max-w-full px-1 text-center transition-all duration-300"
+                            class="text-[.4rem] mt-1 font-medium max-w-full px-1 text-center transition-all duration-300"
                             :class="link.featured ? 'font-bold transform group-hover:scale-105' : ''">
                             {{ link.label }}
                         </span>

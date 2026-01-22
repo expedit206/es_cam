@@ -54,6 +54,13 @@ export const reventes = {
       "Lors d'une vente réussie, vous gagnez la différence entre le prix de vente et le prix de revente convenu",
     "No resellable": "Non revendable",
     "Received on ": "Reçu le",
+    "Status": "Statut",
+    "Pending": "En attente",
+    "Accepted": "Accepté",
+    "Rejected": "Rejeté",
+    "View Product": "Voir le produit",
+    "Contact": "Contacter",
+    "Reseller": "Revendeur",
   },
   en: {}
 };

@@ -1,6 +1,6 @@
 <template>
     <SeoHead v-bind="seoMeta" />
-    <StructuredData :type="structuredData.type" :data="structuredData.data" />
+    <StructuredData :type="(structuredData.type as any)" :data="structuredData.data" />
 
     <div class="h-full overflow-y-auto bg-gradient-to-br from-gray-50 to-green-50 py-2 sm:py-4 px-2 sm:px-4 pb-8">
         <Loader :isLoading="catalogStore.isLoading" />

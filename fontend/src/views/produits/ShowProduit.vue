@@ -692,7 +692,185 @@
         <!-- Modal pour proposer une revente (existant) -->
         <div v-if="showResaleModal"
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <!-- ... Contenu existant du modal de revente ... -->
+           <!-- Modal de revente -->
+<div v-if="showResaleModal" class="fixed top-20 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <!-- En-tête -->
+    <div class="sticky top-0 bg-white border-b border-gray-200 p-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-lg font-bold text-gray-900">Proposer une revente</h3>
+          <p class="text-sm text-gray-600 mt-1">Proposez un prix de revente pour ce produit</p>
+        </div>
+        <button @click="showResaleModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="p-6">
+      <!-- Informations produit -->
+      <div class="flex gap-3 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+          <img 
+            v-if="produit?.photos?.[0]" 
+            :src="produit.photos[0]" 
+            :alt="produit.nom"
+            class="w-full h-full object-cover"
+          >
+          <div v-else class="w-full h-full flex items-center justify-center">
+            <i class="fas fa-image text-gray-300"></i>
+          </div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 class="font-medium text-gray-900 text-sm mb-1 truncate">{{ produit?.nom }}</h4>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-600">Prix original:</span>
+            <span class="text-sm font-semibold text-gray-900">{{ formatPrice(produit?.prix) }}</span>
+          </div>
+          <div class="text-xs text-gray-500 mt-1">
+            Vendue par: {{ produit?.user?.nom }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Prix de revente -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Votre prix de revente proposé
+        </label>
+        
+    
+
+        <!-- Prix personnalisé -->
+        <div class="relative">
+          <div class="flex items-center">
+            <input
+              v-model.number="resalePrice"
+              type="number"
+              min="1"
+              :max="produit?.prix * 2"
+              step="100"
+              class="w-full pl-3 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              placeholder="Entrez votre prix"
+              @input="validateResalePrice"
+            >
+            <span class="absolute right-3 text-gray-500">FCFA</span>
+          </div>
+          
+          <!-- Plage de prix recommandée -->
+          <div class="mt-2 text-xs text-gray-600 flex justify-between">
+            <span>Minimum: {{ formatPrice(Math.round(produit?.prix * 0.5)) }}</span>
+            <span>Maximum: {{ formatPrice(Math.round(produit?.prix * 2)) }}</span>
+          </div>
+        </div>
+
+        <!-- Informations sur la marge -->
+        <div v-if="resalePrice && produit?.prix" class="mt-4 p-3 bg-gray-50 rounded-lg">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-600">Marge potentielle</span>
+            <span :class="[
+              'text-sm font-semibold',
+              resalePrice - produit.prix > 0 ? 'text-green-600' : 'text-red-600'
+            ]">
+              {{ formatPrice(resalePrice - produit.prix) }}
+            </span>
+          </div>
+          <div class="text-xs text-gray-500">
+            <i class="fas fa-info-circle mr-1"></i>
+            Vous gardez la différence entre votre prix de vente et le prix original
+          </div>
+        </div>
+      </div>
+
+      <!-- Comment ça marche -->
+      <div class="mb-6">
+        <div class="flex items-center gap-2 mb-3">
+          <i class="fas fa-info-circle text-blue-500"></i>
+          <h4 class="font-medium text-gray-900">Comment fonctionne la revente ?</h4>
+        </div>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start gap-2">
+            <div class="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-blue-600 text-xs font-bold">1</span>
+            </div>
+            <p class="text-gray-600">Vous proposez un prix au vendeur pour revendre ce produit</p>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-blue-600 text-xs font-bold">2</span>
+            </div>
+            <p class="text-gray-600">Le vendeur accepte ou refuse votre proposition</p>
+          </div>
+          <div class="flex items-start gap-2">
+            <div class="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span class="text-blue-600 text-xs font-bold">3</span>
+            </div>
+            <p class="text-gray-600">Si accepté, vous pouvez vendre le produit à votre prix et garder la différence</p>
+          </div>
+        </div>
+      </div>
+
+      
+  
+    </div>
+
+    <!-- Actions -->
+    <div class="sticky bottom-0 bg-white border-t border-gray-200 p-6">
+      <div class="flex gap-3">
+        <button
+          @click="showResaleModal = false"
+          class="flex-1 px-4 py-3 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+        >
+          Annuler
+        </button>
+        <button
+          @click="submitResaleProposal"
+          :disabled="!resalePrice || isSubmittingResale || resalePrice < Math.round(produit?.prix * 0.5)"
+          :class="[
+            'flex-1 px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2',
+            resalePrice && !isSubmittingResale && resalePrice >= Math.round(produit?.prix * 0.5)
+              ? 'bg-green-600 text-white hover:bg-green-700'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+          ]"
+        >
+          <i v-if="isSubmittingResale" class="fas fa-spinner fa-spin"></i>
+          <i v-else class="fas fa-paper-plane"></i>
+          {{ isSubmittingResale ? 'Envoi...' : 'Proposer' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div v-if="showConfirmationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-xl max-w-sm w-full p-6 text-center">
+    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-check text-green-600 text-xl"></i>
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-2">Proposition envoyée !</h3>
+    <p class="text-sm text-gray-600 mb-4">
+      Votre proposition de revente a été envoyée au vendeur. Vous serez notifié par email lorsqu'il y aura une réponse.
+    </p>
+    <div class="space-y-3">
+      <button
+        @click="showConfirmationModal = false"
+        class="w-full bg-green-600 text-white py-2.5 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium"
+      >
+        Compris
+      </button>
+      <router-link
+        to="/reventes"
+        @click="showConfirmationModal = false"
+        class="inline-block w-full border border-gray-300 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+      >
+        Voir mes propositions
+      </router-link>
+    </div>
+  </div>
+</div>
         </div>
     </div>
 </template>
@@ -798,7 +976,9 @@ const createPromotion = async () => {
 
         if (response.data.success) {
             promotion.value = response.data.promotion;
-            user.value.jetons = response.data.remaining_tokens;
+            if (user.value) {
+              user.value.jetons = response.data.remaining_tokens;
+            }
 
             toast.success('Promotion lancée !');
             closePromotionModal();
@@ -1276,7 +1456,8 @@ const submitResaleProposal = async () => {
 
     try {
         const response = await apiClient.post(`/reventes/${produit.value.id}`, {
-            prix_revente: resalePrice.value
+            prix_revente: resalePrice.value,
+            produit_id: produit.value.id
         });
 
         if (response.data.success) {

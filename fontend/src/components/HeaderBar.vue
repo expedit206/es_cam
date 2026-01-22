@@ -842,7 +842,7 @@ onUnmounted(() => {
             >
               <i class="fas fa-search text-gray-400 mr-2"></i>
               <span class="text-gray-400 text-sm truncate">
-                {{ t("Search") }}…
+                {{ t("What are you looking for?") }}…
               </span>
             </div>
           </div>
@@ -880,7 +880,7 @@ onUnmounted(() => {
               id="mobile-search-input"
               v-model="searchQuery"
               type="text"
-              placeholder="Que cherchez-vous ?"
+              :placeholder="t('What are you looking for?')"
               class="w-full px-4 py-3 pl-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--espace-vert)] focus:bg-white"
               @input="showSearchHistory = searchQuery.length === 0"
               @keyup.enter="performSearch()"
@@ -924,13 +924,13 @@ onUnmounted(() => {
         >
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-lg font-semibold text-gray-800">
-              Recherches récentes
+              {{ t("Recent searches") }}
             </h3>
             <button
               @click="clearSearchHistory"
               class="text-sm text-[var(--espace-vert)] hover:underline"
             >
-              Tout effacer
+              {{ t("Clear all") }}
             </button>
           </div>
 
@@ -958,7 +958,7 @@ onUnmounted(() => {
         <!-- Suggestions de recherche -->
         <div v-if="showSearchHistory" class="px-4 pt-6">
           <h3 class="text-lg font-semibold text-gray-800 mb-3">
-            Suggestions populaires
+            {{ t("Popular suggestions") }}
           </h3>
 
           <div class="space-y-2">
@@ -986,7 +986,7 @@ onUnmounted(() => {
         <!-- Catégories rapides -->
         <div v-if="showSearchHistory" class="px-4 pt-6">
           <h3 class="text-lg font-semibold text-gray-800 mb-3">
-            Rechercher par catégorie
+            {{ t("Search by category") }}
           </h3>
 
           <div class="grid grid-cols-2 gap-3">
@@ -1015,7 +1015,7 @@ onUnmounted(() => {
           class="px-4 pt-4"
         >
           <h3 class="text-lg font-semibold text-gray-800 mb-3">
-            Résultats pour "{{ searchQuery }}"
+            {{ t("No results found for") }} "{{ searchQuery }}"
           </h3>
 
           <div v-if="isSearching" class="text-center py-8">
@@ -1066,13 +1066,13 @@ onUnmounted(() => {
               @click="performSearch()"
               class="w-full py-3 text-center text-[var(--espace-vert)] font-medium bg-green-50 rounded-lg mt-2 hover:bg-green-100 transition-colors"
             >
-              Voir tous les résultats
+              {{ t("View all results") }}
             </button>
           </div>
 
           <div v-else class="text-center py-8 text-gray-500">
             <i class="fas fa-search text-4xl mb-3 opacity-30"></i>
-            <p>Aucun résultat trouvé pour "{{ searchQuery }}"</p>
+            <p>{{ t("No results found for") }} "{{ searchQuery }}"</p>
           </div>
         </div>
       </div>

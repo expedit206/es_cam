@@ -14,7 +14,7 @@ import Messages from "../views/Messages.vue";
 import AchatJetonModal from "../components/AchatJetonModal.vue";
 import JetonHistory from "../views/JetonHistory.vue";
 import ProfilePublic from "../views/ProfilePublic.vue";
-import Doc from "../views/Doc.vue";
+import Doc from "../views/Acceuil.vue";
 import Politique from "../views/Politique_confidentialite.vue";
 import Politique_confidentialite from "../views/Politique_confidentialite.vue";
 import Politique_utilisation from "../views/politique_utilisation.vue";

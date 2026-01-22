@@ -195,7 +195,7 @@ export const useMessageStore = defineStore("message", () => {
         telephone: "",
         ville: "",
         premium: false,
-        parrain_id: null,
+        parrain_id: undefined,
       },
       product: product.value,
     };
@@ -352,7 +352,7 @@ export const useMessageStore = defineStore("message", () => {
 
       // Mettre à jour localement les conversations
       const convIndex = conversations.value.findIndex(
-        (c) => c.user_id === receiverId
+        (c) => c.user_id === String(receiverId)
       );
       if (convIndex !== -1) {
         conversations.value[convIndex].unread_count = 0;

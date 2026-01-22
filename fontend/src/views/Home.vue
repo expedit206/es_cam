@@ -493,7 +493,7 @@ const setupIntersectionObserver = () => {
     if (observer) observer.disconnect();
 
     observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !isLoading.value) {
+        if (entries[0].isIntersecting && !(isLoading as any).value) {
             loadMoreItems();
         }
     }, {

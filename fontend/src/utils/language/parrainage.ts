@@ -114,6 +114,30 @@ export const parrainage = {
     // Autres
     "Ex: MYCODE2024": "Ex: MONCODE2024",
     "tokens": "jetons",
+    
+    // Parrainage.vue - Traductions supplémentaires
+    "Email Verification": "Vérification de l'email",
+    "Verify": "Vérifier",
+    "Your Referrals": "Vos Parrainages",
+    "Referral Not Verified": "Parrainage Non Vérifié",
+    "Referral Status": "Statut du parrainage",
+    "Pending Status": "En attente",
+    "Active Status": "Actif",
+    "Rejected Status": "Rejeté",
+    "Email Address": "Email",
+    "Joined on": "Inscrit le",
+    "Bonus Attributed": "Bonus attribué",
+    "Referral Bonus": "Bonus parrainage",
+    "Bonus Tokens": "jetons de bonus",
+    "Total Bonus": "Bonus total",
+    "Pending Bonus": "Bonus en attente",
+    "Active Bonus": "Bonus actifs",
+    "Share Settings": "Paramètres de partage",
+    "Invitation Link": "Lien d'invitation",
+    "Sharing Channels": "Canaux de partage",
+    "Copy Link": "Copier le lien",
+    "Link Copied": "Lien copié !",
+    "Error": "Erreur",
   },
   en: {}
 };

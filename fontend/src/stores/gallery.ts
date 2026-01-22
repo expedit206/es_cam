@@ -257,7 +257,7 @@ export const useCatalogStore = defineStore("catalog", () => {
   const deleteService = async (serviceId: string) => {
     try {
       await apiClient.delete(`/services/${serviceId}`);
-      services.value = services.value.filter((s) => s.id !== serviceId);
+      services.value = services.value.filter((s) => String(s.id) !== String(serviceId));
       toast.success("Service supprimé avec succès");
     } catch (error: any) {
       toast.error(
@@ -271,7 +271,7 @@ export const useCatalogStore = defineStore("catalog", () => {
   const toggleServiceAvailability = async (serviceId: string) => {
     try {
       await apiClient.patch(`/services/${serviceId}/toggle-disponibilite`);
-      const service = services.value.find((s) => s.id === serviceId);
+      const service = services.value.find((s) => String(s.id) === String(serviceId));
       if (service) {
         service.disponibilite =
           service.disponibilite === "disponible"

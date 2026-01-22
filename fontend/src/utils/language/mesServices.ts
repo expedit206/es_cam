@@ -76,6 +76,22 @@ export const mesServices = {
     "Service updated successfully": "Service mis à jour avec succès",
     "Service created successfully": "Service créé avec succès",
     "Error saving service": "Erreur lors de la sauvegarde du service",
+    
+    // ShowService.vue
+    "About Service Provider": "À propos du prestataire",
+    "View Provider Profile": "Voir le profil du prestataire",
+    "Service Details": "Détails du service",
+    "Service Experience": "Expérience du service",
+    "Service Qualifications": "Qualifications du service",
+    "Similar Services": "Services similaires",
+    "No Similar Services": "Aucun service similaire",
+    "Contact Service Provider": "Contacter le prestataire",
+    "Send Message": "Envoyer un message",
+    "Contact via WhatsApp": "Contacter par WhatsApp",
+    "Service Performance": "Performance du service",
+    "Number of Views": "Nombre de vues",
+    "Number of Favorites": "Nombre de favoris",
+    "Number of Contacts": "Nombre de contacts",
   },
   en: {}
 };

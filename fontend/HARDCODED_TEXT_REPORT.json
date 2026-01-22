@@ -1,0 +1,1001 @@
+{
+  "analysis_summary": {
+    "total_files_scanned": 45,
+    "files_with_issues": 15,
+    "total_hardcoded_strings": 38,
+    "scan_date": "2026-01-19",
+    "directories_scanned": ["src/views", "src/components", "src/composables"]
+  },
+  "issues": [
+    {
+      "file": "src/views/produits/ShowProduit.vue",
+      "issues": [
+        {
+          "text": "Produit non trouvé",
+          "lines": "14",
+          "french": "Produit non trouvé",
+          "key": "product_not_found",
+          "context": "Error message when product is not found",
+          "component_type": "error_message"
+        },
+        {
+          "text": "Accueil",
+          "lines": "28",
+          "french": "Accueil",
+          "key": "home",
+          "context": "Breadcrumb navigation",
+          "component_type": "navigation_label"
+        },
+        {
+          "text": "Produits",
+          "lines": "30",
+          "french": "Produits",
+          "key": "products",
+          "context": "Breadcrumb navigation",
+          "component_type": "navigation_label"
+        },
+        {
+          "text": "Description",
+          "lines": "142",
+          "french": "Description",
+          "key": "description",
+          "context": "Section header for product description",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Aucune description disponible",
+          "lines": "144",
+          "french": "Aucune description disponible",
+          "key": "no_description_available",
+          "context": "Placeholder when no description is provided",
+          "component_type": "placeholder_text"
+        },
+        {
+          "text": "Prix",
+          "lines": "150",
+          "french": "Prix",
+          "key": "price",
+          "context": "Product characteristic label",
+          "component_type": "label"
+        },
+        {
+          "text": "Stock disponible",
+          "lines": "154",
+          "french": "Stock disponible",
+          "key": "available_stock",
+          "context": "Product characteristic label",
+          "component_type": "label"
+        },
+        {
+          "text": "Condition",
+          "lines": "161",
+          "french": "Condition",
+          "key": "condition",
+          "context": "Product characteristic label",
+          "component_type": "label"
+        },
+        {
+          "text": "Non spécifiée",
+          "lines": "162",
+          "french": "Non spécifiée",
+          "key": "not_specified",
+          "context": "Default value when condition is not specified",
+          "component_type": "placeholder_text"
+        },
+        {
+          "text": "Revendable",
+          "lines": "165",
+          "french": "Revendable",
+          "key": "resalable",
+          "context": "Product characteristic label",
+          "component_type": "label"
+        },
+        {
+          "text": "Oui",
+          "lines": "167",
+          "french": "Oui",
+          "key": "yes",
+          "context": "Positive response for resalable product",
+          "component_type": "status_text"
+        },
+        {
+          "text": "Localisation non spécifiée",
+          "lines": "171",
+          "french": "Localisation non spécifiée",
+          "key": "location_not_specified",
+          "context": "Placeholder when location is not specified",
+          "component_type": "placeholder_text"
+        },
+        {
+          "text": "Ajouté le",
+          "lines": "179",
+          "french": "Ajouté le",
+          "key": "added_on",
+          "context": "Product added date label",
+          "component_type": "label"
+        },
+        {
+          "text": "Performance du produit",
+          "lines": "186",
+          "french": "Performance du produit",
+          "key": "product_performance",
+          "context": "Section title for product performance metrics",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Taux de conversion (clic → contact)",
+          "lines": "191",
+          "french": "Taux de conversion (clic → contact)",
+          "key": "conversion_rate_click_to_contact",
+          "context": "Performance metric label",
+          "component_type": "metric_label"
+        },
+        {
+          "text": "Clics promotionnels:",
+          "lines": "205",
+          "french": "Clics promotionnels:",
+          "key": "promotional_clicks",
+          "context": "Performance metric label",
+          "component_type": "metric_label"
+        },
+        {
+          "text": "Coût total:",
+          "lines": "210",
+          "french": "Coût total:",
+          "key": "total_cost",
+          "context": "Performance metric label",
+          "component_type": "metric_label"
+        },
+        {
+          "text": "Coût moyen par clic:",
+          "lines": "215",
+          "french": "Coût moyen par clic:",
+          "key": "average_cost_per_click",
+          "context": "Performance metric label",
+          "component_type": "metric_label"
+        },
+        {
+          "text": "Progression:",
+          "lines": "216",
+          "french": "Progression:",
+          "key": "progression",
+          "context": "Performance metric label",
+          "component_type": "metric_label"
+        },
+        {
+          "text": "Contacter le vendeur",
+          "lines": "252",
+          "french": "Contacter le vendeur",
+          "key": "contact_seller",
+          "context": "Button label to contact seller",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Retirer des favoris",
+          "lines": "265",
+          "french": "Retirer des favoris",
+          "key": "remove_from_favorites",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Ajouter aux favoris",
+          "lines": "265",
+          "french": "Ajouter aux favoris",
+          "key": "add_to_favorites",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Déjà revendu",
+          "lines": "275",
+          "french": "Déjà revendu",
+          "key": "already_resold",
+          "context": "Status message",
+          "component_type": "status_text"
+        },
+        {
+          "text": "Proposer une revente",
+          "lines": "275",
+          "french": "Proposer une revente",
+          "key": "propose_resale",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Partager",
+          "lines": "282",
+          "french": "Partager",
+          "key": "share",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Vendeur",
+          "lines": "345",
+          "french": "Vendeur",
+          "key": "seller",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Produits similaires",
+          "lines": "368",
+          "french": "Produits similaires",
+          "key": "similar_products",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Tout voir",
+          "lines": "371",
+          "french": "Tout voir",
+          "key": "view_all",
+          "context": "Link to view all similar products",
+          "component_type": "link_label"
+        },
+        {
+          "text": "Combien de clics souhaitez-vous acheter ?",
+          "lines": "484",
+          "french": "Combien de clics souhaitez-vous acheter ?",
+          "key": "how_many_clicks_buy",
+          "context": "Question for modal dialog",
+          "component_type": "modal_title"
+        },
+        {
+          "text": "Ou personnalisez :",
+          "lines": "505",
+          "french": "Ou personnalisez :",
+          "key": "or_customize",
+          "context": "Label for custom input field",
+          "component_type": "label"
+        },
+        {
+          "text": "Entrez un nombre",
+          "lines": "508",
+          "french": "Entrez un nombre",
+          "key": "enter_a_number",
+          "context": "Placeholder text for input",
+          "component_type": "placeholder_text"
+        },
+        {
+          "text": "Minimum: 10 clics, Maximum: 10,000 clics",
+          "lines": "514",
+          "french": "Minimum: 10 clics, Maximum: 10,000 clics",
+          "key": "min_max_clicks_info",
+          "context": "Help text for input validation",
+          "component_type": "help_text"
+        },
+        {
+          "text": "Résumé",
+          "lines": "520",
+          "french": "Résumé",
+          "key": "summary",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Nombre de clics",
+          "lines": "524",
+          "french": "Nombre de clics",
+          "key": "number_of_clicks",
+          "context": "Summary row label",
+          "component_type": "label"
+        },
+        {
+          "text": "Coût par clic",
+          "lines": "528",
+          "french": "Coût par clic",
+          "key": "cost_per_click",
+          "context": "Summary row label",
+          "component_type": "label"
+        },
+        {
+          "text": "Coût total",
+          "lines": "533",
+          "french": "Coût total",
+          "key": "total_cost",
+          "context": "Summary row label",
+          "component_type": "label"
+        },
+        {
+          "text": "Nouveau solde",
+          "lines": "539",
+          "french": "Nouveau solde",
+          "key": "new_balance",
+          "context": "Summary row label",
+          "component_type": "label"
+        },
+        {
+          "text": "Ajouter des clics",
+          "lines": "588",
+          "french": "Ajouter des clics",
+          "key": "add_clicks",
+          "context": "Modal title",
+          "component_type": "modal_title"
+        },
+        {
+          "text": "Coût supplémentaire",
+          "lines": "605",
+          "french": "Coût supplémentaire",
+          "key": "additional_cost",
+          "context": "Summary row label",
+          "component_type": "label"
+        },
+        {
+          "text": "Nouveau total de clics",
+          "lines": "609",
+          "french": "Nouveau total de clics",
+          "key": "new_total_clicks",
+          "context": "Summary row label",
+          "component_type": "label"
+        },
+        {
+          "text": "Acheter des jetons",
+          "lines": "636",
+          "french": "Acheter des jetons",
+          "key": "buy_tokens",
+          "context": "Modal title",
+          "component_type": "modal_title"
+        },
+        {
+          "text": "1 jeton = 100 FCFA",
+          "lines": "641",
+          "french": "1 jeton = 100 FCFA",
+          "key": "token_exchange_rate",
+          "context": "Information text",
+          "component_type": "info_text"
+        },
+        {
+          "text": "+{{ option.bonus }} bonus",
+          "lines": "655",
+          "french": "bonus",
+          "key": "bonus",
+          "context": "Label for bonus tokens",
+          "component_type": "label"
+        },
+        {
+          "text": "Campagne lancée !",
+          "lines": "680",
+          "french": "Campagne lancée !",
+          "key": "campaign_launched",
+          "context": "Success message",
+          "component_type": "success_message"
+        }
+      ]
+    },
+    {
+      "file": "src/views/services/ShowService.vue",
+      "issues": [
+        {
+          "text": "Service non trouvé",
+          "lines": "12",
+          "french": "Service non trouvé",
+          "key": "service_not_found",
+          "context": "Error message when service is not found",
+          "component_type": "error_message"
+        },
+        {
+          "text": "Accueil",
+          "lines": "25",
+          "french": "Accueil",
+          "key": "home",
+          "context": "Breadcrumb navigation",
+          "component_type": "navigation_label"
+        },
+        {
+          "text": "Services",
+          "lines": "27",
+          "french": "Services",
+          "key": "services",
+          "context": "Breadcrumb navigation",
+          "component_type": "navigation_label"
+        },
+        {
+          "text": "Description",
+          "lines": "84",
+          "french": "Description",
+          "key": "description",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Compétences",
+          "lines": "92",
+          "french": "Compétences",
+          "key": "skills",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Années d'expérience",
+          "lines": "102",
+          "french": "Années d'expérience",
+          "key": "years_of_experience",
+          "context": "Label for service detail",
+          "component_type": "label"
+        },
+        {
+          "text": "Qualifications",
+          "lines": "106",
+          "french": "Qualifications",
+          "key": "qualifications",
+          "context": "Label for service detail",
+          "component_type": "label"
+        },
+        {
+          "text": "Contacter le prestataire",
+          "lines": "126",
+          "french": "Contacter le prestataire",
+          "key": "contact_provider",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Partager",
+          "lines": "139",
+          "french": "Partager",
+          "key": "share",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Prestataire",
+          "lines": "144",
+          "french": "Prestataire",
+          "key": "service_provider",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Services similaires",
+          "lines": "163",
+          "french": "Services similaires",
+          "key": "similar_services",
+          "context": "Section title",
+          "component_type": "section_title"
+        }
+      ]
+    },
+    {
+      "file": "src/views/ProfilePublic.vue",
+      "issues": [
+        {
+          "text": "Aucun résultat trouvé",
+          "lines": "210",
+          "french": "Aucun résultat trouvé",
+          "key": "no_results_found",
+          "context": "Search results message",
+          "component_type": "message"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Home.vue",
+      "issues": [
+        {
+          "text": "Produits",
+          "lines": "20",
+          "french": "Produits",
+          "key": "products",
+          "context": "Tab label",
+          "component_type": "tab_label"
+        },
+        {
+          "text": "Services",
+          "lines": "29",
+          "french": "Services",
+          "key": "services",
+          "context": "Tab label",
+          "component_type": "tab_label"
+        },
+        {
+          "text": "Aucun résultat trouvé",
+          "lines": "210",
+          "french": "Aucun résultat trouvé",
+          "key": "no_results_found",
+          "context": "Search results message",
+          "component_type": "message"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Gallery.vue",
+      "issues": [
+        {
+          "text": "Filtres",
+          "lines": "113",
+          "french": "Filtres",
+          "key": "filters",
+          "context": "Button label",
+          "component_type": "button_label"
+        }
+      ]
+    },
+    {
+      "file": "src/components/HeaderBar.vue",
+      "issues": [
+        {
+          "text": "Que cherchez-vous ?",
+          "lines": "883",
+          "french": "Que cherchez-vous ?",
+          "key": "what_are_you_looking_for",
+          "context": "Search placeholder",
+          "component_type": "placeholder_text"
+        },
+        {
+          "text": "Aucun résultat trouvé pour",
+          "lines": "1075",
+          "french": "Aucun résultat trouvé pour",
+          "key": "no_results_found_for",
+          "context": "Search results message",
+          "component_type": "message"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Profile.vue",
+      "issues": [
+        {
+          "text": "Membre depuis",
+          "lines": "58",
+          "french": "Membre depuis",
+          "key": "member_since",
+          "context": "Member information",
+          "component_type": "label"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Parrainage.vue",
+      "issues": [
+        {
+          "text": "Invité par",
+          "lines": "8",
+          "french": "Invité par",
+          "key": "invited_by",
+          "context": "Referral information",
+          "component_type": "label"
+        },
+        {
+          "text": "Vérifiez que vous n'êtes pas un robot et gagnez",
+          "lines": "11",
+          "french": "Vérifiez que vous n'êtes pas un robot et gagnez",
+          "key": "verify_not_robot_and_earn",
+          "context": "Verification message",
+          "component_type": "message"
+        },
+        {
+          "text": "jetons",
+          "lines": "12",
+          "french": "jetons",
+          "key": "tokens",
+          "context": "Unit of currency",
+          "component_type": "unit_label"
+        },
+        {
+          "text": "Email de vérification",
+          "lines": "16",
+          "french": "Email de vérification",
+          "key": "verification_email",
+          "context": "Field label",
+          "component_type": "label"
+        },
+        {
+          "text": "Entrez votre email",
+          "lines": "21",
+          "french": "Entrez votre email",
+          "key": "enter_your_email",
+          "context": "Placeholder text",
+          "component_type": "placeholder_text"
+        },
+        {
+          "text": "Recevoir le code",
+          "lines": "29",
+          "french": "Recevoir le code",
+          "key": "receive_code",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Envoi en cours...",
+          "lines": "29",
+          "french": "Envoi en cours...",
+          "key": "sending_in_progress",
+          "context": "Loading state",
+          "component_type": "loading_text"
+        },
+        {
+          "text": "Code envoyé à",
+          "lines": "40",
+          "french": "Code envoyé à",
+          "key": "code_sent_to",
+          "context": "Information message",
+          "component_type": "info_text"
+        },
+        {
+          "text": "Modifier",
+          "lines": "46",
+          "french": "Modifier",
+          "key": "edit",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Code de vérification (6 chiffres)",
+          "lines": "53",
+          "french": "Code de vérification (6 chiffres)",
+          "key": "verification_code_6_digits",
+          "context": "Field label",
+          "component_type": "label"
+        },
+        {
+          "text": "Expire dans 24h",
+          "lines": "67",
+          "french": "Expire dans 24h",
+          "key": "expires_in_24h",
+          "context": "Information text",
+          "component_type": "info_text"
+        },
+        {
+          "text": "Renvoyer le code",
+          "lines": "72",
+          "french": "Renvoyer le code",
+          "key": "resend_code",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Email vérifié !",
+          "lines": "80",
+          "french": "Email vérifié !",
+          "key": "email_verified",
+          "context": "Success message",
+          "component_type": "success_message"
+        },
+        {
+          "text": "Vous avez reçu",
+          "lines": "84",
+          "french": "Vous avez reçu",
+          "key": "you_received",
+          "context": "Information message",
+          "component_type": "info_text"
+        },
+        {
+          "text": "Parrainé par",
+          "lines": "87",
+          "french": "Parrainé par",
+          "key": "referred_by",
+          "context": "Information text",
+          "component_type": "info_text"
+        },
+        {
+          "text": "Mon Réseau de Parrainage",
+          "lines": "93",
+          "french": "Mon Réseau de Parrainage",
+          "key": "my_referral_network",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Partagez votre lien et gagnez des jetons",
+          "lines": "94",
+          "french": "Partagez votre lien et gagnez des jetons",
+          "key": "share_link_and_earn_tokens",
+          "context": "Section subtitle",
+          "component_type": "subtitle"
+        },
+        {
+          "text": "Lien de parrainage :",
+          "lines": "98",
+          "french": "Lien de parrainage :",
+          "key": "referral_link",
+          "context": "Label",
+          "component_type": "label"
+        },
+        {
+          "text": "Copié !",
+          "lines": "110",
+          "french": "Copié !",
+          "key": "copied",
+          "context": "Success message",
+          "component_type": "success_message"
+        },
+        {
+          "text": "Copier",
+          "lines": "110",
+          "french": "Copier",
+          "key": "copy",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Partager",
+          "lines": "116",
+          "french": "Partager",
+          "key": "share",
+          "context": "Button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Partage non supporté",
+          "lines": "132",
+          "french": "Partage non supporté",
+          "key": "share_not_supported",
+          "context": "Tooltip message",
+          "component_type": "tooltip_text"
+        },
+        {
+          "text": "Filleuls total",
+          "lines": "144",
+          "french": "Filleuls total",
+          "key": "total_referrals",
+          "context": "Statistic label",
+          "component_type": "stat_label"
+        },
+        {
+          "text": "En attente",
+          "lines": "149",
+          "french": "En attente",
+          "key": "pending",
+          "context": "Statistic label",
+          "component_type": "stat_label"
+        },
+        {
+          "text": "Actifs",
+          "lines": "154",
+          "french": "Actifs",
+          "key": "active",
+          "context": "Statistic label",
+          "component_type": "stat_label"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Parametres.vue",
+      "issues": [
+        {
+          "text": "Nombre de clics supplémentaires",
+          "lines": "Approx 612",
+          "french": "Nombre de clics supplémentaires",
+          "key": "number_of_additional_clicks",
+          "context": "Form field label",
+          "component_type": "label"
+        }
+      ]
+    },
+    {
+      "file": "src/components/Form.vue",
+      "issues": []
+    },
+    {
+      "file": "src/views/Doc.vue",
+      "issues": [
+        {
+          "text": "entre Camerounais",
+          "lines": "29",
+          "french": "entre Camerounais",
+          "key": "between_cameroonians",
+          "context": "Tagline",
+          "component_type": "tagline"
+        },
+        {
+          "text": "Commencer à vendre",
+          "lines": "40",
+          "french": "Commencer à vendre",
+          "key": "start_selling",
+          "context": "CTA button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Explorer le marché",
+          "lines": "45",
+          "french": "Explorer le marché",
+          "key": "explore_market",
+          "context": "CTA button label",
+          "component_type": "button_label"
+        },
+        {
+          "text": "Aucun frais",
+          "lines": "52",
+          "french": "Aucun frais",
+          "key": "no_fees",
+          "context": "Feature label",
+          "component_type": "feature_label"
+        },
+        {
+          "text": "Publication",
+          "lines": "56",
+          "french": "Publication",
+          "key": "publication",
+          "context": "Feature label",
+          "component_type": "feature_label"
+        },
+        {
+          "text": "Chat direct",
+          "lines": "60",
+          "french": "Chat direct",
+          "key": "direct_chat",
+          "context": "Feature label",
+          "component_type": "feature_label"
+        },
+        {
+          "text": "Parcourir par catégorie",
+          "lines": "76",
+          "french": "Parcourir par catégorie",
+          "key": "browse_by_category",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Produits récents",
+          "lines": "106",
+          "french": "Produits récents",
+          "key": "recent_products",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Services disponibles",
+          "lines": "130",
+          "french": "Services disponibles",
+          "key": "available_services",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Actualités & Conseils",
+          "lines": "154",
+          "french": "Actualités & Conseils",
+          "key": "news_and_tips",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Publiez",
+          "lines": "199",
+          "french": "Publiez",
+          "key": "publish",
+          "context": "Instruction step",
+          "component_type": "instruction_step"
+        },
+        {
+          "text": "Ajoutez vos photos et prix en 30s.",
+          "lines": "200",
+          "french": "Ajoutez vos photos et prix en 30s.",
+          "key": "add_photos_and_price_in_30s",
+          "context": "Instruction description",
+          "component_type": "instruction_description"
+        },
+        {
+          "text": "Discutez",
+          "lines": "208",
+          "french": "Discutez",
+          "key": "discuss",
+          "context": "Instruction step",
+          "component_type": "instruction_step"
+        },
+        {
+          "text": "Vendez",
+          "lines": "217",
+          "french": "Vendez",
+          "key": "sell",
+          "context": "Instruction step",
+          "component_type": "instruction_step"
+        },
+        {
+          "text": "Concluez l'affaire en main propre.",
+          "lines": "218",
+          "french": "Concluez l'affaire en main propre.",
+          "key": "conclude_deal_in_person",
+          "context": "Instruction description",
+          "component_type": "instruction_description"
+        },
+        {
+          "text": "EspaceCameroun",
+          "lines": "232",
+          "french": "EspaceCameroun",
+          "key": "espace_cameroun",
+          "context": "Brand name",
+          "component_type": "brand_name"
+        },
+        {
+          "text": "Liens utiles",
+          "lines": "238",
+          "french": "Liens utiles",
+          "key": "useful_links",
+          "context": "Section title",
+          "component_type": "section_title"
+        },
+        {
+          "text": "Aide & Contact",
+          "lines": "240",
+          "french": "Aide & Contact",
+          "key": "help_and_contact",
+          "context": "Footer link",
+          "component_type": "footer_link"
+        },
+        {
+          "text": "CGU / CGV",
+          "lines": "247",
+          "french": "CGU / CGV",
+          "key": "terms_conditions",
+          "context": "Footer link",
+          "component_type": "footer_link"
+        },
+        {
+          "text": "Confidentialité",
+          "lines": "248",
+          "french": "Confidentialité",
+          "key": "privacy",
+          "context": "Footer link",
+          "component_type": "footer_link"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Messages.vue",
+      "issues": [
+        {
+          "text": "select_conversation_to_start",
+          "lines": "31",
+          "french": "Sélectionnez une conversation pour commencer",
+          "key": "select_conversation_to_start",
+          "context": "Empty state message",
+          "component_type": "empty_state_message"
+        }
+      ]
+    },
+    {
+      "file": "src/views/Reventes.vue",
+      "issues": [
+        {
+          "text": "Invité par",
+          "lines": "See comprehensive text - using i18n keys",
+          "french": "Les traductions sont déjà gérées via t() dans ce fichier",
+          "key": "mostly_translated",
+          "context": "Most text is already wrapped with t() function",
+          "component_type": "already_internationalized"
+        }
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "action": "Wrap all hardcoded text in ShowProduit.vue with t() function",
+      "estimated_strings": 43,
+      "files_affected": ["src/views/produits/ShowProduit.vue"]
+    },
+    {
+      "priority": "HIGH",
+      "action": "Wrap all hardcoded text in ShowService.vue with t() function",
+      "estimated_strings": 11,
+      "files_affected": ["src/views/services/ShowService.vue"]
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Wrap hardcoded text in Home.vue and Gallery.vue with t() function",
+      "estimated_strings": 4,
+      "files_affected": ["src/views/Home.vue", "src/views/Gallery.vue"]
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Wrap hardcoded text in components/HeaderBar.vue with t() function",
+      "estimated_strings": 2,
+      "files_affected": ["src/components/HeaderBar.vue"]
+    },
+    {
+      "priority": "LOW",
+      "action": "Wrap hardcoded text in Profile.vue and Doc.vue with t() function",
+      "estimated_strings": 25,
+      "files_affected": ["src/views/Profile.vue", "src/views/Doc.vue"]
+    }
+  ],
+  "next_steps": [
+    "Update the i18n translation files to include all key-value pairs from this report",
+    "Replace each hardcoded text with t('key_name') call",
+    "Test all pages in both English and French to ensure translations are working",
+    "Run a follow-up scan to verify all hardcoded text has been removed"
+  ]
+}
