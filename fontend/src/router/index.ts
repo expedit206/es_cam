@@ -4,7 +4,7 @@ import Gallery from "../views/Gallery.vue";
 import Register from "../views/auth/Register.vue";
 import Profile from "../views/Profile.vue";
 import Parametres from "../views/Parametres.vue";
-import Home from "../views/Home.vue";
+import Home from "../views/marketplace.vue";
 import Parrainage from "../views/Parrainage.vue";
 import Reventes from "../views/Reventes.vue";
 import JetonMarket from "../views/JetonMarket.vue";
@@ -88,11 +88,13 @@ const routes = [
   {
     path: "/messages",
     component: Messages,
+    meta: { hideLayout: true }
   },
   {
     path: "/messages/:receiverId",
     component: Messages,
     name: "messages",
+    meta: { hideLayout: true }
   },
   { path: "/produits/:id", name: "produit", component: ShowProduit },
   {

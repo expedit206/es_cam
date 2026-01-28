@@ -178,7 +178,7 @@ const getBadgeDescription = (route: string, count: number) => {
 </script>
 
 <template>
-    <div class="shadow-black shadow-2xl z-240">
+    <div class="shadow-black shadow-2xl z-240 bg-white/80">
         <Transition name="slide-up">
             <nav class="lg:hidden shadow-gray-900 shadow-xl z-240">
                 <div class="flex justify-around items-center py-1">

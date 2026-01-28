@@ -55,13 +55,7 @@ const settingsLinks = computed(() => {
             description: t('manage_your_store_and_products'),
             color: 'text-black bg-blue-50'
         },
-        {
-            to: '/parrainage',
-            label: t('referral'),
-            icon: 'fa-user-plus',
-            description: t('invite_friends_and_earn'),
-            color: 'text-black bg-green-50'
-        },
+       
         {
             to: '/profil',
             label: t('subscriptions'),

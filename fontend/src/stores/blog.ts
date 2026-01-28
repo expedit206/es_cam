@@ -9,9 +9,13 @@ export interface Post {
     excerpt: string;
     content: string;
     image: string | null;
+    video: string | null;
     is_published: boolean;
     published_at: string;
     views_count: number;
+    comments_count?: number;
+    likes_count?: number;
+    is_liked?: boolean;
     author: User;
     created_at: string;
 }

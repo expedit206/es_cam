@@ -25,6 +25,9 @@
                         <div class="h-48 bg-gray-200 relative overflow-hidden group">
                            <router-link :to="`/blog/${post.slug}`">
                                 <img v-if="post.image" :src="post.image" :alt="post.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                <div v-if="post.video" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/50 rounded-full w-12 h-12 flex items-center justify-center text-white backdrop-blur-sm group-hover:bg-[var(--espace-vert)]/80 transition-colors">
+                                    <i class="fas fa-play ml-1"></i>
+                                </div>
                                 <div v-else class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
                                     <i class="fas fa-newspaper text-4xl"></i>
                                 </div>

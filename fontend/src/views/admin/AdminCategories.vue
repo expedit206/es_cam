@@ -82,17 +82,74 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Category Modal -->
+    <div v-if="editModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-gray-800">Modifier la catégorie</h3>
+                <button @click="closeEditModal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nom de la catégorie</label>
+                    <input v-model="editForm.nom" type="text" class="w-full px-4 py-3 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[var(--espace-vert)]">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Image actuelle</label>
+                    <div class="w-full h-32 bg-gray-100 rounded-2xl overflow-hidden mb-2 flex items-center justify-center">
+                        <img v-if="editForm.currentImage && !editForm.previewImage" :src="editForm.currentImage" class="w-full h-full object-cover">
+                        <img v-if="editForm.previewImage" :src="editForm.previewImage" class="w-full h-full object-cover">
+                        <div v-if="!editForm.currentImage && !editForm.previewImage" class="text-gray-400">
+                             <i class="fas fa-image text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Changer l'image</label>
+                    <input type="file" @change="handleEditImageUpload" accept="image/*" class="w-full px-4 py-2 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-[var(--espace-vert)] text-sm">
+                </div>
+            </div>
+
+            <div class="p-6 pt-0 flex gap-3">
+                <button @click="closeEditModal" class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-2xl hover:bg-gray-200 transition-colors">
+                    Annuler
+                </button>
+                <button @click="submitEdit" :disabled="isSubmitting" class="flex-1 px-4 py-3 bg-[var(--espace-vert)] text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-green-500/20 transition-all disabled:opacity-50">
+                    <span v-if="isSubmitting"><i class="fas fa-spinner animate-spin mr-2"></i>Enregistrement...</span>
+                    <span v-else>Enregistrer</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useAdminStore } from '../../stores/admin';
 
 const adminStore = useAdminStore();
 const newCat = ref({ nom: '', type: 'product' });
 const selectedImage = ref<File | null>(null);
 const isSubmitting = ref(false);
+
+// Edit Modal State
+const editModalOpen = ref(false);
+const editForm = reactive({
+    id: '',
+    nom: '',
+    type: 'product',
+    currentImage: '',
+    imageFile: null as File | null,
+    previewImage: ''
+});
 
 onMounted(() => {
     adminStore.fetchCategories();
@@ -102,6 +159,19 @@ const handleImageUpload = (event: Event) => {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
         selectedImage.value = target.files[0];
+    }
+};
+
+const handleEditImageUpload = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+        editForm.imageFile = target.files[0];
+        // Create preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            editForm.previewImage = e.target?.result as string;
+        };
+        reader.readAsDataURL(target.files[0]);
     }
 };
 
@@ -122,17 +192,38 @@ const addCategory = async () => {
     }
 };
 
-const editCategory = async (cat: any, type: string) => {
-    const newName = prompt('Nouveau nom pour la catégorie :', cat.nom);
-    if (newName && newName !== cat.nom) {
-        try {
-            await adminStore.updateCategory(cat.id, newName, type as 'product' | 'service');
-        } catch (e) {
-            alert('Erreur lors de la modification');
-        }
+const editCategory = (cat: any, type: string) => {
+    editForm.id = cat.id;
+    editForm.nom = cat.nom;
+    editForm.type = type;
+    editForm.currentImage = cat.image;
+    editForm.imageFile = null;
+    editForm.previewImage = '';
+    editModalOpen.value = true;
+};
+
+const closeEditModal = () => {
+    editModalOpen.value = false;
+    editForm.imageFile = null;
+    editForm.previewImage = '';
+};
+
+const submitEdit = async () => {
+    if (!editForm.nom) return;
+    isSubmitting.value = true;
+    try {
+        await adminStore.updateCategory(
+            editForm.id, 
+            editForm.nom, 
+            editForm.type as 'product' | 'service', 
+            editForm.imageFile
+        );
+        closeEditModal();
+    } catch (e) {
+        alert('Erreur lors de la modification');
+    } finally {
+        isSubmitting.value = false;
     }
-    // Note: To update image of existing category, we would need a more complex modal. 
-    // For now, prompt only handles the name.
 };
 
 const deleteCategory = async (id: string, type: string) => {

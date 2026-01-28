@@ -4,6 +4,7 @@ import { ref, computed } from "vue";
 import apiClient from "../api/index";
 import { Product, Service, Category } from "../components/types/index";
 import { useToast } from "vue-toastification";
+import { useAuthStore } from "./Auth";
 
 export const useCatalogStore = defineStore("catalog", () => {
   const toast = useToast();
@@ -176,8 +177,10 @@ export const useCatalogStore = defineStore("catalog", () => {
     isLoading.value = true;
     try {
       const response = await apiClient.get("/user/mesProduits");
+      const authStore = useAuthStore();
       products.value = response.data.produits.map((p: any) => ({
         ...p,
+        user: authStore.user,
         photo_url: p.photos && p.photos.length > 0 ? p.photos[0] : "",
       }));
     } catch (error) {

@@ -155,6 +155,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label>Vidéo (Optionnel)</label>
+                            <input type="file" @change="handleVideoUpload" accept="video/mp4,video/quicktime,video/x-msvideo">
+                            <div v-if="videoPreview" class="video-preview">
+                                <video :src="videoPreview" controls class="w-full max-h-40 rounded"></video>
+                                <button type="button" @click="removeVideo" class="btn-remove-image">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="form-group checkbox-group">
                             <label>
                                 <input v-model="form.is_published" type="checkbox">
@@ -200,8 +211,11 @@ const form = ref({
     excerpt: '',
     content: '',
     image: null as File | null,
+    video: null as File | null,
     is_published: false
 });
+
+const videoPreview = ref<string | null>(null);
 
 const publishedCount = computed(() => posts.value.filter(p => p.is_published).length);
 const draftCount = computed(() => posts.value.filter(p => !p.is_published).length);
@@ -238,9 +252,11 @@ const openCreateModal = () => {
         excerpt: '',
         content: '',
         image: null,
+        video: null,
         is_published: false
     };
     imagePreview.value = null;
+    videoPreview.value = null;
     showModal.value = true;
 };
 
@@ -251,9 +267,11 @@ const editPost = (post: Post) => {
         excerpt: post.excerpt || '',
         content: post.content,
         image: null,
+        video: null,
         is_published: post.is_published
     };
     imagePreview.value = post.image;
+    videoPreview.value = post.video;
     showModal.value = true;
 };
 
@@ -261,6 +279,7 @@ const closeModal = () => {
     showModal.value = false;
     editingPost.value = null;
     imagePreview.value = null;
+    videoPreview.value = null;
 };
 
 const handleImageUpload = (event: Event) => {
@@ -275,9 +294,26 @@ const handleImageUpload = (event: Event) => {
     }
 };
 
+const handleVideoUpload = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+        form.value.video = target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            videoPreview.value = e.target?.result as string;
+        };
+        reader.readAsDataURL(target.files[0]);
+    }
+};
+
 const removeImage = () => {
     form.value.image = null;
     imagePreview.value = null;
+};
+
+const removeVideo = () => {
+    form.value.video = null;
+    videoPreview.value = null;
 };
 
 const savePost = async () => {
@@ -288,6 +324,7 @@ const savePost = async () => {
         formData.append('content', form.value.content);
         if (form.value.excerpt) formData.append('excerpt', form.value.excerpt);
         if (form.value.image) formData.append('image', form.value.image);
+        if (form.value.video) formData.append('video', form.value.video);
         formData.append('is_published', form.value.is_published ? '1' : '0');
 
         if (editingPost.value) {
