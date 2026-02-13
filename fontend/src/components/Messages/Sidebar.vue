@@ -2,82 +2,149 @@
   <transition name="slide-fade">
     <div
       v-if="isSidebarOpen || !isMobile"
-      class="bg-white pt-4 shadow-md p-4 overflow-y-auto transition-all h-full h-full min-h-full w-full"
-      :class="
-        isMobile ? 'absolute top-0 left-0 h-full z-150 w-full' : 'w-[400px]'
-      "
+      class="bg-white border-r border-gray-100 flex flex-col h-full transition-all duration-300 z-20"
+      :class="isMobile ? 'fixed inset-0 w-full' : 'w-80 md:w-96'"
     >
-      <div class="flex items-center mb-4 gap-2">
+      <!-- Header -->
+      <div
+        class="p-4 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10"
+      >
+        <h2 class="text-xl font-bold text-gray-800">Messages</h2>
         <button
           v-if="isMobile"
-          @click="$router.push('/')"
-          class="mr-2 text-gray-600 hover:text-[var(--espace-vert)]"
+          @click="$emit('toggle-sidebar')"
+          class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center hover:bg-gray-200"
         >
-          <i class="fas fa-arrow-left"></i>
+          <i class="fas fa-times"></i>
         </button>
-        <h2 class="text-lg font-semibold text-[var(--espace-vert)]">
-          Contacts
-        </h2>
       </div>
-      <div
-        v-for="conv in conversations"
-        :key="conv.user_id"
-        @click="$emit('select-conversation', conv.user_id)"
-        class="p-2 hover:bg-gray-100 cursor-pointer rounded flex items-center justify-between transition-colors hiddn"
-      >
-        <div class="flex items-center">
+
+      <!-- Conversation List -->
+      <div class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1">
+        <!-- Skeleton Loading -->
+        <div v-if="isLoading" class="space-y-2">
+          <ConversationSkeleton v-for="i in 8" :key="i" />
+        </div>
+
+        <div
+          v-else-if="conversations.length === 0"
+          class="flex flex-col items-center justify-center h-48 text-gray-400"
+        >
+          <i class="far fa-comments text-4xl mb-2 opacity-50"></i>
+          <p class="text-sm">Aucune conversation</p>
+        </div>
+
+        <div
+          v-else
+          v-for="conv in conversations"
+          :key="conv.user_id"
+          @click="$emit('select-conversation', conv.user_id)"
+          class="group p-3 rounded-xl cursor-pointer transition-all duration-200 flex items-center gap-3 relative overflow-hidden"
+          :class="[
+            activeConversationId == conv.user_id
+              ? 'bg-[var(--espace-vert)]/10'
+              : 'hover:bg-gray-50',
+          ]"
+        >
+          <!-- Active Indicator Strip -->
           <div
+            v-if="activeConversationId == conv.user_id"
+            class="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 bg-[var(--espace-vert)] rounded-r-full"
+          ></div>
+
+          <!-- Avatar -->
+          <div
+            class="relative flex-shrink-0"
             @click.stop="$emit('view-profile', conv.user_id)"
-            class="w-10 h-10 bg-[var(--espace-or)] rounded-full mr-2 flex items-center justify-center overflow-hidden cursor-pointer"
           >
-            <img
-              v-if="conv.profile_photo"
-              :src="storageUrl + conv.profile_photo"
-              alt="Photo de profil"
-              class="w-full h-full object-cover"
-            />
-            <i v-else class="fas fa-user-circle text-2xl text-gray-500"></i>
-          </div>
-          <div class="min-w-0">
-            <p class="font-semibold text-[var(--espace-vert)] truncate">
-              {{ conv.name }}
-            </p>
             <div
-              class="text-xs text-[var(--espace-gris)] overflow-wrap break-words max-w-[200px]"
+              class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent group-hover:ring-gray-100 transition-all"
             >
-              <span v-if="conv.last_message_type == 'text'">{{
-                conv.last_message
-              }}</span>
+              <img
+                v-if="conv.profile_photo"
+                :src="
+                  String(conv.profile_photo).startsWith('http')
+                    ? conv.profile_photo
+                    : storageUrl + conv.profile_photo
+                "
+                alt=""
+                class="w-full h-full object-cover"
+              />
               <div
                 v-else
-                class="flex items-center gap-2 text-[var(--espace-gris)]"
+                class="w-full h-full flex items-center justify-center bg-[var(--espace-vert)] text-white text-lg font-bold"
               >
-                <i
-                  class="fas fa-play-circle text-[var(--espace-vert)] text-sm"
-                ></i>
-                <div class="w-16 h-[4px] rounded bg-gray-300 overflow-hidden">
-                  <div
-                    class="h-full bg-[var(--espace-vert)] animate-progress"
-                  ></div>
-                </div>
+                {{ conv.name.charAt(0).toUpperCase() }}
               </div>
             </div>
+            <!-- Online status (mockup) -->
+            <!-- <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div> -->
           </div>
-        </div>
-        <div class="flex items-center">
-          <div
-            v-if="conv.unread_count > 0"
-            class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center mr-2"
-          >
-            {{ conv.unread_count }}
-          </div>
-          <div class="text-xs text-[var(--espace-gris)] ml-2 whitespace-nowrap">
-            {{
-              new Date(conv.updated_at).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
+
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-baseline mb-0.5">
+              <h3
+                class="font-semibold text-gray-900 truncate pr-2"
+                :class="{
+                  'text-[var(--espace-vert)]':
+                    activeConversationId == conv.user_id,
+                }"
+              >
+                {{ conv.name }}
+              </h3>
+              <span
+                class="text-[10px] text-gray-400 font-medium whitespace-nowrap"
+              >
+                {{ formatTime(conv.updated_at) }}
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div
+                class="flex items-center gap-1.5 min-w-0 text-sm text-gray-500"
+              >
+                <!-- Icon based on type -->
+                <i
+                  v-if="conv.last_message_type === 'image'"
+                  class="fas fa-camera text-xs"
+                ></i>
+                <i
+                  v-else-if="conv.last_message_type === 'video'"
+                  class="fas fa-video text-xs"
+                ></i>
+                <i
+                  v-else-if="conv.last_message_type === 'audio'"
+                  class="fas fa-microphone text-xs"
+                ></i>
+
+                <span
+                  class="truncate block"
+                  :class="{
+                    'font-medium text-gray-800': conv.unread_count > 0,
+                  }"
+                >
+                  {{
+                    conv.last_message ||
+                    (conv.last_message_type === "image"
+                      ? "Photo"
+                      : conv.last_message_type === "video"
+                        ? "Vidéo"
+                        : conv.last_message_type === "audio"
+                          ? "Message vocal"
+                          : "Message")
+                  }}
+                </span>
+              </div>
+
+              <!-- Unread Badge -->
+              <div
+                v-if="conv.unread_count > 0"
+                class="ml-2 bg-[var(--espace-vert)] text-white text-[10px] font-bold h-5 min-w-[20px] px-1.5 rounded-full flex items-center justify-center shadow-sm"
+              >
+                {{ conv.unread_count }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -86,20 +153,56 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+// defineProps and defineEmits are compiler macros and don't need to be imported in <script setup>
 
-const router = useRouter();
 defineProps<{
   conversations: any[];
   isSidebarOpen: boolean;
   isMobile: boolean;
   storageUrl?: string;
+  activeConversationId?: string | number;
+  isLoading?: boolean;
 }>();
 
 defineEmits(["select-conversation", "toggle-sidebar", "view-profile"]);
+
+import ConversationSkeleton from "./ConversationSkeleton.vue";
+
+const formatTime = (dateString: string) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const now = new Date();
+
+  // If today, show time
+  if (date.toDateString() === now.toDateString()) {
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  // If this week, show day name
+  const diffDays = Math.ceil(
+    (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  if (diffDays < 7) {
+    return date.toLocaleDateString([], { weekday: "short" });
+  }
+
+  // Else show date
+  return date.toLocaleDateString([], { month: "short", day: "numeric" });
+};
 </script>
 
 <style scoped>
-/* Styles inchangés */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #f1f1f1;
+  border-radius: 20px;
+}
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+}
 </style>

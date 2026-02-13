@@ -16,7 +16,7 @@ export const useCatalogStore = defineStore("catalog", () => {
   const serviceCategories = ref<Category[]>([]);
 
   // États TEMPORAIRES (peuvent être reset)
-  const isLoading = ref(false);
+  const isLoading = ref(true);
   const activeTab = ref<"products" | "services">("products");
   const searchQuery = ref("");
   const showFilters = ref(false);

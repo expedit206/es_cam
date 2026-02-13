@@ -91,7 +91,13 @@ const storageUrl = computed(() => getStorageBaseUrl());
 const navLinks = computed(() => {
   const baseLinks = [
     // Navigation principale
-    { to: "/", label: t("Home"), icon: "fa-home", badge: 0, showAlways: true },
+    {
+      to: "/accueil",
+      label: t("Accueil"),
+      icon: "fa-home",
+      badge: 0,
+      showAlways: true,
+    },
     {
       to: "/market-place",
       label: t("Explore"),
@@ -165,7 +171,7 @@ const navLinks = computed(() => {
       showAlways: true,
     },
     {
-      to: "/doc",
+      to: "/about",
       label: t("About App"),
       icon: "fa-info-circle",
       badge: 0,
@@ -655,8 +661,8 @@ onUnmounted(() => {
         class="flex items-center mx-3 p-3 rounded-xl transition-all duration-300 group relative justify-center"
         :class="[
           $route.path === link.to
-            ? 'bg-[var(--espace-vert)] text-white shadow-md'
-            : 'text-gray-700 hover:bg-gray-100 hover:text-[var(--espace-vert)]',
+            ? 'bg-primary !text-white shadow-md'
+            : 'text-foreground-muted hover:bg-surface-hover hover:text-primary',
           isSidebarCollapsed ? 'justify-center' : 'justify-start',
         ]"
         :title="isSidebarCollapsed ? link.label : ''"
@@ -675,7 +681,7 @@ onUnmounted(() => {
           <!-- Badge -->
           <span
             v-if="link.badge > 0"
-            class="absolute -top-2 -right-2 bg-[var(--espace-or)] text-[var(--espace-vert)] text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold border-2 border-white"
+            class="absolute -top-2 -right-2 bg-secondary text-primary-dark text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold border-2 border-white"
             :class="{
               'animate-scale':
                 (link.to === '/reventes' && animateReventeBadge) ||
@@ -762,7 +768,7 @@ onUnmounted(() => {
     :class="showHeader ? 'translate-y-0' : '-translate-y-full'"
   >
     <!-- Barre de navigation principale mobile -->
-    <header class="bg-white shadow-md border-b">
+    <header class="bg-white shadow-md">
       <div class="px-3 py-3">
         <div class="flex items-center">
           <!-- Logo -->
@@ -790,7 +796,7 @@ onUnmounted(() => {
           <!-- Bouton Publier Mobile -->
           <button
             @click="openProductModal"
-            class="bg-[var(--espace-vert)] text-white p-2 rounded-full w-8 h-8 flex items-center justify-center shadow-md mr-2 active:scale-95 transition-transform"
+            class="bg-primary text-white p-2 rounded-full w-8 h-8 flex items-center justify-center shadow-md mr-2 active:scale-95 transition-transform"
           >
             <i class="fas fa-plus text-sm"></i>
           </button>
@@ -809,8 +815,11 @@ onUnmounted(() => {
 
   <!-- Desktop Top Bar -->
   <div
-    class="hidden lg:flex fixed top-0 right-0 z-40 bg-white shadow-sm h-14 items-center px-8 justify-between transition-all duration-300"
-    :class="isSidebarCollapsed ? 'left-20' : 'left-52'"
+    class="hidden lg:flex fixed :border-none top-0 right-0 z-40 bg-transparent pt-2 h-14 items-center px-8 justify-between transition-all duration-300"
+    :class="[
+      isSidebarCollapsed ? 'left-20' : 'left-52',
+      showHeader ? 'translate-y-0' : '-translate-y-full',
+    ]"
   >
     <!-- Barre de recherche centrale -->
     <div class="flex-1 max-w-3xl mx-auto">

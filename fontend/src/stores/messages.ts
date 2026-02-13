@@ -166,7 +166,7 @@ export const useMessageStore = defineStore("message", () => {
 
   const sendMessage = async (
     content: string,
-    type: "text" | "audio" | "image" = "text",
+    type: "text" | "audio" | "image" | "video" = "text",
     file?: Blob | File
   ): Promise<void> => {
     if (!selectedConversation.value) {
@@ -187,13 +187,17 @@ export const useMessageStore = defineStore("message", () => {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       isTemporary: true,
-      sender: authStore.user!,
+      sender: {
+        ...authStore.user!,
+        id: authStore.user!.id,
+        parrain_id: authStore.user!.parrain_id ? String(authStore.user!.parrain_id) : undefined,
+      },
       receiver: {
         id: selectedConversation.value.user_id,
         nom: selectedConversation.value.name,
         email: "",
-        telephone: "",
-        ville: "",
+        telephone: null,
+        ville: null,
         premium: false,
         parrain_id: undefined,
       },
@@ -206,10 +210,16 @@ export const useMessageStore = defineStore("message", () => {
 
     try {
       let response;
-      if ((type === "audio" || type === "image") && file) {
+      if ((type === "audio" || type === "image" || type === "video") && file) {
         const formData = new FormData();
         formData.append("type", type);
-        formData.append(type, file); // 'audio' or 'image' matches the type
+        formData.append(type, file); // 'audio', 'image' or 'video' matches the type
+        
+        // Append optional text content if present
+        if (content) {
+          formData.append("content", content);
+        }
+
         formData.append(
           "receiver_id",
           selectedConversation.value.user_id.toString()
@@ -243,7 +253,8 @@ export const useMessageStore = defineStore("message", () => {
           id: realMessage.id,
           created_at: realMessage.created_at,
           updated_at: realMessage.updated_at,
-          content: realMessage.content, // Ensure we use the server URL
+          content: realMessage.content, 
+          attachment_url: realMessage.attachment_url || realMessage.content, // Fallback for old API behavior if needed
           isTemporary: false,
         };
       }
@@ -465,7 +476,13 @@ export const useMessageStore = defineStore("message", () => {
 
     if (convIndex !== -1) {
       conversations.value[convIndex].last_message =
-        message.type === "audio" ? "audio" : message.content;
+        message.type === "audio" 
+          ? "Message vocal" 
+          : message.type === "image" 
+            ? "Photo" 
+            : message.type === "video" 
+              ? "Vidéo" 
+              : message.content;
       conversations.value[convIndex].last_message_type = message.type;
       conversations.value[convIndex].updated_at = message.updated_at;
 

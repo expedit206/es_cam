@@ -1,94 +1,227 @@
 <template>
-    <div class="px-2 md:px-4 pb-0 sm:pb-0 md:pb-0 z-149 bg-white">
-        <div class="chat-input-container max-w-3xl mx-auto mt-2">
-            <!-- Product Tag -->
-            <span v-if="product?.id"
-                class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full flex items-center gap-2 ml-2 mb-2">
-                Product {{ product?.nom }}
-                <button @click="$emit('clear-product-tag')" class="ml-1 text-yellow-800 hover:text-red-600 font-bold"
-                    title="Retirer le tag">
-                    &times;
-                </button>
-            </span>
+  <div class="px-4 py-3 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto flex items-end gap-2 relative">
+      <!-- Product Tag (Popup/Floating) -->
+      <transition name="slide-up">
+        <div
+          v-if="product?.id"
+          class="absolute -top-12 left-0 bg-white shadow-lg border border-gray-100 rounded-lg p-2 flex items-center gap-3 z-10 text-sm"
+        >
+          <div class="w-8 h-8 rounded bg-gray-100 overflow-hidden">
+            <img
+              v-if="product.photo_url"
+              :src="product.photo_url"
+              class="w-full h-full object-cover"
+            />
+            <i v-else class="fas fa-box text-gray-400 m-auto"></i>
+          </div>
+          <span class="font-medium text-gray-700 truncate max-w-[150px]">{{
+            product?.nom
+          }}</span>
+          <button
+            @click="$emit('clear-product-tag')"
+            class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+          >
+            <i class="fas fa-times text-xs"></i>
+          </button>
+        </div>
+      </transition>
 
-            <!-- Text Input (hidden when recording) -->
-            <textarea v-if="!isRecording" :value="newMessage" @input="onInput"
-                @keydown.enter.prevent="$emit('send-message')" rows="1" placeholder="Écrivez votre message..."
-                class="chat-textarea" ref="textAreaRef"></textarea>
+      <!-- Preview Overlay -->
+      <transition name="slide-up">
+        <div
+          v-if="pendingFile"
+          class="absolute bottom-full left-0 w-full mb-2 bg-white rounded-lg shadow-xl border border-gray-100 p-3 z-20"
+        >
+          <div class="flex flex-col gap-3">
+            <div
+              class="relative w-full rounded-lg overflow-hidden bg-gray-100 max-h-60 flex items-center justify-center"
+            >
+              <img
+                v-if="pendingFileType === 'image'"
+                :src="previewUrl"
+                class="max-w-full max-h-60 object-contain"
+              />
+              <video
+                v-else-if="pendingFileType === 'video'"
+                :src="previewUrl"
+                controls
+                class="max-w-full max-h-60"
+              ></video>
 
-            <!-- Recording Display (replaces text input) -->
-            <div v-else class="recording-display">
-                <div class="recording-content">
-                    <!-- Pause/Resume Button -->
-                    <button @click="togglePause" class="pause-button"
-                        :title="isPaused ? 'Reprendre' : 'Mettre en pause'">
-                        <i class="fas" :class="isPaused ? 'fa-play' : 'fa-pause'"></i>
-                    </button>
-
-                    <!-- Sound waves -->
-                    <div class="sound-waves">
-                        <div class="wave" v-for="n in 3" :key="n" :style="getWaveStyle(n)"></div>
-                    </div>
-
-                    <!-- Timer -->
-                    <div class="recording-timer" :class="{ paused: isPaused }">
-                        {{ formatTime(recordingTime) }}
-                    </div>
-
-                    <!-- Recording status -->
-                    <div class="recording-status">
-                        <span v-if="isPaused">En pause</span>
-                        <span v-else>Enregistrement en cours...</span>
-                    </div>
-
-                    <!-- Delete recording button -->
-                    <button @click="cancelRecording" class="delete-button" title="Supprimer l'enregistrement">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+              <button
+                @click="cancelAttachment"
+                class="absolute top-2 right-2 w-8 h-8 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70"
+              >
+                <i class="fas fa-times"></i>
+              </button>
             </div>
 
-            <!-- Voice Record Button (hidden when recording) -->
-            <button v-if="!isRecording" @click="startVoiceRecording" class="voice-button ml-2"
-                title="Commencer l'enregistrement">
-                <i class="fas fa-microphone"></i>
-            </button>
-
-            <!-- Image Upload Button (hidden when recording) -->
-            <button v-if="!isRecording" @click="$refs.fileInput.click()" class="voice-button ml-2 bg-blue-500 hover:bg-blue-600"
-                title="Envoyer une image">
-                <i class="fas fa-image"></i>
-            </button>
-            <input type="file" ref="fileInput" accept="image/*" class="hidden" @change="handleFileSelect">
-
-            <!-- Send Button (visible when recording) -->
-            <button v-if="isRecording" @click="stopAndSendRecording" class="send-button ml-2" :disabled="isPaused">
+            <div class="flex items-center gap-2">
+              <input
+                :value="newMessage"
+                @input="
+                  $emit(
+                    'update:newMessage',
+                    ($event.target as HTMLInputElement).value,
+                  )
+                "
+                type="text"
+                placeholder="Ajouter une légende..."
+                @keydown.enter.prevent="sendAttachment"
+                class="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--espace-vert)]"
+              />
+              <button
+                @click="sendAttachment"
+                class="w-10 h-10 bg-[var(--espace-vert)] text-white rounded-full flex items-center justify-center hover:bg-green-800 shadow-sm"
+              >
                 <i class="fas fa-paper-plane"></i>
-            </button>
+              </button>
+            </div>
+          </div>
         </div>
+      </transition>
+
+      <!-- Attachment Actions (Left side) -->
+      <div
+        v-if="!isRecording && !pendingFile"
+        class="flex items-center gap-1 pb-2"
+      >
+        <button
+          @click="triggerFileInput"
+          class="w-9 h-9 rounded-full text-gray-400 hover:text-[var(--espace-vert)] hover:bg-green-50 flex items-center justify-center transition-all"
+          title="Envoyer une image"
+        >
+          <i class="far fa-image text-lg"></i>
+        </button>
+        <button
+          @click="triggerVideoInput"
+          class="w-9 h-9 rounded-full text-gray-400 hover:text-blue-500 hover:bg-blue-50 flex items-center justify-center transition-all"
+          title="Envoyer une vidéo"
+        >
+          <i class="fas fa-video text-lg"></i>
+        </button>
+
+        <input
+          type="file"
+          ref="fileInput"
+          accept="image/*"
+          class="hidden"
+          @change="handleFileSelect"
+        />
+        <input
+          type="file"
+          ref="videoInput"
+          accept="video/*"
+          class="hidden"
+          @change="handleVideoSelect"
+        />
+      </div>
+
+      <!-- Main Input Area -->
+      <div
+        class="flex-1 bg-gray-100 rounded-[1.5rem] flex items-center min-h-[48px] px-2 transition-colors focus-within:bg-gray-50 focus-within:ring-1 focus-within:ring-gray-300 focus-within:shadow-sm"
+      >
+        <!-- Text Area -->
+        <textarea
+          v-if="!isRecording"
+          :value="newMessage"
+          @input="onInput"
+          @keydown.enter.prevent="$emit('send-message')"
+          rows="1"
+          placeholder="Message..."
+          class="w-full bg-transparent border-none focus:ring-0 px-4 py-3 text-gray-700 placeholder-gray-400 resize-none max-h-32 overflow-y-auto"
+          ref="textAreaRef"
+          style="min-height: 48px; box-shadow: none !important"
+        ></textarea>
+
+        <!-- Recording Interface -->
+        <div v-else class="flex-1 flex items-center gap-3 px-2">
+          <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+          <span class="text-xs font-mono text-gray-500 min-w-[45px]">{{
+            formatTime(recordingTime)
+          }}</span>
+
+          <!-- Sound Wave Visualizer -->
+          <div
+            class="flex-1 flex items-center gap-1 h-6 justify-center opacity-50"
+          >
+            <div
+              v-for="n in 12"
+              :key="n"
+              class="w-1 bg-[var(--espace-vert)] rounded-full transition-all duration-75"
+              :style="{ height: getDynamicWaveHeight(n) }"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Right Actions inside input -->
+        <div class="flex items-center pr-1 gap-1">
+          <template v-if="isRecording">
+            <button
+              @click="cancelRecording"
+              class="w-8 h-8 rounded-full text-red-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all"
+              title="Annuler"
+            >
+              <i class="fas fa-trash-alt text-sm"></i>
+            </button>
+            <button
+              @click="stopAndSendRecording"
+              class="w-8 h-8 rounded-full bg-[var(--espace-vert)] text-white hover:bg-green-800 flex items-center justify-center shadow-md transform hover:scale-105 transition-all"
+              title="Envoyer"
+            >
+              <i class="fas fa-arrow-up"></i>
+            </button>
+          </template>
+
+          <template v-else>
+            <!-- Mic Button (Show only if no text) -->
+            <button
+              v-if="!newMessage.trim()"
+              @click="startVoiceRecording"
+              class="w-8 h-8 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all"
+              title="Message vocal"
+            >
+              <i class="fas fa-microphone text-lg"></i>
+            </button>
+
+            <!-- Send Button (Show if text exists) -->
+            <button
+              v-else
+              @click="$emit('send-message')"
+              class="w-8 h-8 rounded-full bg-[var(--espace-vert)] text-white hover:bg-green-800 flex items-center justify-center shadow-md transform hover:scale-105 transition-all"
+              title="Envoyer"
+            >
+              <i class="fas fa-arrow-up"></i>
+            </button>
+          </template>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue';
-import { Product } from '../types/index';
+import { ref, onUnmounted, nextTick, watch } from "vue";
+import { Product } from "../types/index";
 
 const props = defineProps<{
-    newMessage: string;
-    isRecording: boolean;
-    product: Product | null;
+  newMessage: string;
+  isRecording: boolean;
+  product: Product | null;
 }>();
 
 const emit = defineEmits([
-    'update:newMessage',
-    'send-message',
-    'send-image',
-    'start-recording',
-    'stop-recording',
-    'emit-typing',
-    'clear-product-tag',
-    'pause-recording',
-    'resume-recording'
+  "update:newMessage",
+  "send-message",
+  "send-image",
+  "send-video", // New emit
+  "start-recording",
+  "stop-recording",
+  "emit-typing",
+  "clear-product-tag",
+  "pause-recording",
+  "resume-recording",
 ]);
 
 // Refs
@@ -97,322 +230,143 @@ const recordingTimer = ref<number | null>(null);
 const isPaused = ref(false);
 const textAreaRef = ref<HTMLTextAreaElement | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
+const videoInput = ref<HTMLInputElement | null>(null);
 
-const handleFileSelect = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        // Reset input value so the same file can be selected again
-        emit('send-image', file);
-        input.value = '';
-    }
+// Preview Refs
+const pendingFile = ref<File | null>(null);
+const pendingFileType = ref<"image" | "video" | null>(null);
+const previewUrl = ref<string>("");
+
+// Auto-resize textarea
+watch(
+  () => props.newMessage,
+  () => {
+    nextTick(() => {
+      if (textAreaRef.value) {
+        textAreaRef.value.style.height = "auto"; // Reset
+        textAreaRef.value.style.height =
+          Math.min(textAreaRef.value.scrollHeight, 128) + "px"; // Limit max height
+      }
+    });
+  },
+);
+
+const triggerFileInput = () => {
+  fileInput.value?.click();
 };
 
-// Voice recording functions
-const startVoiceRecording = () => {
-    if (!props.isRecording) {
-        isPaused.value = false;
-        recordingTime.value = 0;
-        emit('start-recording');
-        startTimer();
+const triggerVideoInput = () => {
+  videoInput.value?.click();
+};
+
+const handleFileSelect = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files[0]) {
+    pendingFile.value = input.files[0];
+    pendingFileType.value = "image";
+    previewUrl.value = URL.createObjectURL(input.files[0]);
+    input.value = "";
+  }
+};
+
+const handleVideoSelect = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files[0]) {
+    pendingFile.value = input.files[0];
+    pendingFileType.value = "video";
+    previewUrl.value = URL.createObjectURL(input.files[0]);
+    input.value = "";
+  }
+};
+
+const sendAttachment = () => {
+  if (pendingFile.value && pendingFileType.value) {
+    if (pendingFileType.value === "image") {
+      emit("send-image", pendingFile.value, props.newMessage);
+    } else {
+      emit("send-video", pendingFile.value, props.newMessage);
     }
+    cancelAttachment();
+    emit("update:newMessage", ""); // Clear caption after send
+  }
+};
+
+const cancelAttachment = () => {
+  if (previewUrl.value) {
+    URL.revokeObjectURL(previewUrl.value);
+  }
+  pendingFile.value = null;
+  pendingFileType.value = null;
+  previewUrl.value = "";
+};
+
+// ... existing recording logic ...
+const startVoiceRecording = () => {
+  emit("start-recording");
+  isPaused.value = false;
+  recordingTime.value = 0;
+  startTimer();
 };
 
 const stopAndSendRecording = () => {
-    if (props.isRecording) {
-        emit('stop-recording');
-        stopTimer();
-    }
+  emit("stop-recording");
+  stopTimer();
 };
 
 const cancelRecording = () => {
-    if (props.isRecording) {
-        emit('stop-recording');
-        stopTimer();
-        isPaused.value = false;
-    }
-};
-
-const togglePause = () => {
-    if (!props.isRecording) return;
-
-    isPaused.value = !isPaused.value;
-
-    if (isPaused.value) {
-        // Pause recording
-        emit('pause-recording');
-        stopTimer();
-    } else {
-        // Resume recording
-        emit('resume-recording');
-        startTimer();
-    }
+  emit("stop-recording");
+  stopTimer();
 };
 
 const startTimer = () => {
-    if (recordingTimer.value) {
-        clearInterval(recordingTimer.value);
-    }
-
-    recordingTimer.value = window.setInterval(() => {
-        if (!isPaused.value) {
-            recordingTime.value++;
-        }
-    }, 1000);
+  if (recordingTimer.value) clearInterval(recordingTimer.value);
+  recordingTimer.value = window.setInterval(() => {
+    recordingTime.value++;
+  }, 1000);
 };
 
 const stopTimer = () => {
-    if (recordingTimer.value) {
-        clearInterval(recordingTimer.value);
-        recordingTimer.value = null;
-    }
+  if (recordingTimer.value) {
+    clearInterval(recordingTimer.value);
+    recordingTimer.value = null;
+  }
 };
 
 const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-};
-
-const getWaveStyle = (index: number) => {
-    if (isPaused.value) {
-        return {
-            height: '8px',
-            opacity: '0.3'
-        };
-    }
-
-    const height = 8 + Math.random() * 12;
-    const delay = index * 0.2;
-    return {
-        height: `${height}px`,
-        animationDelay: `${delay}s`
-    };
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 };
 
 const onInput = (event: Event) => {
-    const target = event.target as HTMLTextAreaElement;
-    emit('update:newMessage', target.value);
-    emit('emit-typing');
+  const target = event.target as HTMLTextAreaElement;
+  emit("update:newMessage", target.value);
+  emit("emit-typing");
+};
+
+const getDynamicWaveHeight = (index: number) => {
+  // Simulate wave animation
+  if (props.isRecording) {
+    return 4 + Math.random() * 16 + "px";
+  }
+  return "4px";
 };
 
 onUnmounted(() => {
-    stopTimer();
+  stopTimer();
 });
 </script>
 
 <style scoped>
-.chat-input-container {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 1.5rem;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    min-height: 60px;
+/* No custom CSS needed mostly, using Tailwind */
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease-out;
 }
 
-.chat-textarea {
-    flex: 1;
-    resize: none;
-    background: transparent;
-    border: none;
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
-    color: #374151;
-    border-radius: 1rem;
-    outline: none;
-    line-height: 1.5;
-    min-height: 40px;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-.chat-textarea::placeholder {
-    color: #9ca3af;
-}
-
-/* Recording Display */
-.recording-display {
-    flex: 1;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 1rem;
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    color: #374151;
-}
-
-.recording-content {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-}
-
-/* Pause/Resume Button */
-.pause-button {
-    background: #6b7280;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-}
-
-.pause-button:hover {
-    background: #4b5563;
-    transform: scale(1.05);
-}
-
-/* Sound waves */
-.sound-waves {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    height: 25px;
-    flex: 1;
-    max-width: 80px;
-    justify-content: center;
-}
-
-.wave {
-    width: 2px;
-    background: #10b981;
-    border-radius: 1px;
-    animation: waveAnimation 1.5s ease-in-out infinite;
-    flex: 1;
-    transition: all 0.3s ease;
-}
-
-.sound-waves.paused .wave {
-    animation: none;
-    opacity: 0.3;
-}
-
-@keyframes waveAnimation {
-
-    0%,
-    100% {
-        transform: scaleY(0.3);
-    }
-
-    50% {
-        transform: scaleY(0.8);
-    }
-}
-
-.recording-timer {
-    font-size: 0.9rem;
-    font-weight: 500;
-    font-family: monospace;
-    min-width: 45px;
-    color: #374151;
-}
-
-.recording-timer.paused {
-    color: #6b7280;
-    opacity: 0.7;
-}
-
-.recording-status {
-    font-size: 0.75rem;
-    text-align: center;
-    flex: 1;
-    color: #6b7280;
-}
-
-/* Delete button */
-.delete-button {
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s ease;
-}
-
-.delete-button:hover {
-    background: #dc2626;
-    transform: scale(1.1);
-}
-
-/* Button Styles */
-.send-button,
-.voice-button {
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-}
-
-.voice-button:hover,
-.send-button:hover:not(:disabled) {
-    background: #059669;
-    transform: scale(1.05);
-}
-
-.send-button:disabled {
-    background: #9ca3af;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .chat-input-container {
-        padding: 0.5rem 0.75rem;
-        min-height: 55px;
-    }
-
-    .recording-content {
-        gap: 0.75rem;
-    }
-
-    .sound-waves {
-        max-width: 60px;
-    }
-
-    .recording-timer {
-        font-size: 0.85rem;
-    }
-
-    .recording-status {
-        font-size: 0.7rem;
-    }
-
-    .pause-button {
-        width: 32px;
-        height: 32px;
-        font-size: 0.7rem;
-    }
-
-    .delete-button {
-        width: 28px;
-        height: 28px;
-        font-size: 0.7rem;
-    }
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
 }
 </style>

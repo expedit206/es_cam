@@ -5,13 +5,13 @@
     :data="structuredData.data"
   />
 
-  <div class="bg-gray-00 h-full pb- lg:pb-0">
+  <div class="h-full pb- lg:pb-0 bg-background">
     <header
-      class="relative bg-gradient-to-br from-[#14532d] to-emerald-950 text-white overflow-hidden rounded-b-[em] lg:rounded-b-[rem] shadow-2xl"
+      class="relative bg-gradient-to-br from-primary to-primary-dark text-white overflow-hidden rounded-b-[3rem] lg:rounded-b-[4rem] shadow-2xl"
     >
       <div class="absolute inset-0 z-0 overflow-hidden">
         <div
-          class="absolute -top-24 -right-24 w-96 h-96 bg-yellow-200/30 rounded-full blur-[120px] opacity-10 animate-pulse"
+          class="absolute -top-24 -right-24 w-96 h-96 bg-secondary/30 rounded-full blur-[120px] opacity-10 animate-pulse"
         ></div>
         <div
           class="absolute bottom-0 left-0 w-72 h-72 bg-emerald-500 rounded-full blur-[100px] opacity-10"
@@ -26,74 +26,115 @@
             >
               <span class="flex h-2 w-2">
                 <span
-                  class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-yellow-400 opacity-75"
+                  class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-secondary opacity-75"
                 ></span>
                 <span
-                  class="relative inline-flex rounded-full h-2 w-2 bg-yellow-400"
+                  class="relative inline-flex rounded-full h-2 w-2 bg-secondary"
                 ></span>
               </span>
               <span
-                class="text-xs sm:text-sm font-semibold tracking-wide uppercase"
+                class="text-xs sm:text-sm font-semibold tracking-wide uppercase font-heading"
                 >1ère Marketplace locale au Cameroun 🇨🇲</span
               >
             </div>
 
             <h1
-              class="text-sm sm:text-2xl lg:text-2xl font-extrabold tracking-tight leading-[1.1] text-white"
+              class="text-sm sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-[1.1] text-white font-heading"
             >
               Vendez et Achetez <br />
               <span
-                class="text-base text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200"
+                class="text-base sm:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-200"
               >
-                en toute simplicité
+                entre particuliers
               </span>
             </h1>
 
             <p
-              class="text-sm sm:text-lg text-emerald-50/80 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light"
+              class="text-sm sm:text-lg text-emerald-50/80 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light font-body"
             >
-              Rejoignez la communauté de référence pour faire de bonnes affaires
-              près de chez vous. Publiez gratuitement et discutez en direct avec
-              vos acheteurs.
+              La communauté de confiance pour faire de bonnes affaires au
+              Cameroun. Postez votre annonce en 2 minutes ou dénichez la perle
+              rare.
             </p>
 
-            <div
-              class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start text-md"
-            >
-              <RouterLink
-                to="/gallery"
-                class="group bg-yellow-400 text-emerald-900 px-3 py-2 rounded-2xl font-bold text-lg hover:bg-yellow-300 transition-all shadow-xl shadow-yellow-500/20 active:scale-95 flex items-center justify-center gap-3 text-sm"
+            <!-- BARRE DE RECHERCHE + BOUTONS ACTION -->
+            <div class="space-y-4">
+              <!-- Barre de recherche intégrée -->
+              <div
+                class="relative max-w-lg bg-surface p-1.5 rounded-2xl shadow-xl flex items-center transform transition-transform focus-within:scale-105"
               >
-                <i class="fas fa-plus-circle"></i>
-                <span>Je veux vendre</span>
-              </RouterLink>
-              <RouterLink
-                to="/market-place"
-                class="group bg-white/10 backdrop-blur-md border border-white/20 text-white px-3 py-2 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center gap-3 text-sm"
-              >
-                <i class="fas fa-search"></i>
-                <span>Je cherche un produit</span>
-              </RouterLink>
+                <i class="fas fa-search text-gray-400 ml-3 text-lg"></i>
+                <input
+                  type="text"
+                  placeholder="Que recherchez-vous ? (ex: iPhone, Robe...)"
+                  class="flex-1 w-full bg-transparent border-none focus:ring-0 text-foreground placeholder-gray-400 font-medium px-3 py-2 font-body"
+                  @keyup.enter="router.push('/market-place')"
+                />
+                <RouterLink
+                  to="/market-place"
+                  class="bg-primary text-white px-4 py-2.5 rounded-xl font-bold text-sm shadow-md hover:bg-primary-light transition-colors font-heading"
+                >
+                  Trouver
+                </RouterLink>
+              </div>
+
+              <!-- Action Rapide Vendeur -->
+              <div class="flex items-center gap-3 pt-1">
+                <span class="text-emerald-100 text-sm font-medium font-body"
+                  >Ou voulez-vous vendre ?</span
+                >
+                <RouterLink
+                  to="/gallery"
+                  class="inline-flex items-center gap-2 bg-secondary text-primary-dark px-4 py-1.5 rounded-full font-bold text-xs hover:bg-yellow-300 transition-all shadow-lg active:scale-95 font-heading"
+                >
+                  <i class="fas fa-plus-circle"></i>
+                  <span>Déposer une annonce</span>
+                </RouterLink>
+              </div>
             </div>
 
-            <div class="pt-3 grid grid-cols-3 gap-4 border-t border-white/10">
-              <div>
-                <div class="font-bold text-md md:text-2xl text-yellow-400">
-                  0 FCFA
+            <!-- TRUST SIGNALS C2C -->
+            <div class="pt-4 grid grid-cols-3 gap-2 border-t border-white/10">
+              <div class="flex flex-col">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <i class="fas fa-check-circle text-secondary text-sm"></i>
+                  <span class="font-bold text-sm text-white font-heading"
+                    >Vérifié</span
+                  >
                 </div>
-                <div class="text-xs text-emerald-300">Gratuit</div>
+                <div
+                  class="text-[10px] text-emerald-200 leading-tight font-body"
+                >
+                  Profils vendeurs & acheteurs
+                </div>
               </div>
-              <div>
-                <div class="font-bold text-md md:text-2xl text-yellow-400">
-                  100%
+              <div class="flex flex-col">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <i class="fas fa-comments text-secondary text-sm"></i>
+                  <span class="font-bold text-sm text-white font-heading"
+                    >Direct</span
+                  >
                 </div>
-                <div class="text-xs text-emerald-300">Sécurisé</div>
+                <div
+                  class="text-[10px] text-emerald-200 leading-tight font-body"
+                >
+                  Chat sécurisé intégré
+                </div>
               </div>
-              <div>
-                <div class="font-bold text-md md:text-2xl text-yellow-400">
-                  24/7
+              <div class="flex flex-col">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <i
+                    class="fas fa-hand-holding-heart text-secondary text-sm"
+                  ></i>
+                  <span class="font-bold text-sm text-white font-heading"
+                    >Gratuit</span
+                  >
                 </div>
-                <div class="text-xs text-emerald-300">Support Client</div>
+                <div
+                  class="text-[10px] text-emerald-200 leading-tight font-body"
+                >
+                  0% de commission
+                </div>
               </div>
             </div>
           </div>
@@ -129,11 +170,11 @@
                   }"
                 />
                 <div
-                  class="absolute inset-0 bg-gradient-to-t from-emerald-900/60 via-transparent to-transparent"
+                  class="absolute inset-0 bg-gradient-to-t from-primary-dark/60 via-transparent to-transparent"
                 ></div>
                 <!-- Tag au survol -->
                 <div
-                  class="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-amber-500 text-emerald-900 px-4 py-1 rounded-full text-xs font-bold transform transition-all duration-300"
+                  class="absolute top-4 right-4 bg-gradient-to-r from-secondary to-amber-500 text-primary-dark px-4 py-1 rounded-full text-xs font-bold transform transition-all duration-300 font-heading"
                   :style="{
                     opacity: isHovered && activeImage === 'main' ? 1 : 0,
                     transform:
@@ -167,7 +208,7 @@
                   }"
                 />
                 <div
-                  class="absolute inset-0 bg-gradient-to-t from-emerald-800/50 to-transparent"
+                  class="absolute inset-0 bg-gradient-to-t from-primary-dark/50 to-transparent"
                 ></div>
                 <!-- Overlay texte -->
                 <div
@@ -180,8 +221,8 @@
                         : 'translateY(5px)',
                   }"
                 >
-                  <div class="text-sm font-bold">Électronique</div>
-                  <div class="text-xs">À partir de 50.000 FCFA</div>
+                  <div class="text-sm font-bold font-heading">Électronique</div>
+                  <div class="text-xs font-body">À partir de 50.000 FCFA</div>
                 </div>
               </div>
 
@@ -206,7 +247,7 @@
                   }"
                 />
                 <div
-                  class="absolute inset-0 bg-gradient-to-t from-emerald-800/50 to-transparent"
+                  class="absolute inset-0 bg-gradient-to-t from-primary-dark/50 to-transparent"
                 ></div>
                 <!-- Overlay texte -->
                 <div
@@ -219,8 +260,8 @@
                         : 'translateY(5px)',
                   }"
                 >
-                  <div class="text-sm font-bold">Accessoires</div>
-                  <div class="text-xs">Styles tendance</div>
+                  <div class="text-sm font-bold font-heading">Accessoires</div>
+                  <div class="text-xs font-body">Styles tendance</div>
                 </div>
               </div>
 
@@ -240,32 +281,31 @@
     </header>
 
     <!-- RECENT PRODUCTS -->
-    <section class="pt-2 pb-3 bg-white border-t border-gray-100">
+    <section class="pt-2 pb-3 bg-surface border-t border-border">
       <div class="container mx-auto px-4">
         <div class="flex items-end justify-between mb-4">
           <div>
-            <h2 class="text-lg md:text-lg font-bold text-gray-900">
+            <h2
+              class="text-lg md:text-lg font-bold text-foreground font-heading"
+            >
               Nouveautés
             </h2>
-            <p class="text-xs sm:text-sm text-gray-500 mt-1">
+            <p class="text-xs sm:text-sm text-foreground-muted mt-1 font-body">
               Dénichez les pépites fraîchement publiées
             </p>
           </div>
         </div>
 
-        <ProductGrid
-          :products="recentProducts"
-          :is-loading="isLoading"
-        >
+        <ProductGrid :products="recentProducts" :is-loading="isLoading">
           <template #empty>
             <div
-              class="text-center py-8 text-gray-500 bg-gray-50 rounded-xl mt-4 border border-dashed border-gray-200"
+              class="text-center py-8 text-foreground-muted bg-background rounded-xl mt-4 border border-dashed border-border"
             >
               <div class="text-4xl mb-3">📭</div>
               <p>Aucun produit pour le moment.</p>
               <RouterLink
                 to="/gallery"
-                class="text-[var(--espace-vert)] font-bold hover:underline mt-2 inline-block"
+                class="text-primary font-bold hover:underline mt-2 inline-block"
                 >Soyez le premier à publier !</RouterLink
               >
             </div>
@@ -275,7 +315,7 @@
         <div class="mt-1 md:mt-3 text-center">
           <RouterLink
             to="/market-place"
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-gray-200 shadow-sm text-gray-700 font-bold hover:bg-gray-50 hover:border-gray-300 transition-all active:scale-95"
+            class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface border border-border shadow-sm text-foreground-muted font-bold hover:bg-surface-hover hover:border-gray-300 transition-all active:scale-95"
           >
             <span>explorer les produits</span>
             <i class="fas fa-arrow-right text-xs"></i>
@@ -290,14 +330,14 @@
       <div class="container mx-auto px-4">
         <div class="flex items-center justify-between mb-6">
           <h2
-            class="text-lg sm:text-2xl font-bold text-gray-900 flex items-center gap-2"
+            class="text-lg sm:text-2xl font-bold text-foreground flex items-center gap-2 font-heading"
           >
-            <i class="fas fa-layer-group text-[var(--espace-vert)]"></i>
+            <i class="fas fa-layer-group text-primary"></i>
             Parcourir par catégorie
           </h2>
           <RouterLink
             to="/categories"
-            class="text-sm font-bold text-[var(--espace-vert)] hover:text-emerald-700 transition-colors flex items-center gap-1"
+            class="text-sm font-bold text-primary hover:text-primary-light transition-colors flex items-center gap-1 font-heading"
           >
             Tout voir <i class="fas fa-arrow-right text-xs"></i>
           </RouterLink>
@@ -326,7 +366,7 @@
             class="snap-start flex flex-col items-center gap-2 min-w-[5.5rem] group cursor-pointer"
           >
             <div
-              class="w-full h-30 rounded-2xl bg-white shadow-sm border border-gray-100 flex items-center justify-center group-hover:border-[var(--espace-vert)] group-hover:shadow-md transition-all duration-300 group-active:scale-95 overflow-hidden relative"
+              class="w-full h-30 rounded-2xl bg-surface shadow-sm border border-border flex items-center justify-center group-hover:border-primary group-hover:shadow-md transition-all duration-300 group-active:scale-95 overflow-hidden relative"
             >
               <img
                 v-if="cat.image"
@@ -337,11 +377,11 @@
               <i
                 v-else
                 :class="cat.icon || 'fas fa-tag'"
-                class="text-2xl text-gray-400 group-hover:text-[var(--espace-vert)] group-hover:scale-110 transition-all duration-300"
+                class="text-2xl text-gray-400 group-hover:text-primary group-hover:scale-110 transition-all duration-300"
               ></i>
             </div>
             <span
-              class="text-xs font-semibold text-gray-600 group-hover:text-[var(--espace-vert)] text-center line-clamp-1 w-full transition-colors"
+              class="text-xs font-semibold text-foreground-muted group-hover:text-primary text-center line-clamp-1 w-full transition-colors font-body"
             >
               {{ (cat as any).nom || (cat as any).name }}
             </span>
@@ -356,7 +396,7 @@
         class="relative rounded-3xl overflow-hidden p-6 sm:p-12 shadow-2xl bg-gray-200"
       >
         <div
-          class="absolute top-0 right-0 w-64 h-64 bg-[var(--espace-vert)] rounded-full opacity-30 -translate-y-1/2 translate-x-1/2 blur-3xl"
+          class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full opacity-30 -translate-y-1/2 translate-x-1/2 blur-3xl"
         ></div>
 
         <div
@@ -364,20 +404,20 @@
         >
           <div class="max-w-xl">
             <span
-              class="inline-block px-3 py-1 rounded bg-white/10 text-xs font-bold mb-4 backdrop-blur-sm border border-white/5"
+              class="inline-block px-3 py-1 rounded bg-white/10 text-xs font-bold mb-4 backdrop-blur-sm border border-white/5 font-heading"
               >ASTUCE VENDEUR</span
             >
-            <h3 class="text-xs sm:text-xl font-bold mb-3">
+            <h3 class="text-xs sm:text-xl font-bold mb-3 font-heading">
               Donnez une seconde vie à vos objets
             </h3>
-            <p class="text-[var(--espace-vert)] text-xs">
+            <p class="text-primary text-xs font-body">
               Transformez ce que vous n'utilisez plus en cash. C'est gratuit,
               rapide et local.
             </p>
           </div>
           <RouterLink
             to="/gallery"
-            class="flex-shrink-0 bg-[var(--espace-or)] text-gray-900 px-8 py-3 rounded-xl font-bold flex items-center gap-3 hover:bg-gray-100 transition-all shadow-lg active:scale-95 text-md"
+            class="flex-shrink-0 bg-secondary text-primary-dark px-8 py-3 rounded-xl font-bold flex items-center gap-3 hover:bg-surface transition-all shadow-lg active:scale-95 text-md font-heading"
           >
             <i class="fas fa-camera text-md"></i>
             <span>Publier une annonce</span>
@@ -387,15 +427,15 @@
     </section>
 
     <!-- BLOG / NEWS -->
-    <section class="py-3 md:py-6 mb-5 bg-gray-50">
+    <section class="py-3 md:py-6 mb-5 bg-background">
       <div class="container mx-auto px-4">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-sm sm:text-xl font-bold text-gray-900">
+          <h2 class="text-sm sm:text-xl font-bold text-foreground font-heading">
             Actualités & Conseils
           </h2>
           <RouterLink
             to="/blog"
-            class="text-xs font-bold text-[var(--espace-vert)] hover:underline"
+            class="text-xs font-bold text-primary hover:underline font-heading"
           >
             Tout lire <i class="fas fa-chevron-right ml-1 text-xs"></i>
           </RouterLink>
@@ -416,7 +456,7 @@
           <article
             v-for="post in latestPosts"
             :key="post.id"
-            class="group bg-white rounded-2xl shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col h-full border border-gray-100"
+            class="group bg-surface rounded-2xl shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col h-full border border-border"
           >
             <RouterLink
               :to="`/blog/${post.slug}`"
@@ -438,21 +478,21 @@
                 class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent"
               ></div>
               <span
-                class="absolute bottom-3 left-3 text-white text-[5px] font-semibold px-2 py-1 bg-black/30 backdrop-blur-md rounded-lg border border-white/20"
+                class="absolute bottom-3 left-3 text-white text-[5px] font-semibold px-2 py-1 bg-black/30 backdrop-blur-md rounded-lg border border-white/20 font-body"
               >
                 {{ new Date(post.published_at).toLocaleDateString("fr-FR") }}
               </span>
             </RouterLink>
             <div class="px-2 py-2 flex flex-col flex-1">
               <h3
-                class="font-bold text-gray-900 text-xs mb-1 line-clamp-2 group-hover:text-[var(--espace-vert)] transition-colors"
+                class="font-bold text-foreground text-xs mb-1 line-clamp-2 group-hover:text-primary transition-colors font-heading"
               >
                 <RouterLink :to="`/blog/${post.slug}`">{{
                   post.title
                 }}</RouterLink>
               </h3>
               <p
-                class="text-xs text-gray-500 line-clamp-3 mb-1 flex-1 leading-relaxed"
+                class="text-xs text-foreground-muted line-clamp-3 mb-1 flex-1 leading-relaxed font-body"
               >
                 {{
                   post.excerpt ||
@@ -461,7 +501,7 @@
               </p>
               <RouterLink
                 :to="`/blog/${post.slug}`"
-                class="text-[var(--espace-vert)] font-bold text-xs hover:underline mt-auto flex items-center justify-between gap-3"
+                class="text-primary font-bold text-xs hover:underline mt-auto flex items-center justify-between gap-3 font-heading"
               >
                 Lire la suite
                 <i
@@ -471,189 +511,13 @@
             </div>
           </article>
         </div>
-        <div v-else class="text-center py-8 text-gray-500">
+        <div v-else class="text-center py-8 text-foreground-muted">
           Bientôt disponible.
         </div>
       </div>
     </section>
 
-    <footer
-      class="relative bg-emerald-950 text-gray-300 pt-16 pb-8 overflow-hidden"
-    >
-      <div
-        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-50"
-      ></div>
-
-      <div class="container mx-auto px-4 relative z-10">
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
-        >
-          <div class="space-y-6">
-            <RouterLink
-              to="/"
-              class="inline-block transition-transform hover:scale-105"
-            >
-              <img
-                src="/src/assets/images/logo/logo_blanc.png"
-                class="h-10 w-auto"
-                alt="EspaceCameroun"
-              />
-            </RouterLink>
-            <p class="text-sm leading-relaxed text-emerald-100/70">
-              La marketplace n°1 au Cameroun. Nous connectons les vendeurs et
-              acheteurs locaux en toute sécurité. Transformez vos objets en
-              opportunités.
-            </p>
-            <div class="flex gap-4">
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300"
-              >
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300"
-              >
-                <i class="fab fa-whatsapp"></i>
-              </a>
-              <a
-                href="#"
-                class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300"
-              >
-                <i class="fab fa-instagram"></i>
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <h5
-              class="text-white font-bold text-base mb-6 flex items-center gap-2"
-            >
-              <span class="w-6 h-1 bg-yellow-400 rounded-full"></span>
-              Marketplace
-            </h5>
-            <ul class="space-y-4">
-              <li>
-                <RouterLink
-                  to="/market-place"
-                  class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
-                >
-                  Toutes les annonces</RouterLink
-                >
-              </li>
-              <li>
-                <RouterLink
-                  to="/categories"
-                  class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
-                >
-                  Parcourir par ville</RouterLink
-                >
-              </li>
-              <li>
-                <RouterLink
-                  to="/gallery"
-                  class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
-                >
-                  Publier une annonce</RouterLink
-                >
-              </li>
-              <li>
-                <RouterLink
-                  to="/aide"
-                  class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
-                >
-                  Conseils de sécurité</RouterLink
-                >
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h5
-              class="text-white font-bold text-base mb-6 flex items-center gap-2"
-            >
-              <span class="w-6 h-1 bg-yellow-400 rounded-full"></span>
-              Besoin d'aide ?
-            </h5>
-            <ul class="space-y-4">
-              <li class="flex items-start gap-3 group">
-                <i class="fas fa-headset text-yellow-400 mt-1"></i>
-                <RouterLink
-                  to="/contact"
-                  class="text-sm group-hover:text-yellow-400 transition-colors"
-                  >Support Client 24/7</RouterLink
-                >
-              </li>
-              <li class="flex items-start gap-3 group">
-                <i class="fas fa-envelope text-yellow-400 mt-1"></i>
-                <a
-                  href="mailto:contact@espacecameroun.com"
-                  class="text-sm group-hover:text-yellow-400 transition-colors"
-                  >contact@espacecameroun.com</a
-                >
-              </li>
-              <li class="flex items-start gap-3 group">
-                <i class="fas fa-map-marker-alt text-yellow-400 mt-1"></i>
-                <span class="text-sm italic">Douala, Cameroun</span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
-            <h5 class="text-white font-bold text-sm mb-4">RESTEZ INFORMÉ</h5>
-            <p class="text-xs text-emerald-100/60 mb-4">
-              Recevez les meilleures pépites directement par email.
-            </p>
-            <form class="space-y-2" @submit.prevent>
-              <input
-                type="email"
-                placeholder="Votre email"
-                class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/10 text-white text-sm focus:outline-none focus:border-yellow-400 transition-colors"
-              />
-              <button
-                class="w-full bg-yellow-400 text-emerald-900 font-bold py-2 rounded-lg text-sm hover:bg-yellow-300 transition-all"
-              >
-                S'inscrire
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <div
-          class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6"
-        >
-          <div
-            class="flex flex-col md:flex-row items-center gap-4 text-xs text-emerald-100/50"
-          >
-            <p>
-              &copy; {{ new Date().getFullYear() }} EspaceCameroun. Tous droits
-              réservés.
-            </p>
-            <div class="hidden md:block w-1 h-1 bg-white/20 rounded-full"></div>
-            <div class="flex gap-4">
-              <RouterLink to="/politique-utilisation" class="hover:underline"
-                >Conditions</RouterLink
-              >
-              <RouterLink
-                to="/politique-confidentialite"
-                class="hover:underline"
-                >Confidentialité
-              </RouterLink>
-            </div>
-          </div>
-
-          <div
-            class="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10"
-          >
-            <span
-              class="text-xs font-medium tracking-widest text-emerald-100/80"
-              >MADE BY mciagnessi@gmail.com</span
-            >
-          </div>
-        </div>
-      </div>
-    </footer>
+    <Footer />
   </div>
 </template>
 
@@ -661,6 +525,7 @@
 import SeoHead from "../components/SeoHead.vue";
 import StructuredData from "../components/StructuredData.vue";
 import ProductGrid from "../components/produits/ProductGrid.vue";
+import Footer from "../components/Footer.vue";
 import { ref, onMounted, computed, reactive } from "vue";
 import { useMarketplaceStore } from "../stores/marketplace";
 import { useBlogStore } from "../stores/blog";

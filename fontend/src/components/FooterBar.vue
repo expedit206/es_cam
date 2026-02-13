@@ -38,7 +38,7 @@ const navLinks = computed(() => {
 
     return [
         {
-            to: '/acceuil',
+            to: '/accueil',
             label: t('Home'),
             icon: 'fa-home',
             badge: badgeStore.badgeCounts.parrainages,

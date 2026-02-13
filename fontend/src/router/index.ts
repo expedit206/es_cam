@@ -14,7 +14,7 @@ import Messages from "../views/Messages.vue";
 import AchatJetonModal from "../components/AchatJetonModal.vue";
 import JetonHistory from "../views/JetonHistory.vue";
 import ProfilePublic from "../views/ProfilePublic.vue";
-import Doc from "../views/Acceuil.vue";
+import Doc from "../views/Accueil.vue";
 import Politique from "../views/Politique_confidentialite.vue";
 import Politique_confidentialite from "../views/Politique_confidentialite.vue";
 import Politique_utilisation from "../views/politique_utilisation.vue";
@@ -58,11 +58,11 @@ const routes = [
     name: "home",
   },
   {
-    path: "/acceuil",
+    path: "/accueil",
     component: Doc,
-    name: "acceuil",
+    name: "accueil",
   },
-  { path: "/", redirect: "/acceuil" },
+  { path: "/", redirect: "/accueil" },
   {
     path: "/gallery",
     name: "My_gallery",
@@ -222,6 +222,22 @@ const routes = [
     name: "admin-blog",
     component: () => import("../views/admin/AdminBlog.vue"),
     meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/admin/partenaires",
+    name: "admin-partenaires",
+    component: () => import("../views/admin/AdminPartenaires.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: "/aide",
+    name: "aide",
+    component: () => import("../views/Aide.vue"),
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: () => import("../views/About.vue"),
   },
 ];
 

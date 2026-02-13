@@ -25,7 +25,8 @@ export const useAdminStore = defineStore('admin', {
       platform_sales: 0,
       marketplace_volume: 0
     },
-    transactions: [] as any[]
+    transactions: [] as any[],
+    partenaires: [] as any[]
   }),
 
   actions: {
@@ -220,6 +221,51 @@ export const useAdminStore = defineStore('admin', {
       } finally {
         this.isLoading = false;
       }
+    },
+
+    // Partenaires
+    async fetchPartenaires() {
+        this.isLoading = true;
+        try {
+            const response = await apiClient.get('/admin/partenaires');
+            this.partenaires = response.data;
+        } catch (error) {
+            console.error('Error fetching partenaires:', error);
+        } finally {
+            this.isLoading = false;
+        }
+    },
+    async createPartenaire(data: any) {
+        try {
+            const response = await apiClient.post('/admin/partenaires', data);
+            this.partenaires.unshift(response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error creating partenaire:', error);
+            throw error;
+        }
+    },
+    async updatePartenaire(id: string, data: any) {
+        try {
+            const response = await apiClient.put(`/admin/partenaires/${id}`, data);
+            const index = this.partenaires.findIndex(p => p.id === id);
+            if (index !== -1) {
+                this.partenaires[index] = response.data;
+            }
+            return response.data;
+        } catch (error) {
+            console.error('Error updating partenaire:', error);
+            throw error;
+        }
+    },
+    async deletePartenaire(id: string) {
+        try {
+            await apiClient.delete(`/admin/partenaires/${id}`);
+            this.partenaires = this.partenaires.filter(p => p.id !== id);
+        } catch (error) {
+            console.error('Error deleting partenaire:', error);
+            throw error;
+        }
     }
   }
 });

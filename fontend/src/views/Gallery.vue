@@ -292,18 +292,32 @@
       <div
         class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
       >
-          <ProductGrid
-            :products="catalogStore.filteredProducts"
-            :is-loading="catalogStore.isLoading"
-            :has-active-filters="catalogStore.hasActiveFilters"
-            :search-query="catalogStore.searchQuery"
-            :show-search-summary="true"
-            :show-add-button="true"
-            @edit-product="openEditProductModal"
-            @delete-product="handleDeleteProduct"
-            @reset-filters="catalogStore.resetFilters"
-            @open-add-modal="openProductModal"
-          />
+        <ProductGrid
+          v-if="catalogStore.activeTab === 'products'"
+          :products="catalogStore.filteredProducts"
+          :is-loading="catalogStore.isLoading"
+          :has-active-filters="catalogStore.hasActiveFilters"
+          :search-query="catalogStore.searchQuery"
+          :show-search-summary="true"
+          :show-add-button="true"
+          @edit-product="openEditProductModal"
+          @delete-product="handleDeleteProduct"
+          @reset-filters="catalogStore.resetFilters"
+          @open-add-modal="openProductModal"
+        />
+
+        <ServicesSection
+          v-if="catalogStore.activeTab === 'services'"
+          :services="catalogStore.filteredServices"
+          :is-loading="catalogStore.isLoading"
+          :has-active-filters="catalogStore.hasActiveFilters"
+          :search-query="catalogStore.searchQuery"
+          @edit-service="openEditServiceModal"
+          @delete-service="handleDeleteService"
+          @toggle-availability="handleToggleServiceAvailability"
+          @reset-filters="catalogStore.resetFilters"
+          @open-add-modal="openServiceModal"
+        />
       </div>
     </div>
 
@@ -316,6 +330,8 @@
       @saved="handleProductSaved"
       @closed="handleModalClosed"
     />
+    <!-- <Footer /> -->
+
   </div>
 </template>
 
@@ -332,6 +348,7 @@ import ServiceModal from "../components/mesServices/ServiceModal.vue";
 import ServicesSection from "../components/mesServices/MesServices.vue";
 import ProductGrid from "../components/produits/ProductGrid.vue";
 import { Product, Service } from "../components/types/index";
+import Footer from "../components/Footer.vue";
 
 const { t } = useI18n();
 
@@ -492,7 +509,7 @@ const handleProductSaved = async (product: Product) => {
   console.log(showProductModal.value);
 
   handleModalClosed();
-//   toast.success(t("product_saved_success"));
+  //   toast.success(t("product_saved_success"));
 };
 
 const handleServiceSaved = async (service: any) => {

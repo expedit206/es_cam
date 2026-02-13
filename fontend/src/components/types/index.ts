@@ -57,6 +57,7 @@ export interface Product {
     updated_at: string;
   };
   user: User;
+  commercant_id?: string | null;
 }
 
 export interface Service {
@@ -105,6 +106,7 @@ export interface Parrainage {
 export interface Message {
   id: number;
   content: string;
+  attachment_url?: string | null;
   created_at: string;
   updated_at: string;
   is_read: boolean;

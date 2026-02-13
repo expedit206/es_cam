@@ -3,75 +3,18 @@
 
   <div class="min-h-screen bg-gray-50">
     <!-- Barre de recherche principale AVEC FILTRES TYPE -->
-    <div class="bg-white shadow-sm sticky top-0 z-40">
-      <div class="max-w-7xl px-4 py-1">
-        <div class="flex flex-col gap-3">
+    <!-- Barre de recherche principale AVEC FILTRES TYPE (Desktop uniquement) -->
+    <div class="hidden md:block bg-white shadow-sm sticky top-0 z-40">
+      <div class="max-w-7xl px-4 py-1">sw
+        <div class="flex flex-col gap-3">ssw
           <!-- Première ligne : Navigation + Recherche (mobile) / Ensemble (desktop) -->
           <div class="flex items-center gap-1 w-full sm:flex-1">
-            <!-- Navigation Produits/Services -->
-            <!-- <div class="flex bg-gray-100 rounded-lg p-1">
-                            <button @click="setContentType('product')" :class="[
-                                'px-3 py-1 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-2',
-                                filters.contentType === 'product'
-                                    ? 'bg-white text-[var(--espace-vert)] shadow-sm'
-                                    : 'text-gray-600 hover:text-gray-900'
-                            ]">
-                                <i class="fas fa-box text-xs sm:text-sm"></i>
-                                <span class=" xs:inline">Produits</span>
-                            </button>
-                            <button @click="setContentType('service')" :class="[
-                                'px-3 py-1 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-2',
-                                filters.contentType === 'service'
-                                    ? 'bg-white text-[var(--espace-vert)] shadow-sm'
-                                    : 'text-gray-600 hover:text-gray-900'
-                            ]">
-                                <i class="fas fa-concierge-bell text-xs sm:text-sm"></i>
-                                <span class=" xs:inline">Services</span>
-                            </button>
-                        </div> -->
-
-            <!-- Sur mobile : Icône recherche à droite -->
-            <!-- Sur desktop : Barre de recherche fixe -->
-            <!-- <div class="sm:hidden">
-                            <button @click="toggleSearchBar"
-                                class="p-2 text-gray-600 hover:text-[var(--espace-vert)] hover:bg-green-50 rounded-lg transition-all duration-200"
-                                :class="{ 'text-[var(--espace-vert)] bg-green-50': showSearchBar }">
-                                <i class="fas fa-search text-lg"></i>
-                            </button>
-                        </div> -->
-
-            <!-- Sur desktop : Barre de recherche toujours visible -->
-            <!-- <div class="hidden sm:flex flex-1 ml-4">
-                            <div class="relative w-full">
-                                <i
-                                    class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                <input v-model="filters.searchQuery" type="text" :placeholder="getSearchPlaceholder()"
-                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:border-[var(--espace-vert)] focus:ring-2 focus:ring-green-200 outline-none transition-all text-sm"
-                                    @input="handleSearchInput">
-                                <button v-if="filters.searchQuery" @click="setSearchQuery('')"
-                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                                    <i class="fas fa-times text-sm"></i>
-                                </button>
-                            </div>
-                        </div> -->
+           
           </div>
 
-          <!-- Filtres rapides -->
-          <!-- <div class="flex gap-1 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
-                        <button v-for="filter in getQuickFilters()" :key="filter.id"
-                            @click="toggleQuickFilter(filter.id)" :class="[
-                                'px-2 py-2 rounded-md text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1',
-                                filters.activeQuickFilters.includes(filter.id)
-                                    ? 'bg-[var(--espace-vert)] text-white shadow-md'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            ]">
-                            <i :class="filter.icon"></i>
-                            <span>{{ filter.label }}</span>
-                        </button>
-                    </div> -->
         </div>
         <!-- Barre de recherche mobile dépliante -->
-        <div v-if="showSearchBar" class="mt-3 animate-slide-down">
+        <div v-if="showSearchBar" class="mt-3 animate-slide-down">sqsq
           <div class="relative">
             <i
               class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -97,9 +40,9 @@
     </div>
 
     <!-- Catégories de navigation -->
+    <!-- Catégories de navigation -->
     <div
-      class="bg-white sticky z-30 border-b shadow-sm transition-all duration-300 lg:top-14"
-      :class="isHeaderVisible ? 'top-14' : 'top-0'"
+      class="bg-white absolute sticky z-30 border-b shadow-sm transition-all duration-300 top-14"
     >
       <div class="max-w-7xl mx-auto">
         <!-- Desktop : Catégories horizontales -->
@@ -126,7 +69,7 @@
         <div class="md:hidden border-b border-gray-200">
           <div class="flex items-center justify-between px-4 py-3">
             <!-- Sélecteur de catégorie mobile -->
-            <div class="relative flex-1 ml-4">
+            <div class="relative flex-1">
               <select
                 v-model="filters.activeCategory"
                 @change="setActiveCategory($event.target.value)"
@@ -344,35 +287,7 @@ const showSearchBar = ref(false);
 const searchInput = ref<HTMLInputElement | null>(null);
 
 // Gestion du scroll pour la barre de catégories sticky
-const isHeaderVisible = ref(true);
-const lastScrollTop = ref(0);
-
-const handleScroll = () => {
-  const main = document.querySelector("main");
-  if (!main) return;
-
-  const currentScrollTop = main.scrollTop;
-  if (currentScrollTop < 0) return; // Ignore elastic scrolling
-
-  // Toujours visible en haut de page
-  if (currentScrollTop < 50) {
-    isHeaderVisible.value = true;
-    lastScrollTop.value = currentScrollTop;
-    return;
-  }
-
-  const diff = currentScrollTop - lastScrollTop.value;
-  // Scroll vers le bas -> cacher (top-0)
-  if (diff > 10) {
-    isHeaderVisible.value = false;
-  }
-  // Scroll vers le haut -> afficher (top-14)
-  else if (diff < -10) {
-    isHeaderVisible.value = true;
-  }
-
-  lastScrollTop.value = currentScrollTop;
-};
+// Scroll logic removed in favor of CSS sticky
 
 // ... existing code ...
 
@@ -642,15 +557,9 @@ onMounted(async () => {
 
   await marketplaceStore.fetchMarketplaceData();
   setupIntersectionObserver();
-
-  const main = document.querySelector("main");
-  if (main) main.addEventListener("scroll", handleScroll, { passive: true });
 });
 
 onUnmounted(() => {
-  const main = document.querySelector("main");
-  if (main) main.removeEventListener("scroll", handleScroll);
-
   if (observer) observer.disconnect();
 });
 
