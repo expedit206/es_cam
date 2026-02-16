@@ -241,17 +241,18 @@ const formatCurrency = (value: number) => {
   }).format(value);
 };
 </script>
-<!-- 
 <style scoped>
+@reference "../../assets/css/main.css";
+
 .stats-card {
-  @apply bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-green-500/5 hover:-translate-y-1 transition-all duration-300;
+  @apply bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300;
 }
 
 .action-btn {
-  @apply flex items-center gap-3 p-4 bg-gray-50 rounded-2xl text-gray-700 font-medium hover:bg-gradient-to-r hover:from-[var(--espace-vert)] hover:to-green-500 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 hover:border-transparent hover:shadow-lg hover:shadow-green-500/20;
+  @apply flex items-center gap-3 p-4 bg-gray-50 rounded-2xl text-gray-700 font-medium hover:bg-gradient-to-r hover:from-primary hover:to-green-500 hover:text-white transition-all duration-300 shadow-sm border border-gray-100 hover:border-transparent hover:shadow-lg hover:shadow-primary/20;
 }
 
 .action-btn i {
   @apply text-xl;
 }
-</style> -->
+</style>

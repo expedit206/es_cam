@@ -196,10 +196,9 @@ watch(
 </script>
 
 <style>
-/* Forcer tous les composants enfants du main à prendre 100% de la hauteur */
+/* Forcer tous les composants enfants du main à avoir au moins la hauteur de l'écran */
 main > * {
-  height: 100% !important;
-  min-height: 100% !important;
+  min-height: 100%;
 }
 
 .offline-fade-enter-active,

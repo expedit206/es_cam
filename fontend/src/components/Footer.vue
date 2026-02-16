@@ -1,9 +1,9 @@
 <template>
   <footer
-    class="relative bg-emerald-950 text-gray-300 pt-16 pb-8 overflow-hidden"
+    class="relative bg-primary-dark text-gray-300 pt-16 pb-8 overflow-hidden"
   >
     <div
-      class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-50"
+      class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-50"
     ></div>
 
     <div class="container mx-auto px-4 relative z-10">
@@ -27,19 +27,19 @@
           <div class="flex gap-4">
             <a
               href="#"
-              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300"
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-secondary hover:text-primary-dark transition-all duration-300"
             >
               <i class="fab fa-facebook-f"></i>
             </a>
             <a
               href="#"
-              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300"
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-secondary hover:text-primary-dark transition-all duration-300"
             >
               <i class="fab fa-whatsapp"></i>
             </a>
             <a
               href="#"
-              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-yellow-400 hover:text-emerald-900 transition-all duration-300"
+              class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-secondary hover:text-primary-dark transition-all duration-300"
             >
               <i class="fab fa-instagram"></i>
             </a>
@@ -50,14 +50,14 @@
           <h5
             class="text-white font-bold text-base mb-6 flex items-center gap-2"
           >
-            <span class="w-6 h-1 bg-yellow-400 rounded-full"></span>
+            <span class="w-6 h-1 bg-secondary rounded-full"></span>
             Marketplace
           </h5>
           <ul class="space-y-4">
             <li>
               <RouterLink
                 to="/market-place"
-                class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
+                class="text-sm hover:text-secondary hover:translate-x-1 inline-block transition-all"
               >
                 Toutes les annonces</RouterLink
               >
@@ -65,7 +65,7 @@
             <li>
               <RouterLink
                 to="/categories"
-                class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
+                class="text-sm hover:text-secondary hover:translate-x-1 inline-block transition-all"
               >
                 Parcourir par ville</RouterLink
               >
@@ -73,7 +73,7 @@
             <li>
               <RouterLink
                 to="/gallery"
-                class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
+                class="text-sm hover:text-secondary hover:translate-x-1 inline-block transition-all"
               >
                 Publier une annonce</RouterLink
               >
@@ -81,7 +81,7 @@
             <li>
               <RouterLink
                 to="/aide"
-                class="text-sm hover:text-yellow-400 hover:translate-x-1 inline-block transition-all"
+                class="text-sm hover:text-secondary hover:translate-x-1 inline-block transition-all"
               >
                 Conseils de sécurité</RouterLink
               >
@@ -93,28 +93,28 @@
           <h5
             class="text-white font-bold text-base mb-6 flex items-center gap-2"
           >
-            <span class="w-6 h-1 bg-yellow-400 rounded-full"></span>
+            <span class="w-6 h-1 bg-secondary rounded-full"></span>
             Besoin d'aide ?
           </h5>
           <ul class="space-y-4">
             <li class="flex items-start gap-3 group">
-              <i class="fas fa-headset text-yellow-400 mt-1"></i>
+              <i class="fas fa-headset text-secondary mt-1"></i>
               <RouterLink
                 to="/contact"
-                class="text-sm group-hover:text-yellow-400 transition-colors"
+                class="text-sm group-hover:text-secondary transition-colors"
                 >Support Client 24/7</RouterLink
               >
             </li>
             <li class="flex items-start gap-3 group">
-              <i class="fas fa-envelope text-yellow-400 mt-1"></i>
+              <i class="fas fa-envelope text-secondary mt-1"></i>
               <a
                 href="mailto:contact@espacecameroun.com"
-                class="text-sm group-hover:text-yellow-400 transition-colors"
+                class="text-sm group-hover:text-secondary transition-colors"
                 >contact@espacecameroun.com</a
               >
             </li>
             <li class="flex items-start gap-3 group">
-              <i class="fas fa-map-marker-alt text-yellow-400 mt-1"></i>
+              <i class="fas fa-map-marker-alt text-secondary mt-1"></i>
               <span class="text-sm italic">Douala, Cameroun</span>
             </li>
           </ul>
@@ -129,10 +129,10 @@
             <input
               type="email"
               placeholder="Votre email"
-              class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/10 text-white text-sm focus:outline-none focus:border-yellow-400 transition-colors"
+              class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/10 text-white text-sm focus:outline-none focus:border-secondary transition-colors"
             />
             <button
-              class="w-full bg-yellow-400 text-emerald-900 font-bold py-2 rounded-lg text-sm hover:bg-yellow-300 transition-all"
+              class="w-full bg-secondary text-primary-dark font-bold py-2 rounded-lg text-sm hover:bg-secondary-light transition-all"
             >
               S'inscrire
             </button>

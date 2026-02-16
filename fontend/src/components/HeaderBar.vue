@@ -241,7 +241,7 @@ const mobileMenuItems = computed(() => {
       {
         label: t("About App"),
         icon: "fa-info-circle",
-        action: () => router.push("/doc"),
+        action: () => router.push("/about"),
       },
     ];
   }
@@ -291,7 +291,7 @@ const mobileMenuItems = computed(() => {
     {
       label: t("About App"),
       icon: "fa-info-circle",
-      action: () => router.push("/doc"),
+      action: () => router.push("/about"),
     },
 
     {
@@ -825,10 +825,10 @@ onUnmounted(() => {
     <div class="flex-1 max-w-3xl mx-auto">
       <div class="relative group" @click="toggleSearchOverlay">
         <div
-          class="flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 cursor-text hover:bg-white hover:border-[var(--espace-vert)] hover:ring-1 hover:ring-green-100 transition-all shadow-sm"
+          class="flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 cursor-text hover:bg-white hover:border-primary hover:ring-1 hover:ring-green-100 transition-all shadow-sm"
         >
           <i
-            class="fas fa-search text-gray-400 mr-3 text-lg group-hover:text-[var(--espace-vert)] transition-colors"
+            class="fas fa-search text-gray-400 mr-3 text-lg group-hover:text-primary transition-colors"
           ></i>
           <span class="text-gray-500 text-sm font-medium">{{
             searchQuery || t("Search for products, services...")
@@ -842,7 +842,7 @@ onUnmounted(() => {
       <!-- Bouton Publier -->
       <button
         @click="openProductModal"
-        class="bg-[var(--espace-vert)] hover:bg-green-800 text-white px-5 py-2 rounded-full font-bold text-xs shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
+        class="bg-primary hover:bg-primary-dark text-white px-5 py-2 rounded-full font-bold text-xs shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2"
       >
         <i class="fas fa-plus-circle"></i>
         <span>Poster un produit</span>
@@ -853,7 +853,7 @@ onUnmounted(() => {
       <!-- Notifications -->
       <RouterLink
         to="/messages"
-        class="text-gray-500 hover:text-[var(--espace-vert)] transition-colors p-2 relative"
+        class="text-gray-500 hover:text-primary transition-colors p-2 relative"
         :title="t('Messages')"
       >
         <i class="fas fa-comment-dots text-lg"></i>
@@ -887,7 +887,7 @@ onUnmounted(() => {
             v-model="searchQuery"
             type="text"
             :placeholder="t('What are you looking for?')"
-            class="w-full px-4 py-3 pl-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--espace-vert)] focus:bg-white"
+            class="w-full px-4 py-3 pl-3 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white"
             @input="showSearchHistory = searchQuery.length === 0"
             @keyup.enter="performSearch()"
           />
@@ -912,7 +912,7 @@ onUnmounted(() => {
           class="ml-3 w-11 h-11 rounded-full flex items-center justify-center transition-colors"
           :class="
             searchQuery.trim()
-              ? 'bg-[var(--espace-vert)] text-white'
+              ? 'bg-primary text-white'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
           "
         >
@@ -934,7 +934,7 @@ onUnmounted(() => {
           </h3>
           <button
             @click="clearSearchHistory"
-            class="text-sm text-[var(--espace-vert)] hover:underline"
+            class="text-sm text-primary hover:underline"
           >
             {{ t("Clear all") }}
           </button>
@@ -993,16 +993,16 @@ onUnmounted(() => {
           {{ t("Search by category") }}
         </h3>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="w-full flex flex-wrap gap-2">
+
+        <div class="flex gap-2  "  v-for="cat in categories" :key="cat.id" >
           <RouterLink
-            v-for="cat in categories"
-            :key="cat.id"
-            :to="`/categorie/${cat.slug}`"
+            :to="`/market-place?search=${cat?.slug}`"
             @click="showSearchOverlay = false"
-            class="flex items-center p-3 rounded-lg border border-gray-200 hover:border-[var(--espace-vert)] hover:bg-gray-50 transition-colors"
+            class="flex items-center p-1 rounded-lg border border-gray-200 hover:border-primary hover:bg-gray-50 transition-colors"
           >
             <div
-              class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mr-3"
+              class=" w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gray-100 flex items-center justify-center md:mr-3 mr-2"
             >
               <i :class="cat.icon" class="text-gray-600"></i>
             </div>
@@ -1010,6 +1010,7 @@ onUnmounted(() => {
               cat.name
             }}</span>
           </RouterLink>
+        </div>
         </div>
       </div>
 
@@ -1023,9 +1024,7 @@ onUnmounted(() => {
         </h3>
 
         <div v-if="isSearching" class="text-center py-8">
-          <i
-            class="fas fa-spinner fa-spin text-2xl text-[var(--espace-vert)]"
-          ></i>
+          <i class="fas fa-spinner fa-spin text-2xl text-primary"></i>
         </div>
 
         <div v-else-if="liveSearchResults.length > 0" class="space-y-3">
@@ -1054,7 +1053,7 @@ onUnmounted(() => {
                 {{ item.description }}
               </p>
               <div class="flex items-center justify-between mt-2">
-                <p class="text-[var(--espace-vert)] font-bold text-sm">
+                <p class="text-primary font-bold text-sm">
                   {{ item.prix }} FCFA
                 </p>
                 <span
@@ -1068,7 +1067,7 @@ onUnmounted(() => {
 
           <button
             @click="performSearch()"
-            class="w-full py-3 text-center text-[var(--espace-vert)] font-medium bg-green-50 rounded-lg mt-2 hover:bg-green-100 transition-colors"
+            class="w-full py-3 text-center text-primary font-medium bg-green-50 rounded-lg mt-2 hover:bg-green-100 transition-colors"
           >
             {{ t("View all results") }}
           </button>
@@ -1153,7 +1152,7 @@ onUnmounted(() => {
           >
             <!-- Icône -->
             <i
-              class="fas text-gray-400 group-hover:text-[var(--espace-vert)] text-lg w-6 flex-shrink-0"
+              class="fas text-gray-400 group-hover:text-primary text-lg w-6 flex-shrink-0"
               :class="[item.icon, item.danger ? 'text-red-500' : '']"
             ></i>
 
@@ -1170,7 +1169,7 @@ onUnmounted(() => {
             <!-- Badge -->
             <span
               v-if="item.badge && item.badge > 0"
-              class="bg-[var(--espace-or)] text-[var(--espace-vert)] text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold"
+              class="bg-secondary text-primary-dark text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold"
             >
               {{ item.badge > 99 ? "99+" : item.badge }}
             </span>
@@ -1182,7 +1181,7 @@ onUnmounted(() => {
           <RouterLink
             to="/gallery"
             @click="showMobileMenu = false"
-            class="w-full bg-[var(--espace-vert)] text-white py-4 px-5 rounded-xl font-bold text-lg hover:bg-emerald-700 transition-colors flex items-center justify-center gap-3 shadow-lg"
+            class="w-full bg-primary text-white py-4 px-5 rounded-xl font-bold text-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-3 shadow-lg"
           >
             <i class="fas fa-circle-plus text-xl"></i>
             Publier une annonce
@@ -1194,11 +1193,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-:root {
-  --espace-vert: #14532d;
-  --espace-or: #facc15;
-}
-
 /* Animation pour l'overlay de recherche */
 .fixed {
   transition: transform 0.3s ease-out;

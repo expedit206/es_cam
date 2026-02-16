@@ -21,9 +21,9 @@
         }
     }" />
 
-    <div class="h-full overflow-y-auto bg-gradient-to-br from-gray-50 to-green-50">
+    <div class="h-full overflow-y-auto bg-gradient-to-br from-gray-50 to-primary/5">
         <!-- Hero Section -->
-        <section class="bg-gradient-to-r from-[var(--espace-vert)] to-green-700 text-white py-16 shadow-lg">
+        <section class="bg-gradient-to-r from-primary to-primary-dark text-white py-16 shadow-lg">
             <div class="max-w-6xl mx-auto text-center px-6">
                 <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-user-shield text-3xl text-white"></i>
@@ -50,7 +50,7 @@
             <div class="max-w-6xl mx-auto px-6">
                 <div class="flex overflow-x-auto py-4 gap-6 hide-scrollbar">
                     <a v-for="section in navigationSections" :key="section.id" :href="`#${section.id}`"
-                        class="flex items-center gap-2 whitespace-nowrap text-sm font-medium text-gray-600 hover:text-[var(--espace-vert)] transition-colors">
+                        class="flex items-center gap-2 whitespace-nowrap text-sm font-medium text-gray-600 hover:text-primary transition-colors">
                         <i :class="section.icon" class="text-xs"></i>
                         {{ t(section.translationKey) }}
                     </a>
@@ -63,8 +63,8 @@
             <!-- Introduction -->
             <section id="introduction" class="mb-12">
                 <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-[var(--espace-vert)] mb-4 flex items-center gap-3">
-                        <i class="fas fa-info-circle text-[var(--espace-or)]"></i>
+                    <h2 class="text-2xl font-bold text-primary mb-4 flex items-center gap-3">
+                        <i class="fas fa-info-circle text-secondary"></i>
                         {{ t('introduction_title') }}
                     </h2>
                     <div class="prose prose-lg text-gray-700">
@@ -89,8 +89,8 @@
             <!-- Données collectées -->
             <section id="donnees-collectees" class="mb-12">
                 <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-[var(--espace-vert)] mb-6 flex items-center gap-3">
-                        <i class="fas fa-database text-[var(--espace-or)]"></i>
+                    <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-database text-secondary"></i>
                         {{ t('data_collected_title') }}
                     </h2>
 
@@ -155,8 +155,8 @@
             <!-- Utilisation des données -->
             <section id="utilisation-donnees" class="mb-12">
                 <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-[var(--espace-vert)] mb-6 flex items-center gap-3">
-                        <i class="fas fa-cogs text-[var(--espace-or)]"></i>
+                    <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-cogs text-secondary"></i>
                         {{ t('data_usage_title') }}
                     </h2>
 
@@ -221,8 +221,8 @@
             <!-- Partage des données -->
             <section id="partage-donnees" class="mb-12">
                 <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-[var(--espace-vert)] mb-6 flex items-center gap-3">
-                        <i class="fas fa-share-alt text-[var(--espace-or)]"></i>
+                    <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-share-alt text-secondary"></i>
                         {{ t('data_sharing_title') }}
                     </h2>
 
@@ -299,8 +299,8 @@
             <!-- Sécurité -->
             <section id="securite" class="mb-12">
                 <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-[var(--espace-vert)] mb-6 flex items-center gap-3">
-                        <i class="fas fa-lock text-[var(--espace-or)]"></i>
+                    <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-lock text-secondary"></i>
                         {{ t('security_title') }}
                     </h2>
 
@@ -358,8 +358,8 @@
             <!-- Vos droits -->
             <section id="vos-droits" class="mb-12">
                 <div class="bg-white rounded-2xl shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-[var(--espace-vert)] mb-6 flex items-center gap-3">
-                        <i class="fas fa-user-check text-[var(--espace-or)]"></i>
+                    <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                        <i class="fas fa-user-check text-secondary"></i>
                         {{ t('your_rights_title') }}
                     </h2>
 
@@ -423,7 +423,7 @@
                         <p class="text-sm text-gray-700">
                             <strong>{{ t('how_to_exercise') }}</strong> {{ t('contact_dpo') }}
                             <a href="mailto:espacecameroun@gmail.com"
-                                class="text-[var(--espace-vert)] hover:underline">espacecameroun@gmail.com</a>.
+                                class="text-primary hover:underline">espacecameroun@gmail.com</a>.
                             {{ t('response_time') }}
                         </p>
                     </div>
@@ -458,10 +458,12 @@ const navigationSections = [
 </script>
 
 <style scoped>
+/*
 :root {
     --espace-vert: #14532d;
     --espace-or: #facc15;
 }
+*/
 
 .hide-scrollbar {
     -ms-overflow-style: none;

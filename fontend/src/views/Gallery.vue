@@ -12,7 +12,7 @@
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-2">
           <div
-            class="w-6 h-6 bg-[var(--espace-vert)] rounded flex items-center justify-center"
+            class="w-6 h-6 bg-primary rounded flex items-center justify-center"
           >
             <i class="fas fa-store text-white text-xs"></i>
           </div>
@@ -24,7 +24,7 @@
         <button
           v-if="catalogStore.activeTab === 'products'"
           @click="openProductModal"
-          class="bg-[var(--espace-vert)] text-white px-2 py-1.5 rounded-lg font-medium hover:bg-green-700 transition-all duration-200 shadow-sm hover:shadow flex items-center gap-1 text-xs"
+          class="bg-primary text-white px-2 py-1.5 rounded-lg font-medium hover:bg-primary-dark transition-all duration-200 shadow-sm hover:shadow flex items-center gap-1 text-xs"
         >
           <i class="fas fa-plus text-xs"></i>
           <span class="hidden xs:inline">{{ t("new_product") }}</span>
@@ -33,7 +33,7 @@
         <button
           v-if="catalogStore.activeTab === 'services'"
           @click="openServiceModal"
-          class="bg-[var(--espace-vert)] text-white px-2 py-1.5 rounded-lg font-medium hover:bg-green-700 transition-all duration-200 shadow-sm hover:shadow flex items-center gap-1 text-xs"
+          class="bg-primary text-white px-2 py-1.5 rounded-lg font-medium hover:bg-primary-dark transition-all duration-200 shadow-sm hover:shadow flex items-center gap-1 text-xs"
         >
           <i class="fas fa-plus text-xs"></i>
           <span class="hidden xs:inline">{{ t("new_service") }}</span>
@@ -96,7 +96,7 @@
                   ? t('search_products')
                   : t('search_services')
               "
-              class="w-full pl-6 pr-5 py-1.5 border border-gray-300 rounded-lg focus:border-[var(--espace-vert)] focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
+              class="w-full pl-6 pr-5 py-1.5 border border-gray-300 rounded-lg focus:border-primary focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
             />
             <button
               v-if="catalogStore.searchQuery"
@@ -116,7 +116,7 @@
             <span class="hidden xs:inline">Filtres</span>
             <span
               v-if="catalogStore.activeFilterCount > 0"
-              class="absolute -top-1 -right-1 bg-[var(--espace-vert)] text-white text-[8px] w-3 h-3 rounded-full flex items-center justify-center"
+              class="absolute -top-1 -right-1 bg-primary text-white text-[8px] w-3 h-3 rounded-full flex items-center justify-center"
             >
               {{ catalogStore.activeFilterCount }}
             </span>
@@ -145,7 +145,7 @@
           >
             <select
               v-model="catalogStore.productFilters.stock"
-              class="px-1.5 py-1 border border-gray-300 rounded focus:border-[var(--espace-vert)] focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
+              class="px-1.5 py-1 border border-gray-300 rounded focus:border-primary focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
             >
               <option value="all">{{ t("all_status") }}</option>
               <option value="in_stock">{{ t("in_stock") }}</option>
@@ -154,7 +154,7 @@
 
             <select
               v-model="catalogStore.productFilters.revendable"
-              class="px-1.5 py-1 border border-gray-300 rounded focus:border-[var(--espace-vert)] focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
+              class="px-1.5 py-1 border border-gray-300 rounded focus:border-primary focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
             >
               <option value="all">{{ t("all_types") }}</option>
               <option value="revendable">{{ t("revendable") }}</option>
@@ -163,7 +163,7 @@
 
             <select
               v-model="catalogStore.productFilters.sortBy"
-              class="px-1.5 py-1 border border-gray-300 rounded focus:border-[var(--espace-vert)] focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
+              class="px-1.5 py-1 border border-gray-300 rounded focus:border-primary focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
             >
               <option value="newest">{{ t("newest") }}</option>
               <option value="oldest">{{ t("oldest") }}</option>
@@ -179,7 +179,7 @@
           >
             <select
               v-model="catalogStore.serviceFilters.status"
-              class="px-1.5 py-1 border border-gray-300 rounded focus:border-[var(--espace-vert)] focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
+              class="px-1.5 py-1 border border-gray-300 rounded focus:border-primary focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
             >
               <option value="all">{{ t("all_status") }}</option>
               <option value="disponible">{{ t("available") }}</option>
@@ -188,7 +188,7 @@
 
             <select
               v-model="catalogStore.serviceFilters.category"
-              class="px-1.5 py-1 border border-gray-300 rounded focus:border-[var(--espace-vert)] focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
+              class="px-1.5 py-1 border border-gray-300 rounded focus:border-primary focus:ring-1 focus:ring-green-200 outline-none transition-all text-xs"
             >
               <option value="all">{{ t("all_categories") }}</option>
               <option
@@ -331,7 +331,6 @@
       @closed="handleModalClosed"
     />
     <!-- <Footer /> -->
-
   </div>
 </template>
 

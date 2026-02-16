@@ -1,79 +1,66 @@
 <template>
   <SeoHead v-bind="seoMeta" />
 
-  <div class="min-h-screen bg-gray-50">
-    <!-- Barre de recherche principale AVEC FILTRES TYPE -->
-    <!-- Barre de recherche principale AVEC FILTRES TYPE (Desktop uniquement) -->
-    <div class="hidden md:block bg-white shadow-sm sticky top-0 z-40">
-      <div class="max-w-7xl px-4 py-1">sw
-        <div class="flex flex-col gap-3">ssw
-          <!-- Première ligne : Navigation + Recherche (mobile) / Ensemble (desktop) -->
-          <div class="flex items-center gap-1 w-full sm:flex-1">
-           
-          </div>
+  <div class="min-h-screen bg-gray-50 !h-auto">
+    <!-- Catégories de navigation - Sticky -->
+    <div class="bg-white border-b shadow-sm sticky -top-17   z-30">
+      <div class="max-w-7xl mx-auto ">
+        <!-- Desktop : Catégories horizontales défilables -->
+        <div class="hidden md:block relative">
+          <!-- Bouton scroll gauche -->
+          <button
+            v-if="showLeftScroll"
+            @click="scrollCategories('left')"
+            class="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center text-gray-600 hover:text-gray-900 border border-gray-200 hover:shadow-lg transition-all"
+          >
+            <i class="fas fa-chevron-left text-xs"></i>
+          </button>
 
-        </div>
-        <!-- Barre de recherche mobile dépliante -->
-        <div v-if="showSearchBar" class="mt-3 animate-slide-down">sqsq
-          <div class="relative">
-            <i
-              class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            ></i>
-            <input
-              v-model="filters.searchQuery"
-              type="text"
-              :placeholder="getSearchPlaceholder()"
-              class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:border-[var(--espace-vert)] focus:ring-2 focus:ring-green-200 outline-none transition-all"
-              @input="handleSearchInput"
-              ref="searchInput"
-            />
-            <button
-              v-if="filters.searchQuery"
-              @click="setSearchQuery('')"
-              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Catégories de navigation -->
-    <!-- Catégories de navigation -->
-    <div
-      class="bg-white absolute sticky z-30 border-b shadow-sm transition-all duration-300 top-14"
-    >
-      <div class="max-w-7xl mx-auto">
-        <!-- Desktop : Catégories horizontales -->
-        <div class="hidden md:block">
-          <div class="flex flex-wrap gap-2 px-4 py-3">
+          <!-- Catégories scrollables horizontalement -->
+          <div
+            ref="categoriesContainer"
+            class="flex overflow-x-auto hide-scrollbar px-4 py-2.5 gap-1 scroll-smooth"
+            @scroll="checkScrollButtons"
+          >
             <button
               v-for="category in getFilteredCategories()"
               :key="category.id"
               @click="setActiveCategory(category.id)"
               :class="[
-                'inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all',
+                'flex items-center px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all hover:shadow-sm',
                 filters.activeCategory === category.id
-                  ? 'bg-[var(--espace-vert)] text-white shadow-sm'
-                  : 'text-gray-700 bg-gray-100 hover:bg-gray-200',
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-gray-600 bg-gray-100 hover:bg-gray-200',
               ]"
             >
-              <i v-if="category.icon" :class="category.icon" class="mr-2"></i>
+              <i
+                v-if="category.icon"
+                :class="category.icon"
+                class="mr-1.5 text-xs"
+              ></i>
               {{ category.name }}
             </button>
           </div>
+
+          <!-- Bouton scroll droit -->
+          <button
+            v-if="showRightScroll"
+            @click="scrollCategories('right')"
+            class="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white rounded-full shadow-md flex items-center justify-center text-gray-600 hover:text-gray-900 border border-gray-200 hover:shadow-lg transition-all"
+          >
+            <i class="fas fa-chevron-right text-xs"></i>
+          </button>
         </div>
 
-        <!-- Mobile : Header avec sélecteur -->
-        <div class="md:hidden border-b border-gray-200">
-          <div class="flex items-center justify-between px-4 py-3">
+        <!-- Mobile : Header avec sélecteur compact -->
+        <div class="md:hidden">
+          <div class="flex items-center gap-2 px-4 py-2.5">
             <!-- Sélecteur de catégorie mobile -->
             <div class="relative flex-1">
               <select
                 v-model="filters.activeCategory"
                 @change="setActiveCategory($event.target.value)"
-                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-white appearance-none focus:border-[var(--espace-vert)] focus:ring-2 focus:ring-green-200 outline-none transition-all"
+                class="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg bg-white appearance-none focus:border-primary focus:ring-1 focus:ring-green-200 outline-none"
               >
                 <option value="all">Toutes les catégories</option>
                 <option
@@ -87,19 +74,49 @@
                 </option>
               </select>
               <div
-                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400"
               >
-                <i class="fas fa-chevron-down text-sm"></i>
+                <i class="fas fa-chevron-down text-[10px]"></i>
               </div>
+            </div>
+
+            <!-- Filtres rapides compact -->
+            <button
+              @click="toggleFiltersPanel"
+              class="p-2 bg-gray-100 rounded-lg text-gray-600 hover:bg-gray-200 transition-colors shrink-0"
+              :class="{ 'bg-primary/10 text-primary': showFilters }"
+            >
+              <i class="fas fa-sliders-h text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Filtres rapides déroulants -->
+          <div
+            v-if="showFilters"
+            class="px-4 py-2 bg-gray-50 border-t border-gray-100"
+          >
+            <div class="flex flex-wrap gap-1.5">
+              <button
+                v-for="filter in getQuickFilters()"
+                :key="filter.id"
+                @click="toggleQuickFilter(filter.id)"
+                class="px-2.5 py-1 text-[10px] rounded-full border transition-all"
+                :class="
+                  filters.quickFilters.includes(filter.id)
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-gray-600 border-gray-200'
+                "
+              >
+                {{ filter.label }}
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <!-- Contenu Principal -->
     <div class="max-w-7xl mx-auto px-4 py-6 bg-slate-100">
-      <!-- En-tête dynamique -->
-
       <!-- Affichage des contenus -->
       <div v-if="isLoading">
         <div
@@ -164,15 +181,12 @@
             <div>
               <p class="text-gray-600 text-sm">
                 {{ allItems.length }} résultat(s)
-                <span
-                  v-if="filters.searchQuery"
-                  class="text-[var(--espace-vert)]"
-                >
+                <span v-if="filters.searchQuery" class="text-primary">
                   pour "{{ filters.searchQuery }}"
                 </span>
                 <span
                   v-else-if="filters.activeCategory !== 'all'"
-                  class="text-[var(--espace-vert)]"
+                  class="text-primary"
                 >
                   dans cette catégorie
                 </span>
@@ -237,7 +251,7 @@
           </p>
           <button
             @click="resetFilters"
-            class="bg-[var(--espace-vert)] text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors"
           >
             Réinitialiser les filtres
           </button>
@@ -251,27 +265,18 @@
 import { ref, computed, onMounted, watch, nextTick, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useMarketplaceStore } from "../stores/marketplace";
-import type { Product, Service, Category } from "../stores/marketplace";
+import type { Product, Service } from "../stores/marketplace";
 import SeoHead from "../components/SeoHead.vue";
 import MesProductCard from "../components/mesProduits/MesProductCard.vue";
 import ServiceCard from "../components/mesServices/MesServiceCard.vue";
-import Pagination from "../components/Pagination.vue";
-import Loader from "../components/Loader.vue";
 import ProductCardSkeleton from "../components/ProductCardSkeleton.vue";
 
 const router = useRouter();
 const route = useRoute();
 const marketplaceStore = useMarketplaceStore();
 
-const { filters, pagination, isLoading } = marketplaceStore;
+const { filters, isLoading } = marketplaceStore;
 const categories = computed(() => marketplaceStore.categories || []);
-
-// Getters via computed (attendent que le store soit prêt)
-const trendingProducts = computed(() => marketplaceStore.trendingProducts);
-const popularServices = computed(() => marketplaceStore.popularServices);
-const productsStats = computed(() => marketplaceStore.productsStats);
-const servicesStats = computed(() => marketplaceStore.servicesStats);
-// const filteredItems = computed(() => marketplaceStore.filteredItems);
 
 // États pour le scroll infini
 const infiniteScrollTrigger = ref<HTMLElement | null>(null);
@@ -282,42 +287,51 @@ const hasMoreItems = computed(
     marketplaceStore.pagination.lastPage,
 );
 
-// État pour contrôler l'affichage de la barre de recherche mobile
+// États pour les catégories scrollables
+const categoriesContainer = ref<HTMLElement | null>(null);
+const showLeftScroll = ref(false);
+const showRightScroll = ref(false);
+const showFilters = ref(false);
+
+// États recherche mobile
 const showSearchBar = ref(false);
 const searchInput = ref<HTMLInputElement | null>(null);
 
-// Gestion du scroll pour la barre de catégories sticky
-// Scroll logic removed in favor of CSS sticky
+// Fonctions pour le scroll horizontal des catégories
+const checkScrollButtons = () => {
+  if (!categoriesContainer.value) return;
 
-// ... existing code ...
-
-const toggleSearchBar = async () => {
-  showSearchBar.value = !showSearchBar.value;
-  // Focus sur l'input quand la barre se déplie (mobile seulement)
-  if (showSearchBar.value) {
-    // await nextTick();
-    // searchInput.value?.focus();
-  }
-  // alert(showSearchBar.value)
+  const { scrollLeft, scrollWidth, clientWidth } = categoriesContainer.value;
+  showLeftScroll.value = scrollLeft > 10;
+  showRightScroll.value = scrollLeft < scrollWidth - clientWidth - 10;
 };
 
-// Fermer la barre de recherche mobile en appuyant sur Echap
+const scrollCategories = (direction: "left" | "right") => {
+  if (!categoriesContainer.value) return;
+
+  const scrollAmount = 200;
+  const currentScroll = categoriesContainer.value.scrollLeft;
+
+  categoriesContainer.value.scrollTo({
+    left:
+      direction === "left"
+        ? currentScroll - scrollAmount
+        : currentScroll + scrollAmount,
+    behavior: "smooth",
+  });
+};
+
+const toggleFiltersPanel = () => {
+  showFilters.value = !showFilters.value;
+};
+
+// Gestionnaires d'événements clavier
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === "Escape" && showSearchBar.value) {
     showSearchBar.value = false;
   }
 };
 
-// Écouter les événements clavier
-onMounted(() => {
-  document.addEventListener("keydown", handleKeydown);
-});
-
-onUnmounted(() => {
-  document.removeEventListener("keydown", handleKeydown);
-});
-
-// Fermer la barre de recherche mobile quand on clique ailleurs
 const onClickOutside = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
   const isSearchArea =
@@ -329,31 +343,14 @@ const onClickOutside = (event: MouseEvent) => {
   }
 };
 
-onMounted(() => {
-  document.addEventListener("click", onClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener("click", onClickOutside);
-});
-
-// Computed properties simplifiées
+// Computed properties
 const allItems = computed(() => {
   return filters.contentType === "product"
     ? marketplaceStore.products
     : marketplaceStore.services;
 });
 
-const newItems = computed(() => {
-  return allItems.value
-    .sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-    )
-    .slice(0, 10);
-});
-
-// Filtres rapides adaptés au type de contenu
+// Filtres rapides
 const quickFilters = {
   product: [
     { id: "in stock", label: "📦 En stock" },
@@ -369,58 +366,29 @@ const quickFilters = {
   ],
 };
 
-// Métadonnées SEO
+// SEO
 const seoMeta = computed(() => {
   const type = filters.contentType === "product" ? "produits" : "services";
-
   return {
     title: `${filters.contentType === "product" ? "Produits" : "Services"} - Marketplace | Espace Cameroun`,
-    description: `Découvrez notre sélection de ${type} de qualité. ${getSectionDescription()}`,
-    keywords: `marketplace, cameroun, ${type}, ${filters.contentType === "product" ? "achats en ligne" : "services professionnels"}`,
+    description: `Découvrez notre sélection de ${type} de qualité.`,
+    keywords: `marketplace, cameroun, ${type}`,
     url: window.location.href,
     type: "website",
   };
 });
 
-// Dans votre composant
-const setContentType = async (type: "product" | "service") => {
-  try {
-    await marketplaceStore.setContentType(type);
-  } catch (error) {
-    console.error("Error setting content type:", error);
-  }
-};
-
+// Méthodes du store
 const setActiveCategory = async (categoryId: string) => {
-  try {
-    await marketplaceStore.setActiveCategory(categoryId);
-  } catch (error) {
-    console.error("Error setting active category:", error);
-  }
+  await marketplaceStore.setActiveCategory(categoryId);
 };
 
 const setSearchQuery = async (query: string) => {
-  try {
-    await marketplaceStore.setSearchQuery(query);
-  } catch (error) {
-    console.error("Error setting search query:", error);
-  }
+  await marketplaceStore.setSearchQuery(query);
 };
 
 const resetFilters = async () => {
-  try {
-    await marketplaceStore.resetFilters();
-  } catch (error) {
-    console.error("Error resetting filters:", error);
-  }
-};
-
-const setSortBy = (sortBy: string) => {
-  marketplaceStore.setSortBy(sortBy);
-};
-
-const setViewMode = (mode: "grid" | "list") => {
-  marketplaceStore.setViewMode(mode);
+  await marketplaceStore.resetFilters();
 };
 
 const toggleQuickFilter = (filterId: string) => {
@@ -429,30 +397,24 @@ const toggleQuickFilter = (filterId: string) => {
 
 const loadMoreItems = async () => {
   if (isLoadingMore.value || !hasMoreItems.value) return;
-
   isLoadingMore.value = true;
   try {
     await marketplaceStore.fetchDataWithFilters(true);
-  } catch (error) {
-    console.error("Erreur lors du chargement de plus d'articles:", error);
   } finally {
     isLoadingMore.value = false;
   }
 };
 
-// Méthodes helpers
+// Helpers
 const getQuickFilters = () => {
   return quickFilters[filters.contentType] || [];
 };
 
 const areCategoriesLoaded = computed(() => categories.value.length > 0);
 
-// Dans votre composant, modifiez la méthode getFilteredCategories()
 const getFilteredCategories = () => {
   if (!areCategoriesLoaded.value) return [];
-
-  // Créer un tableau avec la catégorie "Tous" en premier
-  const allCategories = [
+  return [
     {
       id: "all",
       name: "Tous",
@@ -461,46 +423,16 @@ const getFilteredCategories = () => {
     },
     ...categories.value.filter((cat) => cat.type === filters.contentType),
   ];
-
-  return allCategories;
-};
-
-const getSearchPlaceholder = () => {
-  return filters.contentType === "product"
-    ? "Rechercher des produits, marques..."
-    : "Rechercher des services, compétences...";
-};
-
-const getSectionTitle = () => {
-  if (filters.searchQuery) return `Résultats pour "${filters.searchQuery}"`;
-  if (filters.activeCategory !== "all") {
-    return (
-      categories.value.find((c) => c.id === filters.activeCategory)?.name ||
-      "Catégorie"
-    );
-  }
-  // return filters.contentType === 'product' ? 'Nos Produits' : 'Nos Services';
-};
-
-const getSectionDescription = () => {
-  // if (filters.searchQuery) return `${filteredItems.value.length} résultat(s) trouvé(s)`;
-  // if (filters.activeCategory !== 'all') return 'Les meilleures offres de cette catégorie';
-  // return `${filteredItems.value.length} ${filters.contentType === 'product' ? 'produit(s)' : 'service(s)'} disponible(s)`;
 };
 
 const getEmptyStateMessage = () => {
   if (filters.searchQuery) {
-    return `Aucun ${filters.contentType === "product" ? "produit" : "service"} trouvé pour "${filters.searchQuery}". Essayez avec d'autres termes.`;
+    return `Aucun ${filters.contentType === "product" ? "produit" : "service"} trouvé pour "${filters.searchQuery}".`;
   }
   if (filters.activeCategory !== "all") {
-    return `Aucun ${filters.contentType === "product" ? "produit" : "service"} trouvé dans cette catégorie.`;
+    return `Aucun ${filters.contentType === "product" ? "produit" : "service"} dans cette catégorie.`;
   }
-  return `Aucun ${filters.contentType === "product" ? "produit" : "service"} disponible pour le moment.`;
-};
-
-const handleSearchInput = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  setSearchQuery(target.value);
+  return `Aucun ${filters.contentType === "product" ? "produit" : "service"} disponible.`;
 };
 
 const viewProduct = (product: Product) => {
@@ -511,59 +443,50 @@ const viewService = (service: Service) => {
   router.push(`/services/${service.id}`);
 };
 
-// Watchers pour le chargement automatique des données
-watch(
-  () => filters.contentType,
-  async (newType) => {
-    if (newType === "product" && marketplaceStore.products.length === 0) {
-      await marketplaceStore.fetchProducts();
-    } else if (
-      newType === "service" &&
-      marketplaceStore.services.length === 0
-    ) {
-      await marketplaceStore.fetchServices();
-    }
-  },
-);
-
-// Configuration de l'Intersection Observer pour le scroll infini
+// Intersection Observer pour scroll infini
 let observer: IntersectionObserver | null = null;
 
 const setupIntersectionObserver = () => {
   if (observer) observer.disconnect();
-
   observer = new IntersectionObserver(
     (entries) => {
-      if (entries[0].isIntersecting && !(isLoading as any).value) {
+      if (entries[0].isIntersecting && !isLoading.value) {
         loadMoreItems();
       }
     },
-    {
-      rootMargin: "200px", // Charger un peu avant la fin
-      threshold: 0.1,
-    },
+    { rootMargin: "200px", threshold: 0.1 },
   );
-
   if (infiniteScrollTrigger.value) {
     observer.observe(infiniteScrollTrigger.value);
   }
 };
 
+// Lifecycle
 onMounted(async () => {
-  // Si un paramètre de recherche est présent dans l'URL
+  // Initialisation
   if (route.query.search) {
     marketplaceStore.filters.searchQuery = route.query.search as string;
   }
 
   await marketplaceStore.fetchMarketplaceData();
   setupIntersectionObserver();
+
+  // Ajouter les listeners
+  window.addEventListener("resize", checkScrollButtons);
+  document.addEventListener("keydown", handleKeydown);
+  document.addEventListener("click", onClickOutside);
+
+  checkScrollButtons();
 });
 
 onUnmounted(() => {
   if (observer) observer.disconnect();
+  window.removeEventListener("resize", checkScrollButtons);
+  document.removeEventListener("keydown", handleKeydown);
+  document.removeEventListener("click", onClickOutside);
 });
 
-// Ré-attacher l'observateur si les contenus changent (quand l'élément peut être recréé par v-if)
+// Watchers
 watch(
   [
     () => filters.activeCategory,
@@ -577,7 +500,6 @@ watch(
   },
 );
 
-// Surveiller les changements de l'URL pour la recherche
 watch(
   () => route.query.search,
   (newSearch) => {
@@ -600,6 +522,7 @@ watch(
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .animate-slide-down {
   animation: slideDown 0.3s ease-out;
 }
@@ -609,20 +532,9 @@ watch(
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Masquer la scrollbar pour les filtres rapides */
-.overflow-x-auto {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.overflow-x-auto::-webkit-scrollbar {
-  display: none;
 }
 </style>

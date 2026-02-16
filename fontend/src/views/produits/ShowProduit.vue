@@ -23,7 +23,7 @@
         <p class="text-gray-600 text-sm sm:text-base mb-6">{{ error }}</p>
         <button
           @click="$router.back()"
-          class="bg-[var(--espace-vert)] text-white px-4 sm:px-6 py-2 sm:py-2 rounded-lg hover:bg-green-700 transition-colors text-sm sm:text-base"
+          class="bg-primary text-white px-4 sm:px-6 py-2 sm:py-2 rounded-lg hover:bg-primary-dark transition-colors text-sm sm:text-base"
         >
           Retour
         </button>
@@ -39,15 +39,11 @@
       <nav
         class="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 overflow-x-auto hide-scrollbar"
       >
-        <router-link
-          to="/"
-          class="hover:text-[var(--espace-vert)] whitespace-nowrap"
+        <router-link to="/" class="hover:text-primary whitespace-nowrap"
           >Accueil</router-link
         >
         <i class="fas fa-chevron-right text-xs flex-shrink-0"></i>
-        <router-link
-          to="/"
-          class="hover:text-[var(--espace-vert)] whitespace-nowrap"
+        <router-link to="/" class="hover:text-primary whitespace-nowrap"
           >Produits</router-link
         >
         <i class="fas fa-chevron-right text-xs flex-shrink-0"></i>
@@ -126,7 +122,7 @@
                 :class="[
                   'flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-2 transition-all',
                   currentImageIndex === index
-                    ? 'border-[var(--espace-vert)]'
+                    ? 'border-primary'
                     : 'border-transparent hover:border-gray-300',
                 ]"
               >
@@ -284,16 +280,14 @@
             >
               <div class="flex items-center gap-2 text-gray-600">
                 <i
-                  class="fas fa-map-marker-alt text-[var(--espace-vert)] text-xs sm:text-sm"
+                  class="fas fa-map-marker-alt text-primary text-xs sm:text-sm"
                 ></i>
                 <span class="truncate">{{
                   produit?.ville || "Localisation non spécifiée"
                 }}</span>
               </div>
               <div class="flex items-center gap-2 text-gray-600">
-                <i
-                  class="fas fa-calendar text-[var(--espace-vert)] text-xs sm:text-sm"
-                ></i>
+                <i class="fas fa-calendar text-primary text-xs sm:text-sm"></i>
                 <span>Ajouté le {{ formatDate(produit?.created_at) }}</span>
               </div>
             </div>
@@ -391,7 +385,7 @@
               <router-link
                 :to="`/messages/${produit?.user?.id}`"
                 @click="contactSeller"
-                class="w-full bg-[var(--espace-vert)] text-white py-2.5 sm:py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base"
+                class="w-full bg-primary text-white py-2.5 sm:py-3 px-4 rounded-lg hover:bg-primary-dark transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base"
               >
                 <i class="fas fa-comment-dots text-sm"></i>
                 <span>Contacter le vendeur</span>
@@ -403,7 +397,7 @@
                 :class="[
                   'w-full border py-2.5 sm:py-3 px-4 rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer',
                   isFavorited
-                    ? 'border-[var(--espace-or)] bg-[var(--espace-or)]/5 text-[var(--espace-or)] hover:bg-[var(--espace-or)]/10'
+                    ? 'border-secondary bg-secondary/5 text-secondary hover:bg-secondary/10'
                     : 'border-gray-300 text-gray-700 hover:bg-gray-50',
                 ]"
               >
@@ -420,7 +414,7 @@
                 :class="[
                   'w-full border py-2.5 sm:py-3 px-4 rounded-lg transition-colors font-semibold flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer',
                   produit?.revendable && !revendu
-                    ? 'border-[var(--espace-vert)] text-[var(--espace-vert)] hover:bg-[var(--espace-vert)]/5'
+                    ? 'border-primary text-primary hover:bg-primary/5'
                     : 'border-gray-300 text-gray-400 cursor-not-allowed',
                 ]"
                 :disabled="revendu"
@@ -569,7 +563,7 @@
                 >
                   <a
                     :href="`tel:${produit.commercant.telephone}`"
-                    class="flex items-center justify-center gap-2 w-full bg-white border border-[var(--espace-vert)] text-[var(--espace-vert)] font-semibold py-2 rounded-lg hover:bg-[var(--espace-vert)] hover:text-white transition-all shadow-sm"
+                    class="flex items-center justify-center gap-2 w-full bg-white border border-primary text-primary font-semibold py-2 rounded-lg hover:bg-primary hover:text-white transition-all shadow-sm"
                   >
                     <i class="fas fa-phone-alt"></i> Appeler
                   </a>
@@ -600,7 +594,7 @@
             Produits similaires
           </h2>
           <button
-            class="text-[var(--espace-vert)] text-sm font-medium hover:text-green-700 flex items-center space-x-1"
+            class="text-primary text-sm font-medium hover:text-primary-dark flex items-center space-x-1"
           >
             <span>Tout voir</span>
             <i class="fas fa-chevron-right text-xs"></i>
@@ -1033,7 +1027,7 @@
         </p>
         <button
           @click="showPromotionConfirmation = false"
-          class="w-full bg-[var(--espace-vert)] text-white py-2 px-4 rounded-lg hover:bg-green-700"
+          class="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark"
         >
           Compris
         </button>
