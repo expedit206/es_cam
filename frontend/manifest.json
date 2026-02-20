@@ -1,0 +1,20 @@
+{
+    "name": "Espace Cameroon",
+    "short_name": "EspaceCM",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#147030FF",
+    "icons": [
+        {
+            "src": "/src/assets/images/logo/logo_vert.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/src/assets/images/logo/logo_vert.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

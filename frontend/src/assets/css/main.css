@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--espace-vert);
+  --color-primary-light: #166534;
+  --color-primary-dark: #052e16;
+
+  --color-secondary: var(--espace-or);
+  --color-secondary-light: #fde047;
+  --color-secondary-dark: #eab308;
+
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-background: var(--background);
+  --color-border: var(--border);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+
+  --font-heading: Outfit, sans-serif;
+  --font-body: Poppins, sans-serif;
+
+  --animate-fade-in-up: fadeInUp 0.5s ease-out;
+  --animate-fade-in: fadeIn 0.3s ease-out;
+  --animate-slide-up: slideUp 0.3s ease-out;
+  --animate-scale-in: scaleIn 0.2s ease-out;
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes slideUp {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  @keyframes scaleIn {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+:root {
+  /* Palette de base (Marque) */
+  --espace-vert: #14532d;
+  --espace-or: #facc15;
+  --espace-blanc: #ffffff;
+  --espace-gris: #4b5563;
+
+  /* Design System - Mode CLAIR (Défaut) */
+  --background: #f9fafb; /* gray-50 */
+  --surface: #ffffff; /* white */
+  --surface-hover: #f3f4f6; /* gray-100 */
+  --foreground: #111827; /* gray-900 */
+  --foreground-muted: #6b7280; /* gray-500 */
+  --border: #e5e7eb; /* gray-200 */
+
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+/* Design System - Mode SOMBRE */
+.dark {
+  --background: #0f172a; /* slate-900 */
+  --surface: #1e293b; /* slate-800 */
+  --surface-hover: #334155; /* slate-700 */
+  --foreground: #f3f4f6; /* gray-100 */
+  --foreground-muted: #9ca3af; /* gray-400 */
+  --border: #334155; /* slate-700 */
+
+  /* Ajustements Marque pour le Sombre */
+  --espace-vert: #166534; /* green-800 légèrement éclairci */
+  --espace-or: #fbbf24; /* amber-400 */
+}
+
+body {
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  margin-top: 0;
+}
+
+#app {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  font-weight: 500;
+  color: var(--espace-vert);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--espace-or);
+}
+
+.card {
+  padding: 1.5rem;
+  background-color: var(--surface);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: rgba(20, 83, 45, 0.1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--espace-vert);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: 2rem;
+  }
+}
